@@ -1,0 +1,5 @@
+DEVELOPMENT_TOKEN=
+PRODUCTION_TOKEN=
+// production: Use production token, and prefix
+// development: Use development token, and prefix
+TYPE=production

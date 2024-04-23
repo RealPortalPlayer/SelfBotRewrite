@@ -3,4 +3,7 @@ project(SelfBotRewrite C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(SelfBotRewrite source/Main.c)
+add_executable(SelfBotRewrite source/Main.c
+        source/Token.c)
+
+target_include_directories(SelfBotRewrite PUBLIC include)
