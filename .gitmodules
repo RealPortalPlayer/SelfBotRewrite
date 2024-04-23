@@ -1,0 +1,3 @@
+[submodule "dependencies/BaconAPI"]
+	path = dependencies/BaconAPI
+	url = https://github.com/RealPortalPlayer/BaconAPI
