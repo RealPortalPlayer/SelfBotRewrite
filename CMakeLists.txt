@@ -15,6 +15,12 @@ endif()
 add_subdirectory(dependencies/BaconAPI)
 add_subdirectory(dependencies/curl)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    add_compile_definitions(DEBUG BA_ALLOW_DEBUG_LOGS)
+elseif(BA_ALLOW_DEBUG_LOGS)
+    add_compile_definitions(BA_ALLOW_DEBUG_LOGS)
+endif()
+
 add_executable(SelfBotRewrite source/Main.c
         source/Token.c
         source/Settings.c
