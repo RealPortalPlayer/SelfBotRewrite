@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     BA_Boolean doAsserts = argc <= 1;
 
     if (!doAsserts)
-        snowflakeId = BA_Number_StringToUnsigned(argv[1], NULL, NULL, NULL, snowflakeId);
+        snowflakeId = BA_Number_StringToUnsignedLongLong(argv[1], NULL, NULL, NULL, snowflakeId);
 
     SBR_Snowflake* snowflake = SBR_Snowflake_ConvertFromNumber(snowflakeId);
 
