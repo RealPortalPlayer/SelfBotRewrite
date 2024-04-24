@@ -20,4 +20,12 @@ void SBR_cURL_Initialize(void) {
     intialized = BA_BOOLEAN_TRUE;
 
     BA_ASSERT((sbrcURL = curl_easy_init()), "Failed to initialize cURL\n");
+    curl_easy_setopt(sbrcURL, CURLOPT_URL, "ws://127.0.0.1:1234");
+    curl_easy_setopt(sbrcURL, CURLOPT_CONNECT_ONLY, 2L);
+    
+    {
+        CURLcode response = curl_easy_perform(sbrcURL);
+
+        BA_ASSERT(response == CURLE_OK, "Failed to perform cURL request: %s\n", curl_easy_strerror(response));
+    }
 }
