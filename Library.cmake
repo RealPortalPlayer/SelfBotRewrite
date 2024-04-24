@@ -10,6 +10,6 @@ target_compile_definitions(libSelfBotRemake PUBLIC DISCORD_API_VERSION=${DISCORD
                                                    DISCORD_WEBSOCKET_URL="${DISCORD_WEBSOCKET_URL}"
                                                    DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION})
 
-target_link_libraries(libSelfBotRemake PUBLIC BaconAPI)
+target_link_libraries(libSelfBotRemake PUBLIC BaconAPI libcurl)
 
 ba_strip_static(libSelfBotRemake)
