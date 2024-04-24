@@ -13,3 +13,9 @@ CURL* SBR_cURL_Get(void);
 
 void SBR_cURL_Initialize(void);
 CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, unsigned int cURLFlag);
+
+#define SBR_CURL_ASSERT(call, message) \
+do {                               \
+    CURLcode sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease = call; \
+    BA_ASSERT(sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease == CURLE_OK, message, curl_easy_strerror(sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease)); \
+} while (BA_BOOLEAN_FALSE)
