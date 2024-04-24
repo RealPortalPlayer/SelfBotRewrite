@@ -44,5 +44,4 @@ void SBR_Settings_Load(void) {
 
     sbrBotSettingsParsed = BA_Configuration_ParseFromFile(bot);
     BA_ASSERT(sbrBotSettingsParsed != NULL, "Failed to parse bot settings file\n");
-    
 }
