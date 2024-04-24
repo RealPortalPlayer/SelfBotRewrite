@@ -28,8 +28,8 @@ endif()
 add_executable(SelfBotRewrite source/Main.c
         source/Token.c
         source/Settings.c
-        include/WebSocket/cURL.h
-        source/WebSocket/cURL.c)
+        source/WebSocket/cURL.c
+        source/Discord/Snowflake.c)
 
 target_include_directories(SelfBotRewrite PUBLIC include)
 target_link_libraries(SelfBotRewrite PUBLIC BaconAPI libcurl)
