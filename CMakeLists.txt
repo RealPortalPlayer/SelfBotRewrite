@@ -29,7 +29,8 @@ add_executable(SelfBotRewrite source/Main.c
         source/Token.c
         source/Settings.c
         source/WebSocket/cURL.c
-        source/Discord/Snowflake.c)
+        source/Discord/Snowflake.c
+        source/Discord/Gateway/Event.c)
 
 target_include_directories(SelfBotRewrite PUBLIC include)
 target_link_libraries(SelfBotRewrite PUBLIC BaconAPI libcurl)
