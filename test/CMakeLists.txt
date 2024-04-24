@@ -8,4 +8,6 @@ foreach(file ${files})
     add_executable("${filename}Test" "${file}")
     
     target_link_libraries("${filename}Test" PRIVATE libSelfBotRemake)
+    
+    ba_strip("${filename}Test")
 endforeach()

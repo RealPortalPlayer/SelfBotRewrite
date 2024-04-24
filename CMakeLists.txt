@@ -42,5 +42,7 @@ target_compile_definitions(SelfBotRewrite PUBLIC DISCORD_API_VERSION=${DISCORD_A
                                                  DISCORD_WEBSOCKET_URL="${DISCORD_WEBSOCKET_URL}"
                                                  DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION})
 
+ba_strip(SelfBotRewrite)
+
 include(Library.cmake)
 add_subdirectory(test)
