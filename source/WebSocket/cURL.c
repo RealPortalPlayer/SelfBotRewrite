@@ -12,7 +12,7 @@ CURL* SBR_cURL_Get(void) {
     return sbrcURL;
 }
 
-void SBR_cURL_Initialize(void) {
+void SBR_cURL_Initialize(const char* url) {
     static BA_Boolean intialized = BA_BOOLEAN_FALSE;
 
     BA_ASSERT(!intialized, "Already initialized cURL\n");
@@ -20,7 +20,7 @@ void SBR_cURL_Initialize(void) {
     intialized = BA_BOOLEAN_TRUE;
 
     BA_ASSERT((sbrcURL = curl_easy_init()), "Failed to initialize cURL\n");
-    curl_easy_setopt(sbrcURL, CURLOPT_URL, "ws://127.0.0.1:1234");
+    curl_easy_setopt(sbrcURL, CURLOPT_URL, url != NULL ? url : DISCORD_WEBSOCKET_URL);
     curl_easy_setopt(sbrcURL, CURLOPT_CONNECT_ONLY, 2L);
     SBR_CURL_ASSERT(curl_easy_perform(sbrcURL), "Failed to perform cURL request: %s\n");
 }

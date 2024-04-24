@@ -16,6 +16,6 @@ int main(int argc, char** argv) {
                     "WebSocket URL: %s\n"
                     "libcurl: %s\n", DISCORD_API_VERSION, DISCORD_API_URL, DISCORD_WEBSOCKET_URL, curl_version());
     BA_LOGGER_INFO("Starting curl\n");
-    SBR_cURL_Initialize();
+    SBR_cURL_Initialize(NULL);
     return 0;
 }

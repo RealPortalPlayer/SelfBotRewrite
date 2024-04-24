@@ -11,7 +11,7 @@
 
 CURL* SBR_cURL_Get(void);
 
-void SBR_cURL_Initialize(void);
+void SBR_cURL_Initialize(const char* url);
 CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, unsigned int cURLFlag);
 
 #define SBR_CURL_ASSERT(call, message) \
