@@ -9,10 +9,12 @@
 #include <errno.h>
 #include <string.h>
 
-static BA_DynamicDictionary* sbrSettingsParsed;
+static BA_DynamicDictionary* sbrSensitiveSettingsParsed;
 
 BA_Boolean SBR_Settings_Get(const char* key, char** output) {
-    *output = BA_DYNAMICDICTIONARY_GET_VALUE(char, sbrSettingsParsed, key, sizeof(char) * (strlen(key) + 1));
+    *output = BA_DYNAMICDICTIONARY_GET_VALUE(char, sbrSensitiveSettingsParsed, key, sizeof(char) * (strlen(key) + 1));
+
+    BA_LOGGER_TRACE("Settings: %s=%s", key, *output != NULL ? *output : "NULL");
     return *output != NULL;
 }
 
@@ -20,15 +22,16 @@ void SBR_Settings_Load(void) {
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     BA_ASSERT(!initialized, "Settings are already initialized\n");
+    BA_LOGGER_INFO("Loading sensitive settings\n");
 
     initialized = BA_BOOLEAN_TRUE;
     
-    FILE* settings = fopen("bot.settings", "r");
+    FILE* sensitive = fopen("sensitive.settings", "r");
 
-    BA_ASSERT(settings != NULL, "Failed to open settings file: %s\n", strerror(errno));
+    BA_ASSERT(sensitive != NULL, "Failed to open settings file: %s\n", strerror(errno));
 
-    sbrSettingsParsed = BA_Configuration_ParseFromFile(settings);
+    sbrSensitiveSettingsParsed = BA_Configuration_ParseFromFile(sensitive);
 
-    BA_ASSERT(sbrSettingsParsed != NULL, "Failed to parse settings file\n");
-    fclose(settings);
+    BA_ASSERT(sbrSensitiveSettingsParsed != NULL, "Failed to parse settings file\n");
+    fclose(sensitive);
 }
