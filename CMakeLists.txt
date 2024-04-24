@@ -32,7 +32,7 @@ set(SOURCE source/Token.c
            source/Discord/Gateway/Event.c
            source/Discord/Gateway/Error.c)
 
-add_executable(SelfBotRewrite source/Main.c)
+add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
 target_include_directories(SelfBotRewrite PUBLIC include)
 target_link_libraries(SelfBotRewrite PUBLIC BaconAPI libcurl)
