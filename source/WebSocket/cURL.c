@@ -29,3 +29,12 @@ void SBR_cURL_Initialize(void) {
         BA_ASSERT(response == CURLE_OK, "Failed to perform cURL request: %s\n", curl_easy_strerror(response));
     }
 }
+
+CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {
+    static size_t throwaway = 0;
+
+    if (sent == NULL)
+        sent = &throwaway;
+    
+    return curl_ws_send(sbrcURL, data, size, sent, 0, cURLFlag);
+}
