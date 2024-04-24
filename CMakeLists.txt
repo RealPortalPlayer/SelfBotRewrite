@@ -8,14 +8,11 @@ set(DISCORD_API_URL "${DISCORD_ROOT_URL}/api/v${DISCORD_API_VERSION}")
 set(DISCORD_WEBSOCKET_URL "wss://gateway.discord.gg")
 set(DISCORD_DEPRECATED_API_VERSION 8)
 
-# cURL options
-set(BUILD_CURL_EXE OFF)
-set(ENABLE_WEBSOCKETS ON)
-
 if(DISCORD_API_VERSION LESS_EQUAL DISCORD_DEPRECATED_API_VERSION)
     message(DEPRECATION "Discord API versions ${DISCORD_DEPRECATED_API_VERSION} and below are deprecated")
 endif()
 
+include(cURLOptions.cmake)
 add_subdirectory(dependencies/BaconAPI)
 add_subdirectory(dependencies/curl)
 
