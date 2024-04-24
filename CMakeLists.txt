@@ -25,13 +25,14 @@ elseif(BA_ALLOW_DEBUG_LOGS)
     add_compile_definitions(BA_ALLOW_DEBUG_LOGS)
 endif()
 
-add_executable(SelfBotRewrite source/Main.c
-        source/Token.c
-        source/Settings.c
-        source/WebSocket/cURL.c
-        source/Discord/Snowflake.c
-        source/Discord/Gateway/Event.c
-        source/Discord/Gateway/Error.c)
+set(SOURCE source/Token.c
+           source/Settings.c
+           source/WebSocket/cURL.c
+           source/Discord/Snowflake.c
+           source/Discord/Gateway/Event.c
+           source/Discord/Gateway/Error.c)
+
+add_executable(SelfBotRewrite source/Main.c)
 
 target_include_directories(SelfBotRewrite PUBLIC include)
 target_link_libraries(SelfBotRewrite PUBLIC BaconAPI libcurl)
@@ -40,3 +41,6 @@ target_compile_definitions(SelfBotRewrite PUBLIC DISCORD_API_VERSION=${DISCORD_A
                                                  DISCORD_API_URL="${DISCORD_API_URL}"
                                                  DISCORD_WEBSOCKET_URL="${DISCORD_WEBSOCKET_URL}"
                                                  DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION})
+
+include(Library.cmake)
+add_subdirectory(test)
