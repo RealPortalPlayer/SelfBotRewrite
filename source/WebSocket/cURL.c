@@ -2,7 +2,6 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Internal/Boolean.h>
-#include <BaconAPI/Debugging/Assert.h>
 
 #include "WebSocket/cURL.h"
 

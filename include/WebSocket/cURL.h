@@ -8,6 +8,7 @@
 #pragma once
 
 #include <curl/curl.h>
+#include <BaconAPI/Debugging/Assert.h>
 
 CURL* SBR_cURL_Get(void);
 
