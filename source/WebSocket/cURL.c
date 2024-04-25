@@ -6,6 +6,7 @@
 
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
+#include "Discord/Configuration.h"
 
 static CURL* sbrcURL;
 
@@ -25,7 +26,7 @@ void SBR_cURL_Initialize(const char* url) {
     if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_CURL_VERBOSE, SBR_BUILTINARGUMENTS_CURL_VERBOSE_SHORT, BA_BOOLEAN_FALSE))
         curl_easy_setopt(sbrcURL, CURLOPT_VERBOSE, 1L);
     
-    curl_easy_setopt(sbrcURL, CURLOPT_URL, url != NULL ? url : DISCORD_WEBSOCKET_URL);
+    curl_easy_setopt(sbrcURL, CURLOPT_URL, url != NULL ? url : SBR_DiscordConfiguration_GetWebSocketURL());
     curl_easy_setopt(sbrcURL, CURLOPT_CONNECT_ONLY, 2L);
     SBR_CURL_ASSERT(curl_easy_perform(sbrcURL), "Failed to perform cURL request: %s\n");
 }
