@@ -10,3 +10,4 @@ int SBR_DiscordConfiguration_GetAPIVersion(void);
 const char* SBR_DiscordConfiguration_GetAPIRootURL(void);
 const char* SBR_DiscordConfiguration_GetAPIURL(void);
 const char* SBR_DiscordConfiguration_GetWebSocketURL(void);
+const char* SBR_DiscordConfiguration_GetCDNURL(void);

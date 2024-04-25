@@ -12,6 +12,20 @@
 #define SBR_DISCORDCONFIGURATION_HACK_STRING2(string) #string
 #define SBR_DISCORDCONFIGURATION_HACK_STRING1(string) SBR_DISCORDCONFIGURATION_HACK_STRING2(string)
 
+#define SBR_DISCORDCONFIGURATION_SETUP_STRING(argument, short, default) \
+initialized = BA_BOOLEAN_TRUE;                                          \
+BA_ArgumentHandler_ShortResults results;                                \
+if (BA_ArgumentHandler_GetInformationWithShort(argument, short, BA_BOOLEAN_FALSE, &results) == 0) { \
+    cached = default;                                                   \
+    return cached;                                                      \
+} (void) NULL
+
+#define SBR_DISCORDCONFIGURATION_SETUP_URL(prefix) \
+if (!BA_String_StartsWith(cached, prefix "s://", BA_BOOLEAN_TRUE) && !BA_String_StartsWith(cached, prefix "://", BA_BOOLEAN_TRUE)) \
+    BA_String_Prepend(&cached, prefix "s://");     \
+if (!BA_String_EndsWith(cached, "/", BA_BOOLEAN_FALSE)) \
+    BA_String_Append(&cached, "/")
+
 int SBR_DiscordConfiguration_GetAPIVersion(void) {
     static int cached = SBR_DISCORD_API_VERSION;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
@@ -33,15 +47,8 @@ const char* SBR_DiscordConfiguration_GetAPIRootURL(void) {
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        initialized = BA_BOOLEAN_TRUE;
+        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_API_ROOT, SBR_BUILTINARGUMENTS_DISCORD_API_ROOT_SHORT, SBR_DISCORD_ROOT_URL);
         
-        BA_ArgumentHandler_ShortResults results;
-
-        if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_DISCORD_API_ROOT, SBR_BUILTINARGUMENTS_DISCORD_API_ROOT_SHORT, BA_BOOLEAN_FALSE, &results) == 0) {
-            cached = SBR_DISCORD_ROOT_URL;
-            return cached;
-        }
-
         cached = *results.value;
     }
 
@@ -59,12 +66,7 @@ const char* SBR_DiscordConfiguration_GetAPIURL(void) {
         
         cached = BA_String_Copy(SBR_DiscordConfiguration_GetAPIRootURL());
         
-        if (!BA_String_StartsWith(cached, "https://", BA_BOOLEAN_TRUE) && !BA_String_StartsWith(cached, "http://", BA_BOOLEAN_TRUE))
-            BA_String_Prepend(&cached, "https://");
-
-        if (!BA_String_EndsWith(cached, "/", BA_BOOLEAN_FALSE))
-            BA_String_Append(&cached, "/");
-
+        SBR_DISCORDCONFIGURATION_SETUP_URL("http");
         BA_String_Append(&cached, "api/v%i");
         BA_String_Format(&cached, SBR_DiscordConfiguration_GetAPIVersion());
     }
@@ -77,19 +79,26 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        initialized = BA_BOOLEAN_TRUE;
-        
-        BA_ArgumentHandler_ShortResults results;
-
-        if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, BA_BOOLEAN_FALSE, &results) == 0) {
-            cached = SBR_DISCORD_WEBSOCKET_URL;
-            return cached;
-        }
+        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, SBR_DISCORD_WEBSOCKET_URL);
 
         cached = BA_String_Copy(*results.value);
 
-        if (!BA_String_StartsWith(cached, "wss://", BA_BOOLEAN_TRUE) && !BA_String_StartsWith(cached, "ws://", BA_BOOLEAN_TRUE))
-            BA_String_Prepend(&cached, "wss://");
+        SBR_DISCORDCONFIGURATION_SETUP_URL("ws");
+    }
+
+    return cached;
+}
+
+const char* SBR_DiscordConfiguration_GetCDNURL(void) {
+    static const char* cached = SBR_DISCORD_ROOT_URL;
+    static BA_Boolean initialized = BA_BOOLEAN_FALSE;
+
+    if (!initialized) {
+        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_CDN, SBR_BUILTINARGUMENTS_DISCORD_CDN_SHORT, SBR_DISCORD_CDN_URL);
+
+        cached = BA_String_Copy(*results.value);
+
+        SBR_DISCORDCONFIGURATION_SETUP_URL("http");
     }
 
     return cached;

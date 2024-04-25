@@ -8,7 +8,8 @@ target_compile_definitions(libSelfBotRemake PUBLIC SBR_DISCORD_API_VERSION=${DIS
                                                    SBR_DISCORD_ROOT_URL="${DISCORD_ROOT_URL}"
                                                    SBR_DISCORD_API_URL="${DISCORD_API_URL}"
                                                    SBR_DISCORD_WEBSOCKET_URL="${DISCORD_WEBSOCKET_URL}"
-                                                   SBR_DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION})
+                                                   SBR_DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION}
+                                                   SBR_DISCORD_CDN_URL="${DISCORD_CDN_URL}")
 
 target_link_libraries(libSelfBotRemake PUBLIC BaconAPI libcurl)
 

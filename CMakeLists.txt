@@ -7,6 +7,7 @@ set(DISCORD_ROOT_URL "https://discord.com")
 set(DISCORD_API_URL "${DISCORD_ROOT_URL}/api/v${DISCORD_API_VERSION}")
 set(DISCORD_WEBSOCKET_URL "wss://gateway.discord.gg")
 set(DISCORD_DEPRECATED_API_VERSION 8)
+set(DISCORD_CDN_URL "https://cdn.discordapp.com")
 
 if(DISCORD_API_VERSION LESS_EQUAL DISCORD_DEPRECATED_API_VERSION)
     message(DEPRECATION "Discord API versions ${DISCORD_DEPRECATED_API_VERSION} and below are deprecated")
@@ -40,7 +41,8 @@ target_compile_definitions(SelfBotRewrite PUBLIC SBR_DISCORD_API_VERSION=${DISCO
                                                  SBR_DISCORD_ROOT_URL="${DISCORD_ROOT_URL}"
                                                  SBR_DISCORD_API_URL="${DISCORD_API_URL}"
                                                  SBR_DISCORD_WEBSOCKET_URL="${DISCORD_WEBSOCKET_URL}"
-                                                 SBR_DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION})
+                                                 SBR_DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION}
+                                                 SBR_DISCORD_CDN_URL="${DISCORD_CDN_URL}")
 
 ba_strip(SelfBotRewrite)
 
