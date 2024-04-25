@@ -28,7 +28,8 @@ set(SOURCE source/Token.c
            source/Discord/Snowflake.c
            source/Discord/Gateway/Event.c
            source/Discord/Gateway/Error.c
-           source/UserAgent.c)
+           source/UserAgent.c
+           source/Discord/Permissions.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
