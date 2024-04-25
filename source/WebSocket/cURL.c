@@ -2,8 +2,10 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Internal/Boolean.h>
+#include <BaconAPI/ArgumentHandler.h>
 
 #include "WebSocket/cURL.h"
+#include "BuiltInArguments.h"
 
 static CURL* sbrcURL;
 
@@ -19,6 +21,10 @@ void SBR_cURL_Initialize(const char* url) {
     intialized = BA_BOOLEAN_TRUE;
 
     BA_ASSERT((sbrcURL = curl_easy_init()), "Failed to initialize cURL\n");
+
+    if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_CURL_VERBOSE, SBR_BUILTINARGUMENTS_CURL_VERBOSE_SHORT, BA_BOOLEAN_FALSE))
+        curl_easy_setopt(sbrcURL, CURLOPT_VERBOSE, 1L);
+    
     curl_easy_setopt(sbrcURL, CURLOPT_URL, url != NULL ? url : DISCORD_WEBSOCKET_URL);
     curl_easy_setopt(sbrcURL, CURLOPT_CONNECT_ONLY, 2L);
     SBR_CURL_ASSERT(curl_easy_perform(sbrcURL), "Failed to perform cURL request: %s\n");
