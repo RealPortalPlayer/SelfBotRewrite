@@ -12,11 +12,22 @@
 #define SBR_DISCORDCONFIGURATION_HACK_STRING2(string) #string
 #define SBR_DISCORDCONFIGURATION_HACK_STRING1(string) SBR_DISCORDCONFIGURATION_HACK_STRING2(string)
 
-#define SBR_DISCORDCONFIGURATION_SETUP_STRING(argument, short, default) \
+#define SBR_DISCORDCONFIGURATION_ADD_PATH() \
+if (path != NULL) {                         \
+    char* cloned = BA_String_Copy(cached);  \
+    if (!BA_String_EndsWith(&cloned, "/", BA_BOOLEAN_FALSE)) \
+        BA_String_Append(&cloned, "/"); \
+    return BA_String_Append(&cloned, path); \
+} (void) NULL
+
+#define SBR_DISCORDCONFIGURATION_ADD_NO_PATH()
+
+#define SBR_DISCORDCONFIGURATION_SETUP_STRING(argument, short, default, path) \
 initialized = BA_BOOLEAN_TRUE;                                          \
 BA_ArgumentHandler_ShortResults results;                                \
 if (BA_ArgumentHandler_GetInformationWithShort(argument, short, BA_BOOLEAN_FALSE, &results) == 0) { \
     cached = default;                                                   \
+    SBR_DISCORDCONFIGURATION_ADD_ ## path();                                \
     return cached;                                                      \
 } (void) NULL
 
@@ -43,24 +54,25 @@ int SBR_DiscordConfiguration_GetAPIVersion(void) {
 }
 
 const char* SBR_DiscordConfiguration_GetAPIRootURL(void) {
-    static const char* cached = SBR_DISCORD_ROOT_URL;
+    static char* cached = SBR_DISCORD_ROOT_URL;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_API_ROOT, SBR_BUILTINARGUMENTS_DISCORD_API_ROOT_SHORT, SBR_DISCORD_ROOT_URL);
+        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_API_ROOT, SBR_BUILTINARGUMENTS_DISCORD_API_ROOT_SHORT, SBR_DISCORD_ROOT_URL, NO_PATH);
         
-        cached = *results.value;
+        cached = BA_String_Copy(*results.value);
     }
 
     return cached;
 }
 
-const char* SBR_DiscordConfiguration_GetAPIURL(void) {
-    static const char* cached = NULL;
+const char* SBR_DiscordConfiguration_GetAPIURL(const char* path) {
+    static char* cached = NULL;
 
     if (cached == NULL) {
         if (!BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_DISCORD_API, SBR_BUILTINARGUMENTS_DISCORD_API_SHORT, BA_BOOLEAN_FALSE) && !BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_DISCORD_API_ROOT, SBR_BUILTINARGUMENTS_DISCORD_API_ROOT_SHORT, BA_BOOLEAN_FALSE)) {
             cached = SBR_DISCORD_API_URL;
+            SBR_DISCORDCONFIGURATION_ADD_PATH();
             return cached;
         }
         
@@ -71,15 +83,16 @@ const char* SBR_DiscordConfiguration_GetAPIURL(void) {
         BA_String_Format(&cached, SBR_DiscordConfiguration_GetAPIVersion());
     }
 
+    SBR_DISCORDCONFIGURATION_ADD_PATH();
     return cached;
 }
 
 const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
-    static const char* cached = SBR_DISCORD_ROOT_URL;
+    static char* cached = SBR_DISCORD_ROOT_URL;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, SBR_DISCORD_WEBSOCKET_URL);
+        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, SBR_DISCORD_WEBSOCKET_URL, NO_PATH);
 
         cached = BA_String_Copy(*results.value);
 
@@ -89,17 +102,18 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
     return cached;
 }
 
-const char* SBR_DiscordConfiguration_GetCDNURL(void) {
-    static const char* cached = SBR_DISCORD_ROOT_URL;
+const char* SBR_DiscordConfiguration_GetCDNURL(const char* path) {
+    static char* cached = SBR_DISCORD_ROOT_URL;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_CDN, SBR_BUILTINARGUMENTS_DISCORD_CDN_SHORT, SBR_DISCORD_CDN_URL);
+        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_CDN, SBR_BUILTINARGUMENTS_DISCORD_CDN_SHORT, SBR_DISCORD_CDN_URL, PATH);
 
         cached = BA_String_Copy(*results.value);
 
         SBR_DISCORDCONFIGURATION_SETUP_URL("http");
     }
 
+    SBR_DISCORDCONFIGURATION_ADD_PATH();
     return cached;
 }

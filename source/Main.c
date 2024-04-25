@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
                     "API URL: %s\n"
                     "WebSocket URL: %s\n"
                     "CDN URL: %s\n"
-                    "libcurl: %s\n", SBR_DiscordConfiguration_GetAPIVersion(), SBR_DiscordConfiguration_GetAPIURL(), SBR_DiscordConfiguration_GetWebSocketURL(), SBR_DiscordConfiguration_GetCDNURL(), curl_version());
+                    "libcurl: %s\n", SBR_DiscordConfiguration_GetAPIVersion(), SBR_DiscordConfiguration_GetAPIURL(NULL), SBR_DiscordConfiguration_GetWebSocketURL(), SBR_DiscordConfiguration_GetCDNURL(NULL), curl_version());
 
     if (SBR_DiscordConfiguration_GetAPIVersion() <= SBR_DISCORD_DEPRECATED_API_VERSION)
         BA_LOGGER_WARN("Discord API version %i and below are deprecated. Expect problems\n", SBR_DISCORD_DEPRECATED_API_VERSION);
