@@ -13,7 +13,7 @@
 #define SBR_DISCORDCONFIGURATION_HACK_STRING1(string) SBR_DISCORDCONFIGURATION_HACK_STRING2(string)
 
 int SBR_DiscordConfiguration_GetAPIVersion(void) {
-    static int cached = DISCORD_API_VERSION;
+    static int cached = SBR_DISCORD_API_VERSION;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
@@ -22,14 +22,14 @@ int SBR_DiscordConfiguration_GetAPIVersion(void) {
         BA_ArgumentHandler_ShortResults results;
 
         if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_DISCORD_API, SBR_BUILTINARGUMENTS_DISCORD_API_SHORT, BA_BOOLEAN_FALSE, &results) != 0)
-            cached = BA_Number_StringToInteger(*results.value, NULL, NULL, "Invalid Discord API version\n", DISCORD_API_VERSION);
+            cached = BA_Number_StringToInteger(*results.value, NULL, NULL, "Invalid Discord API version\n", SBR_DISCORD_API_VERSION);
     }
 
     return cached;
 }
 
 const char* SBR_DiscordConfiguration_GetAPIRootURL(void) {
-    static const char* cached = DISCORD_ROOT_URL;
+    static const char* cached = SBR_DISCORD_ROOT_URL;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
@@ -38,7 +38,7 @@ const char* SBR_DiscordConfiguration_GetAPIRootURL(void) {
         BA_ArgumentHandler_ShortResults results;
 
         if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_DISCORD_API_ROOT, SBR_BUILTINARGUMENTS_DISCORD_API_ROOT_SHORT, BA_BOOLEAN_FALSE, &results) == 0) {
-            cached = DISCORD_ROOT_URL;
+            cached = SBR_DISCORD_ROOT_URL;
             return cached;
         }
 
@@ -53,7 +53,7 @@ const char* SBR_DiscordConfiguration_GetAPIURL(void) {
 
     if (cached == NULL) {
         if (!BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_DISCORD_API, SBR_BUILTINARGUMENTS_DISCORD_API_SHORT, BA_BOOLEAN_FALSE) && !BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_DISCORD_API_ROOT, SBR_BUILTINARGUMENTS_DISCORD_API_ROOT_SHORT, BA_BOOLEAN_FALSE)) {
-            cached = DISCORD_API_URL;
+            cached = SBR_DISCORD_API_URL;
             return cached;
         }
         
@@ -73,7 +73,7 @@ const char* SBR_DiscordConfiguration_GetAPIURL(void) {
 }
 
 const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
-    static const char* cached = DISCORD_ROOT_URL;
+    static const char* cached = SBR_DISCORD_ROOT_URL;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
@@ -82,7 +82,7 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
         BA_ArgumentHandler_ShortResults results;
 
         if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, BA_BOOLEAN_FALSE, &results) == 0) {
-            cached = DISCORD_WEBSOCKET_URL;
+            cached = SBR_DISCORD_WEBSOCKET_URL;
             return cached;
         }
 

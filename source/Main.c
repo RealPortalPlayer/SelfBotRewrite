@@ -29,8 +29,8 @@ int main(int argc, char** argv) {
                     "WebSocket URL: %s\n"
                     "libcurl: %s\n", SBR_DiscordConfiguration_GetAPIVersion(), SBR_DiscordConfiguration_GetAPIURL(), SBR_DiscordConfiguration_GetWebSocketURL(), curl_version());
 
-    if (SBR_DiscordConfiguration_GetAPIVersion() <= DISCORD_DEPRECATED_API_VERSION)
-        BA_LOGGER_WARN("Discord API version %i and below are deprecated. Expect problems\n", DISCORD_DEPRECATED_API_VERSION);
+    if (SBR_DiscordConfiguration_GetAPIVersion() <= SBR_DISCORD_DEPRECATED_API_VERSION)
+        BA_LOGGER_WARN("Discord API version %i and below are deprecated. Expect problems\n", SBR_DISCORD_DEPRECATED_API_VERSION);
 
     BA_LOGGER_INFO("Starting curl\n");
     SBR_cURL_Initialize(NULL);
