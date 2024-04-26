@@ -15,7 +15,7 @@ CURL* SBR_cURL_Get(void) {
     return sbrcURL;
 }
 
-void SBR_cURL_Initialize(const char* url) {
+BA_Boolean SBR_cURL_Initialize(const char* url) {
     BA_ASSERT(!sbrcURLInitialized, "Already initialized cURL\n");
 
     sbrcURLInitialized = BA_BOOLEAN_TRUE;
@@ -27,7 +27,16 @@ void SBR_cURL_Initialize(const char* url) {
     
     curl_easy_setopt(sbrcURL, CURLOPT_URL, url != NULL ? url : SBR_DiscordConfiguration_GetWebSocketURL());
     curl_easy_setopt(sbrcURL, CURLOPT_CONNECT_ONLY, 2L);
-    SBR_CURL_ASSERT(curl_easy_perform(sbrcURL), "Failed to perform cURL request: %s\n");
+
+    CURLcode code = curl_easy_perform(sbrcURL);
+
+    if (code == CURLE_OK)
+        return BA_BOOLEAN_TRUE;
+
+    sbrcURLInitialized = BA_BOOLEAN_FALSE;
+    
+    BA_LOGGER_ERROR("Failed to connect: %s\n", curl_easy_strerror(code));
+    return BA_BOOLEAN_FALSE;
 }
 
 CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {

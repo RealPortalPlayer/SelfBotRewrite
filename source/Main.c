@@ -4,6 +4,13 @@
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
 #include <Threads/Heartbeat.h>
+#include <BaconAPI/Internal/OperatingSystem.h>
+
+#if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
+#   include <unistd.h>
+#elif BA_OPERATINGSYSTEM_WINDOWS
+#   include <Windows.h>
+#endif
 
 #include "Settings.h"
 #include "WebSocket/cURL.h"
@@ -39,7 +46,17 @@ int main(int argc, char** argv) {
         BA_LOGGER_WARN("Discord API version %i and below are deprecated. Expect problems\n", SBR_DISCORD_DEPRECATED_API_VERSION);
 
     BA_LOGGER_INFO("Starting cURL\n");
-    SBR_cURL_Initialize(NULL);
+
+    while (BA_BOOLEAN_TRUE) {
+        if (!SBR_cURL_Initialize(NULL)) {
+            BA_LOGGER_ERROR("Retrying in 5 seconds...\n");
+            sleep(5);
+            continue;
+        }
+
+        break;
+    }
+    
     BA_LOGGER_INFO("Creating threads\n");
     SBR_HeartbeatThread_Create();
 
