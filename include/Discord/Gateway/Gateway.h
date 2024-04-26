@@ -16,3 +16,10 @@ int SBR_Gateway_GetInterval(void);
 void SBR_Gateway_Send(const SBR_GatewayEvent* event);
 void SBR_Gateway_Parse(const char* buffer);
 void SBR_Gateway_SetInterval(int interval);
+
+#define SBR_GATEWAY_SEND_AND_FREE(gateway) \
+do {                                       \
+    SBR_GatewayEvent* createdGatewayPaddingToPreventNameCollisions = gateway; \
+    SBR_Gateway_Send(createdGatewayPaddingToPreventNameCollisions); \
+    SBR_GatewayEvent_Free(createdGatewayPaddingToPreventNameCollisions); \
+} while (BA_BOOLEAN_FALSE)

@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
     }
 
     BA_LOGGER_INFO("Sending Gateway event\n");
-    SBR_Gateway_Send(SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, ""));
+    SBR_GATEWAY_SEND_AND_FREE(SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, ""));
     BA_LOGGER_INFO("Simulating response\n");
 
     {

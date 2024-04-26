@@ -96,3 +96,4 @@ BA_Boolean SBR_GatewayEvent_IsCodeValid(SBR_GatewayEvent_Codes code);
  * You shouldn't need to call this directly
  */
 SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int sequence, const char* eventName);
+void SBR_GatewayEvent_Free(SBR_GatewayEvent* event);

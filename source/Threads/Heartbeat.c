@@ -27,7 +27,7 @@ static BA_THREAD_RETURN_VALUE BA_THREAD_ATTRIBUTE SBR_HeartbeatThread_Function(v
         if (sbrHeartbeatThreadPaused)
             continue;
 
-        SBR_Gateway_Send(SBR_GatewayEvents_CreateHeartbeat());
+        SBR_GATEWAY_SEND_AND_FREE(SBR_GatewayEvents_CreateHeartbeat());
         sleep(SBR_Gateway_GetInterval() / 1000);
     }
 

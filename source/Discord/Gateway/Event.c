@@ -34,3 +34,12 @@ SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int seque
     BA_ASSERT(event->data != NULL, "Failed to create Gateway event data\n");
     return event;
 }
+
+void SBR_GatewayEvent_Free(SBR_GatewayEvent* event) {
+    BA_LOGGER_TRACE("Freeing: %i\n", event->operationCode);
+    
+    if (!json_object_put(event->data))
+        BA_LOGGER_WARN("Reference count leak\n");
+
+    free(event);
+}
