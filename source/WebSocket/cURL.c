@@ -9,17 +9,16 @@
 #include "Discord/Configuration.h"
 
 static CURL* sbrcURL;
+static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;
 
 CURL* SBR_cURL_Get(void) {
     return sbrcURL;
 }
 
 void SBR_cURL_Initialize(const char* url) {
-    static BA_Boolean intialized = BA_BOOLEAN_FALSE;
+    BA_ASSERT(!sbrcURLInitialized, "Already initialized cURL\n");
 
-    BA_ASSERT(!intialized, "Already initialized cURL\n");
-
-    intialized = BA_BOOLEAN_TRUE;
+    sbrcURLInitialized = BA_BOOLEAN_TRUE;
 
     BA_ASSERT((sbrcURL = curl_easy_init()), "Failed to initialize cURL\n");
 
@@ -32,10 +31,32 @@ void SBR_cURL_Initialize(const char* url) {
 }
 
 CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {
-    static size_t throwaway = 0;
+    size_t throwaway;
 
+    if (cURLFlag == CURLWS_CLOSE && sbrcURLInitialized) {
+        BA_LOGGER_WARN("Manual cURL close\n");
+
+        sbrcURLInitialized = BA_BOOLEAN_FALSE;
+    }
+    
     if (sent == NULL)
         sent = &throwaway;
+
+    CURLcode result = curl_ws_send(sbrcURL, data, size, sent, 0, cURLFlag);
+
+    if (cURLFlag == CURLWS_CLOSE) {
+        SBR_CURL_ASSERT(result, "Failed to close cURL: %s\n");
+        curl_easy_cleanup(sbrcURL);
+    }
     
-    return curl_ws_send(sbrcURL, data, size, sent, 0, cURLFlag);
+    return result;
+}
+
+void SBR_cURL_Close(void) {
+    BA_ASSERT(sbrcURLInitialized, "cURL is not initialized\n");
+
+    sbrcURLInitialized = BA_BOOLEAN_FALSE;
+
+    SBR_cURL_Send("", 0, NULL, CURLWS_CLOSE);
+    curl_easy_cleanup(sbrcURL);
 }

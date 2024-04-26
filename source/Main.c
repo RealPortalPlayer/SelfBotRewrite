@@ -34,7 +34,9 @@ int main(int argc, char** argv) {
     if (SBR_DiscordConfiguration_GetAPIVersion() <= SBR_DISCORD_DEPRECATED_API_VERSION)
         BA_LOGGER_WARN("Discord API version %i and below are deprecated. Expect problems\n", SBR_DISCORD_DEPRECATED_API_VERSION);
 
-    BA_LOGGER_INFO("Starting curl\n");
+    BA_LOGGER_INFO("Starting cURL\n");
     SBR_cURL_Initialize(NULL);
+    BA_LOGGER_INFO("Closing cURL\n");
+    SBR_cURL_Close();
     return 0;
 }
