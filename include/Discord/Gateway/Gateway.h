@@ -18,6 +18,7 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event);
 void SBR_Gateway_Parse(const char* buffer);
 void SBR_Gateway_SetInterval(int interval);
 void SBR_Gateway_ResetRequestCount(void);
+void SBR_Gateway_ParseError(uint16_t code, const char* message);
 
 #define SBR_GATEWAY_SEND_AND_FREE(gateway) \
 do {                                       \

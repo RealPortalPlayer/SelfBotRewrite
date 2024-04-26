@@ -9,6 +9,7 @@
 #include "Discord/Gateway/Gateway.h"
 
 #include <MainLoop.h>
+#include <Discord/Gateway/Errors.h>
 
 #include "WebSocket/cURL.h"
 #include "Discord/Gateway/Events.h"
@@ -107,4 +108,13 @@ int SBR_Gateway_GetRequestCount(void) {
 
 void SBR_Gateway_ResetRequestCount(void) {
     sbrGatewayRequestCount = 0;
+}
+
+void SBR_Gateway_ParseError(uint16_t code, const char* message) {
+    BA_LOGGER_TRACE("Received error: %u\n", code);
+
+    const SBR_GatewayErrors_Information* information = SBR_GatewayErrors_Get(code);
+
+    BA_ASSERT(information != NULL, "Unknown Discord error code (%u): %s\n", code, message);
+    information->action(message);
 }

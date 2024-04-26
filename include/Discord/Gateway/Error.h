@@ -90,11 +90,6 @@ typedef enum {
      * @note Can't reconnect
      */
     SBR_GATEWAYERROR_CODE_DISALLOWED_INTENTS,
-
-    /**
-     * Invalid User Agent, or Cloudflare doesn't like us
-     */
-    SBR_GATEWAYERROR_CODE_UNOFFICIAL_CLOUDFLARE = 40333,
  
     /**
      * Not a real code
@@ -103,6 +98,4 @@ typedef enum {
 } SBR_GatewayError_Codes;
 
 BA_Boolean SBR_GatewayError_CanReconnect(SBR_GatewayError_Codes code);
-BA_Boolean SBR_GatewayError_ShouldReconnect(SBR_GatewayError_Codes code);
-BA_Boolean SBR_GatewayError_IsFatal(SBR_GatewayError_Codes code);
 BA_Boolean SBR_GatewayError_IsValid(SBR_GatewayError_Codes code);
