@@ -3,6 +3,7 @@
 
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
+#include <signal.h>
 
 #include "Settings.h"
 #include "WebSocket/cURL.h"
@@ -13,8 +14,17 @@
 #include "Threads/Heartbeat.h"
 #include "Threads/RateLimit.h"
 
+void SignalHandler(int signal) {
+    if (signal != SIGINT)
+        return;
+    
+    SBR_MainLoop_Shutdown();
+}
+
 int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
+    BA_LOGGER_DEBUG("Registering signals\n");
+    signal(SIGINT, &SignalHandler);
 
     if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_HELP, SBR_BUILTINARGUMENTS_HELP_SHORT, BA_BOOLEAN_FALSE)) {
         BA_LOGGER_INFO("Arguments:\n%s\n"
@@ -26,7 +36,7 @@ int main(int argc, char** argv) {
                        BA_ARGUMENTHANDLER_HELP_MESSAGE_ARGUMENTS(SBR_BUILTINARGUMENTS_DISCORD_CDN, SBR_BUILTINARGUMENTS_DISCORD_CDN_SHORT, "<url>", "Use custom Discord CDN\n")), BA_ArgumentHandler_GetHelpMessage());
         return BA_BOOLEAN_TRUE;
     }
-
+    
     BA_LOGGER_INFO("Starting bot (internal version: " SRB_VERSION ")\n");
     SBR_Settings_Load();
     BA_LOGGER_DEBUG("Discord:\n"
