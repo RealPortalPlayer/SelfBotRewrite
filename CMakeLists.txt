@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 set(DISCORD_API_VERSION 10)
 set(DISCORD_ROOT_URL "https://discord.com")
 set(DISCORD_API_URL "${DISCORD_ROOT_URL}/api/v${DISCORD_API_VERSION}")
-set(DISCORD_WEBSOCKET_URL "wss://gateway.discord.gg")
+set(DISCORD_WEBSOCKET_URL "wss://gateway.discord.gg/?v=10&encoding=json")
 set(DISCORD_DEPRECATED_API_VERSION 8)
 set(DISCORD_CDN_URL "https://cdn.discordapp.com")
 
@@ -34,7 +34,8 @@ set(SOURCE source/Token.c
            source/Discord/Permissions.c
            source/Discord/Configuration.c
            source/Prefix.c
-           source/Discord/Gateway/Events.c)
+           source/Discord/Gateway/Events.c
+           source/Threads/Heartbeat.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 

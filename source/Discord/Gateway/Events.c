@@ -4,6 +4,7 @@
 #include <BaconAPI/Debugging/StaticAssert.h>
 #include <BaconAPI/Logger.h>
 #include <BaconAPI/Debugging/Assert.h>
+#include <Threads/Heartbeat.h>
 
 #include "Discord/Gateway/Events.h"
 
@@ -77,6 +78,7 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HELLO) {
 
     BA_ASSERT(interval != NULL, "Malformed packet: missing JSON field\n");
     SBR_GatewayEvent_SetInterval(json_object_get_int(interval));
+    SBR_HeartbeatThread_Pause(BA_BOOLEAN_FALSE);
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_ACKNOWLEDGE) {

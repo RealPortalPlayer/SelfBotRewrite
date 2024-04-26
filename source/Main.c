@@ -3,12 +3,13 @@
 
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
-#include <Discord/Configuration.h>
-#include <Discord/Gateway/Event.h>
+#include <Threads/Heartbeat.h>
 
 #include "Settings.h"
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
+#include "Discord/Configuration.h"
+#include "Discord/Gateway/Event.h"
 
 #define SBR_MAIN_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
 
@@ -39,6 +40,8 @@ int main(int argc, char** argv) {
 
     BA_LOGGER_INFO("Starting cURL\n");
     SBR_cURL_Initialize(NULL);
+    BA_LOGGER_INFO("Creating threads\n");
+    SBR_HeartbeatThread_Create();
 
     // TODO: Console command thread
     // TODO: Heartbeat thread
@@ -54,7 +57,9 @@ int main(int argc, char** argv) {
         buffer[receivedBytes] = '\0';
         SBR_GatewayEvent_Parse(buffer);
     }
-    
+
+    BA_LOGGER_INFO("Closing threads (press CTRL+C if frozen)\n");
+    SBR_HeartbeatThread_Destroy();
     BA_LOGGER_INFO("Closing cURL\n");
     SBR_cURL_Close();
     return 0;
