@@ -22,6 +22,8 @@ SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-Limit clearer", KILL) {
         sleep(60);
         SBR_Gateway_ResetRequestCount();
     }
+
+    return NULL;
 }
 
 SBR_THREADINTERNAL_CODE(RateLimitDetecter, "rate-limit detecter", JOIN) {
@@ -40,6 +42,8 @@ SBR_THREADINTERNAL_CODE(RateLimitDetecter, "rate-limit detecter", JOIN) {
 
         sbrRateLimitSleeping = BA_BOOLEAN_FALSE;
     }
+
+    return NULL;
 }
 
 BA_Boolean SBR_RateLimit_Sleeping(void) {
