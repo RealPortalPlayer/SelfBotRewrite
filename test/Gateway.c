@@ -6,6 +6,7 @@
 #include <WebSocket/cURL.h>
 #include <Discord/Gateway/Event.h>
 #include <BaconAPI/Internal/OperatingSystem.h>
+#include <Discord/Gateway/Gateway.h>
 
 #if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
 #   include <unistd.h>
@@ -28,7 +29,7 @@ int main(int argc, char** argv) {
     }
 
     BA_LOGGER_INFO("Sending Gateway event\n");
-    SBR_GatewayEvent_Send(SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, ""));
+    SBR_Gateway_Send(SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, ""));
     BA_LOGGER_INFO("Simulating response\n");
 
     {
@@ -36,7 +37,7 @@ int main(int argc, char** argv) {
 
         BA_ASSERT(fakePacket != NULL, "Failed to allocate memory for fake packet\n");
         BA_ASSERT(BA_String_Format(&fakePacket, SBR_GATEWAYEVENT_CODE_HEARTBEAT_ACKNOWLEDGE), "Failed to format fake packet\n");
-        SBR_GatewayEvent_Parse(fakePacket);
+        SBR_Gateway_Parse(fakePacket);
     }
 
     BA_LOGGER_INFO("Closing cURL\n");

@@ -13,6 +13,7 @@
 #include "MainLoop.h"
 #include "WebSocket/cURL.h"
 #include "Discord/Gateway/Event.h"
+#include "Discord/Gateway/Gateway.h"
 
 #define SBR_MAIN_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
 
@@ -56,7 +57,8 @@ BA_Boolean SBR_MainLoop_Start(void) {
         }
 
         buffer[receivedBytes] = '\0';
-        SBR_GatewayEvent_Parse(buffer);
+
+        SBR_Gateway_Parse(buffer);
     }
 
     BA_LOGGER_INFO("Closing cURL\n");

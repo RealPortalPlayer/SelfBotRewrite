@@ -14,6 +14,7 @@
 #include "Threads/Heartbeat.h"
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Events.h"
+#include "Discord/Gateway/Gateway.h"
 
 static BA_Boolean sbrHeartbeatThreadPaused = BA_BOOLEAN_TRUE;
 static BA_Thread sbrHeartbeatThread;
@@ -26,8 +27,8 @@ static BA_THREAD_RETURN_VALUE BA_THREAD_ATTRIBUTE SBR_HeartbeatThread_Function(v
         if (sbrHeartbeatThreadPaused)
             continue;
 
-        SBR_GatewayEvent_Send(SBR_GatewayEvents_CreateHeartbeat());
-        sleep(SBR_GatewayEvent_GetInterval() / 1000);
+        SBR_Gateway_Send(SBR_GatewayEvents_CreateHeartbeat());
+        sleep(SBR_Gateway_GetInterval() / 1000);
     }
 
     return NULL;

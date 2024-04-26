@@ -91,16 +91,8 @@ typedef struct {
 BA_Boolean SBR_GatewayEvent_CanReceiveCode(SBR_GatewayEvent_Codes code);
 BA_Boolean SBR_GatewayEvent_CanSendCode(SBR_GatewayEvent_Codes code);
 BA_Boolean SBR_GatewayEvent_IsCodeValid(SBR_GatewayEvent_Codes code);
-int SBR_GatewayEvent_GetInterval(void);
 
 /**
  * You shouldn't need to call this directly
  */
 SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int sequence, const char* eventName);
-
-/**
- * You shouldn't need to call this directly
- */
-void SBR_GatewayEvent_Send(const SBR_GatewayEvent* event);
-void SBR_GatewayEvent_Parse(const char* buffer);
-void SBR_GatewayEvent_SetInterval(int interval);

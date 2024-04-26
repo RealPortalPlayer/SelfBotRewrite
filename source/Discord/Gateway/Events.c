@@ -9,6 +9,7 @@
 #include "Discord/Gateway/Events.h"
 #include "Token.h"
 #include "UserAgent.h"
+#include "Discord/Gateway/Gateway.h"
 
 #define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static const char* SBR_GatewayEvents_Action ## name(const json_object* data)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
@@ -64,7 +65,7 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH) {
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT) {
     BA_LOGGER_WARN("Requested heartbeat\n");
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
-    SBR_GatewayEvent_Send(SBR_GatewayEvents_CreateHeartbeat());
+    SBR_Gateway_Send(SBR_GatewayEvents_CreateHeartbeat());
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_RECONNECT) {
@@ -81,9 +82,9 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HELLO) {
     json_object* interval = json_object_object_get(data, "heartbeat_interval");
 
     BA_ASSERT(interval != NULL, "Malformed packet: missing JSON field\n");
-    SBR_GatewayEvent_SetInterval(json_object_get_int(interval));
+    SBR_Gateway_SetInterval(json_object_get_int(interval));
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_FALSE);
-    SBR_GatewayEvent_Send(SBR_GatewayEvents_CreateIdentify());
+    SBR_Gateway_Send(SBR_GatewayEvents_CreateIdentify());
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_ACKNOWLEDGE) {
