@@ -7,6 +7,9 @@
 #include <BaconAPI/Thread.h>
 
 #include "Discord/Gateway/Gateway.h"
+
+#include <MainLoop.h>
+
 #include "WebSocket/cURL.h"
 #include "Discord/Gateway/Events.h"
 #include "Threads/RateLimit.h"
@@ -52,7 +55,11 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
 void SBR_Gateway_Parse(const char* buffer) {
     json_object* object = json_tokener_parse(buffer);
 
-    BA_ASSERT(object != NULL, "Failed to parse buffer: %s\n", buffer);
+    if (object == NULL) {
+        BA_LOGGER_ERROR("Failed to parse buffer: %s\n", buffer);
+        SBR_MainLoop_SignalDisconnected();
+        return;
+    }
     
     json_object* operationCode = json_object_object_get(object, "op");
     json_object* data = json_object_object_get(object, "d");
