@@ -90,6 +90,11 @@ typedef enum {
      * @note Can't reconnect
      */
     SBR_GATEWAYERROR_CODE_DISALLOWED_INTENTS,
+
+    /**
+     * Invalid User Agent, or Cloudflare doesn't like us
+     */
+    SBR_GATEWAYERROR_CODE_UNOFFICIAL_CLOUDFLARE = 40333,
  
     /**
      * Not a real code
