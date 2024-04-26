@@ -1,7 +1,6 @@
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
-#include <stddef.h>
 #include <BaconAPI/Debugging/Assert.h>
 
 #include "Prefix.h"
