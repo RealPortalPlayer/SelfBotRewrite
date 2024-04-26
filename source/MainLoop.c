@@ -24,6 +24,7 @@
 #define SBR_MAIN_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
 
 static volatile BA_Boolean sbrMainDisconnected = BA_BOOLEAN_FALSE;
+static volatile BA_Boolean sbrMainShuttingDown = BA_BOOLEAN_FALSE;
 
 BA_Boolean SBR_MainLoop_Start(void) {
 #ifndef SBR_STATIC
@@ -50,7 +51,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
 
     sbrMainDisconnected = BA_BOOLEAN_FALSE;
     
-    while (BA_BOOLEAN_TRUE) {
+    while (!SBR_MainLoop_IsShuttingDown()) {
         char buffer[SBR_MAIN_PACKET_BUFFER_SIZE];
         size_t receivedBytes;
         const struct curl_ws_frame* metadata;
@@ -99,4 +100,12 @@ BA_Boolean SBR_MainLoop_Start(void) {
 
 void SBR_MainLoop_SignalDisconnected(void) {
     sbrMainDisconnected = BA_BOOLEAN_TRUE;
+}
+
+void SBR_MainLoop_Shutdown(void) {
+    sbrMainShuttingDown = BA_BOOLEAN_TRUE;
+}
+
+BA_Boolean SBR_MainLoop_IsShuttingDown(void) {
+    return sbrMainShuttingDown;
 }

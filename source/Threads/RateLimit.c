@@ -15,19 +15,19 @@
 
 static BA_Boolean sbrRateLimitSleeping;
 
-SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-Limit clearer") {
+SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-Limit clearer", KILL) {
     BA_LOGGER_DEBUG("Hello, from rate-limit clearer\n");
     
-    while (BA_BOOLEAN_TRUE) {
+    while (sbrRateLimitClearerInitialized) {
         sleep(60);
         SBR_Gateway_ResetRequestCount();
     }
 }
 
-SBR_THREADINTERNAL_CODE(RateLimitDetecter, "rate-limit detecter") {
+SBR_THREADINTERNAL_CODE(RateLimitDetecter, "rate-limit detecter", JOIN) {
     BA_LOGGER_DEBUG("Hello, from rate-limit detecter\n");
 
-    while (BA_BOOLEAN_TRUE) {
+    while (sbrRateLimitClearerInitialized) {
         if (SBR_Gateway_GetRequestCount() < 110)
             continue;
 

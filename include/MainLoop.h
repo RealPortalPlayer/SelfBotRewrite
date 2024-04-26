@@ -8,5 +8,8 @@
 
 #include <BaconAPI/Internal/Boolean.h>
 
+BA_Boolean SBR_MainLoop_IsShuttingDown(void);
+
 void SBR_MainLoop_SignalDisconnected(void);
 BA_Boolean SBR_MainLoop_Start(void);
+void SBR_MainLoop_Shutdown(void);

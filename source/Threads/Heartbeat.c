@@ -18,7 +18,7 @@
 
 static BA_Boolean sbrHeartbeatThreadPaused = BA_BOOLEAN_TRUE;
 
-SBR_THREADINTERNAL_CODE(Heartbeat, "heartbeat") {
+SBR_THREADINTERNAL_CODE(Heartbeat, "heartbeat", JOIN) {
     BA_LOGGER_DEBUG("Hello, from heartbeat thread\n");
     
     while (sbrHeartbeatInitialized) {
