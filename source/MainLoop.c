@@ -16,13 +16,17 @@
 #include <curl/curl.h>
 
 #include "MainLoop.h"
+
+#include <BuiltInArguments.h>
+#include <BaconAPI/ArgumentHandler.h>
+#include <BaconAPI/Number.h>
+
 #include "WebSocket/cURL.h"
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Gateway.h"
 #include "Discord/Gateway/Error.h"
 #include "Threads/Heartbeat.h"
 
-#define SBR_MAINLOOP_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
 #define SBR_MAINLOOP_START_CURL() \
 do {                              \
     BA_LOGGER_INFO("Starting cURL\n"); \
@@ -45,16 +49,29 @@ static volatile BA_Boolean sbrMainShuttingDown = BA_BOOLEAN_FALSE;
 
 BA_Boolean SBR_MainLoop_Start(void) {
 #ifndef SBR_STATIC
+    static int bufferSize = -1;
+
+    if (bufferSize == -1) {
+        BA_ArgumentHandler_ShortResults results;
+
+        if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_EVENT_BUFFER, SBR_BUILTINARGUMENTS_EVENT_BUFFER_SHORT, BA_BOOLEAN_FALSE, &results) != 0)
+            bufferSize = BA_Number_StringToInteger(*results.value, NULL, NULL, "Invalid event buffer number\n", 9000);
+        else
+            bufferSize = 9000;
+
+        BA_LOGGER_DEBUG("Event buffer size: %i character(s)\n", bufferSize);
+    }
+    
     SBR_MAINLOOP_START_CURL();
     
     sbrMainDisconnected = BA_BOOLEAN_FALSE;
     
     while (!SBR_MainLoop_IsShuttingDown()) {
-        char buffer[SBR_MAINLOOP_PACKET_BUFFER_SIZE];
+        char buffer[bufferSize];
         size_t receivedBytes;
         const struct curl_ws_frame* metadata;
 
-        if (!SBR_cURL_Receive(buffer, SBR_MAINLOOP_PACKET_BUFFER_SIZE, &receivedBytes, &metadata)) {
+        if (!SBR_cURL_Receive(buffer, bufferSize, &receivedBytes, &metadata)) {
             if (sbrMainDisconnected)
                 break;
 
