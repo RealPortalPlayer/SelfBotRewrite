@@ -21,8 +21,11 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
     static BA_Thread_Lock threadLock;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
-    if (!initialized)
+    if (!initialized) {
         BA_ASSERT(BA_Thread_CreateLock(&threadLock), "Failed to create Gateway send thread lock\n");
+
+        initialized = BA_BOOLEAN_TRUE;
+    }
     
     BA_Thread_UseLock(&threadLock);
 
