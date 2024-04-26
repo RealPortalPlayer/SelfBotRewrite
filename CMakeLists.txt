@@ -33,7 +33,8 @@ set(SOURCE source/Token.c
            source/UserAgent.c
            source/Discord/Permissions.c
            source/Discord/Configuration.c
-           source/Prefix.c)
+           source/Prefix.c
+           source/Discord/Gateway/Events.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 

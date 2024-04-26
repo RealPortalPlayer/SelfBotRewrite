@@ -8,19 +8,14 @@
 #include <json_tokener.h>
 
 #include "Discord/Gateway/Event.h"
+#include "Discord/Gateway/Events.h"
 
 BA_Boolean SBR_GatewayEvent_CanReceiveCode(SBR_GatewayEvent_Codes code) {
-    return SBR_GatewayEvent_IsCodeValid(code) &&
-           (code == SBR_GATEWAYEVENT_CODE_DISPATCH ||
-           code == SBR_GATEWAYEVENT_CODE_HEARTBEAT ||
-           code == SBR_GATEWAYEVENT_CODE_RECONNECT ||
-           code >= SBR_GATEWAYEVENT_CODE_INVALID_SESSION);
+    return SBR_GatewayEvents_Get(code)->action != NULL;
 }
 
 BA_Boolean SBR_GatewayEvent_CanSendCode(SBR_GatewayEvent_Codes code) {
-    return SBR_GatewayEvent_IsCodeValid(code) &&
-           ((code >= SBR_GATEWAYEVENT_CODE_HEARTBEAT && code <= SBR_GATEWAYEVENT_CODE_RESUME) ||
-           code == SBR_GATEWAYEVENT_CODE_REQUEST_GUILD_MEMBERS);
+    return SBR_GatewayEvents_Get(code)->supportsSending;
 }
 
 BA_Boolean SBR_GatewayEvent_IsCodeValid(SBR_GatewayEvent_Codes code) {
@@ -75,7 +70,6 @@ void SBR_GatewayEvent_Parse(const char* buffer) {
     int parsedOperationCode = json_object_get_int(operationCode);
 
     BA_ASSERT(SBR_GatewayEvent_CanReceiveCode(parsedOperationCode), "Malformed packet: cannot receive code %i\n", parsedOperationCode);
-    // TODO: Action based on event
     BA_LOGGER_TRACE("Received event: %i\n", parsedOperationCode);
-    return BA_BOOLEAN_TRUE;
+    SBR_GatewayEvents_Get(parsedOperationCode)->action(data);
 }
