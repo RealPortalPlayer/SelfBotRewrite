@@ -7,6 +7,7 @@
 #pragma once
 
 #include <BaconAPI/Storage/DynamicDictionary.h>
+#include <json_object.h>
 
 typedef enum {
     /**
@@ -82,7 +83,7 @@ typedef enum {
 
 typedef struct {
     SBR_GatewayEvent_Codes operationCode;
-    BA_DynamicDictionary* data;
+    json_object* data;
     int sequence;
     const char* eventName;
 } SBR_GatewayEvent;
@@ -90,3 +91,13 @@ typedef struct {
 BA_Boolean SBR_GatewayEvent_CanReceiveCode(SBR_GatewayEvent_Codes code);
 BA_Boolean SBR_GatewayEvent_CanSendCode(SBR_GatewayEvent_Codes code);
 BA_Boolean SBR_GatewayEvent_IsCodeValid(SBR_GatewayEvent_Codes code);
+
+/**
+ * You shouldn't need to call this directly
+ */
+SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int sequence, const char* eventName);
+
+/**
+ * You shouldn't need to call this directly
+ */
+BA_Boolean SBR_GatewayEvent_Send(const SBR_GatewayEvent* event);
