@@ -16,6 +16,7 @@ endif()
 include(cURLOptions.cmake)
 add_subdirectory(dependencies/BaconAPI)
 add_subdirectory(dependencies/curl)
+add_subdirectory(dependencies/json-c)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     add_compile_definitions(DEBUG BA_ALLOW_DEBUG_LOGS)
@@ -37,7 +38,7 @@ set(SOURCE source/Token.c
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
 target_include_directories(SelfBotRewrite PUBLIC include)
-target_link_libraries(SelfBotRewrite PUBLIC BaconAPI libcurl)
+target_link_libraries(SelfBotRewrite PUBLIC BaconAPI libcurl json-c)
 target_compile_definitions(SelfBotRewrite PUBLIC SBR_DISCORD_API_VERSION=${DISCORD_API_VERSION}
                                                  SBR_DISCORD_ROOT_URL="${DISCORD_ROOT_URL}"
                                                  SBR_DISCORD_API_URL="${DISCORD_API_URL}"

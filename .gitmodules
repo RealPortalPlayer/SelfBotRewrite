@@ -4,3 +4,6 @@
 [submodule "dependencies/curl"]
 	path = dependencies/curl
 	url = https://github.com/curl/curl
+[submodule "dependencies/json-c"]
+	path = dependencies/json-c
+	url = https://github.com/json-c/json-c
