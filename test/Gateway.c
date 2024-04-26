@@ -21,4 +21,7 @@ int main(int argc, char** argv) {
         BA_ASSERT(BA_String_Format(&fakePacket, SBR_GATEWAYEVENT_CODE_HEARTBEAT_ACKNOWLEDGE), "Failed to format fake packet\n");
         SBR_GatewayEvent_Parse(fakePacket);
     }
+
+    BA_LOGGER_INFO("Closing cURL\n");
+    SBR_cURL_Close();
 }
