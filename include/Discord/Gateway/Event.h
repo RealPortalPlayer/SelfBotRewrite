@@ -101,3 +101,4 @@ SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int seque
  * You shouldn't need to call this directly
  */
 BA_Boolean SBR_GatewayEvent_Send(const SBR_GatewayEvent* event);
+BA_Boolean SBR_GatewayEvent_Parse(const char* buffer);

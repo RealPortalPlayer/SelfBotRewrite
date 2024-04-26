@@ -5,6 +5,7 @@
 #include <BaconAPI/Debugging/Assert.h>
 #include <WebSocket/cURL.h>
 #include <string.h>
+#include <json_tokener.h>
 
 #include "Discord/Gateway/Event.h"
 
@@ -63,5 +64,26 @@ BA_Boolean SBR_GatewayEvent_Send(const SBR_GatewayEvent* event) {
     const char* results = json_object_to_json_string(json);
     
     SBR_CURL_ASSERT(SBR_cURL_Send(results, strlen(results), NULL, CURLWS_TEXT), "Failed to send Gateway packet: %s\n");
+    return BA_BOOLEAN_TRUE;
+}
+
+BA_Boolean SBR_GatewayEvent_Parse(const char* buffer) {
+    json_object* object = json_tokener_parse(buffer);
+
+    if (object == NULL) {
+        BA_LOGGER_WARN("Failed to parse buffer: %s\n", buffer);
+        return BA_BOOLEAN_FALSE;
+    }
+
+    json_object* operationCode = json_object_object_get(object, "op");
+    json_object* data = json_object_object_get(object, "d");
+
+    BA_ASSERT(operationCode != NULL && data != NULL, "Malformed packet: missing JSON fields\n");
+
+    int parsedOperationCode = json_object_get_int(operationCode);
+
+    BA_ASSERT(SBR_GatewayEvent_CanReceiveCode(parsedOperationCode), "Malformed packet: cannot receive code %i\n", parsedOperationCode);
+    // TODO: Action based on event
+    BA_LOGGER_TRACE("Received event: %i\n", parsedOperationCode);
     return BA_BOOLEAN_TRUE;
 }
