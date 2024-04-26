@@ -61,7 +61,7 @@ void SBR_cURL_Close(void) {
     curl_easy_cleanup(sbrcURL);
 }
 
-BA_Boolean SRB_cURL_Recieve(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata) {
+BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata) {
     CURLcode result = curl_ws_recv(sbrcURL, buffer, bufferSize, receivedBytes, metadata);
 
     if (result == CURLE_AGAIN) {

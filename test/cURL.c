@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         size_t receivedBytes;
         const struct curl_ws_frame* metadata;
         
-        if (!SRB_cURL_Recieve(buffer, bufferSize, &receivedBytes, &metadata))
+        if (!SBR_cURL_Receive(buffer, bufferSize, &receivedBytes, &metadata))
             continue;
 
         BA_LOGGER_INFO("Got response: ");
