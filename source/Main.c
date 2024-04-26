@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 
     BA_LOGGER_INFO("Closing threads (press CTRL+C if frozen)\n");
     SBR_RateLimitDetecterThread_Destroy();
-    SBR_RateLimitClearerThread_Create();
+    SBR_RateLimitClearerThread_Destroy();
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
     SBR_HeartbeatThread_Destroy();
     return 0;
