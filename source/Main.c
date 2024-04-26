@@ -98,6 +98,8 @@ int main(int argc, char** argv) {
 
     while (BA_BOOLEAN_TRUE) {
         if (!SBR_Main_EntryPoint()) {
+            SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
+            
             sbrMainDisconnected = BA_BOOLEAN_FALSE;
             continue;
         }
