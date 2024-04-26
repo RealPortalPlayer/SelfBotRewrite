@@ -67,7 +67,7 @@ void SBR_Gateway_Parse(const char* buffer) {
     json_object* operationCode = json_object_object_get(object, "op");
     json_object* data = json_object_object_get(object, "d");
 
-    if (operationCode == NULL || data == NULL) {
+    if (operationCode == NULL) {
         BA_LOGGER_ERROR("Malformed packet: missing JSON fields\n");
         SBR_MainLoop_SignalDisconnected();
         return;
