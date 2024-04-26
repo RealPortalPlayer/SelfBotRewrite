@@ -11,7 +11,7 @@
 #include "UserAgent.h"
 #include "Discord/Gateway/Gateway.h"
 
-#define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static const char* SBR_GatewayEvents_Action ## name(const json_object* data)
+#define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(const json_object* data)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
 {                                                                           \
     code,                                                                   \

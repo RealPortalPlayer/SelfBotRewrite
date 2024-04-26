@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "Discord/Gateway/Event.h"
+#include "Event.h"
 
-typedef const char* (*SBR_GatewayEvents_Action)(const json_object* data);
+typedef void (*SBR_GatewayEvents_Action)(const json_object* data);
 
 typedef struct {
     SBR_GatewayEvent_Codes operationCode;
