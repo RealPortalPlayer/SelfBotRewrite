@@ -24,7 +24,8 @@ elseif(BA_ALLOW_DEBUG_LOGS)
     add_compile_definitions(BA_ALLOW_DEBUG_LOGS)
 endif()
 
-set(SOURCE source/Token.c
+set(SOURCE source/Main.c
+           source/Token.c
            source/Settings.c
            source/WebSocket/cURL.c
            source/Discord/Snowflake.c
@@ -37,7 +38,7 @@ set(SOURCE source/Token.c
            source/Discord/Gateway/Events.c
            source/Threads/Heartbeat.c)
 
-add_executable(SelfBotRewrite source/Main.c ${SOURCE})
+add_executable(SelfBotRewrite ${SOURCE})
 
 target_include_directories(SelfBotRewrite PUBLIC include)
 target_link_libraries(SelfBotRewrite PUBLIC BaconAPI libcurl json-c)

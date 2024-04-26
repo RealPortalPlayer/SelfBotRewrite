@@ -23,6 +23,7 @@
 
 static volatile BA_Boolean sbrMainDisconnected = BA_BOOLEAN_FALSE;
 
+#ifndef SBR_STATIC
 BA_Boolean SBR_Main_EntryPoint(void) {
     BA_LOGGER_INFO("Starting cURL\n");
 
@@ -111,6 +112,7 @@ int main(int argc, char** argv) {
     SBR_HeartbeatThread_Destroy();
     return 0;
 }
+#endif
 
 void SBR_Main_SignalDisconnected(void) {
     sbrMainDisconnected = BA_BOOLEAN_TRUE;

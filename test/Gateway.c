@@ -5,11 +5,28 @@
 #include <BaconAPI/String.h>
 #include <WebSocket/cURL.h>
 #include <Discord/Gateway/Event.h>
+#include <BaconAPI/Internal/OperatingSystem.h>
+
+#if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
+#   include <unistd.h>
+#elif BA_OPERATINGSYSTEM_WINDOWS
+#   include <Windows.h>
+#endif
 
 int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
     BA_LOGGER_INFO("Initializing curl\n");
-    SBR_cURL_Initialize("ws://127.0.0.1:1234");
+
+    while (BA_BOOLEAN_TRUE) {
+        if (!SBR_cURL_Initialize("ws://127.0.0.1:1234")) {
+            BA_LOGGER_WARN("Retrying in 1 second...\n");
+            sleep(1);
+            continue;
+        }
+
+        break;
+    }
+
     BA_LOGGER_INFO("Sending Gateway event\n");
     SBR_GatewayEvent_Send(SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, ""));
     BA_LOGGER_INFO("Simulating response\n");

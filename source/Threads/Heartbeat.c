@@ -43,7 +43,6 @@ void SBR_HeartbeatThread_Create(void) {
 }
 
 void SBR_HeartbeatThread_Pause(BA_Boolean pause) {
-    BA_ASSERT(sbrHeartbeatInitialized, "Heartbeat thread not created\n");
     BA_LOGGER_TRACE("%s heartbeat thread\n", pause ? "Pausing" : "Unpausing");
 
     sbrHeartbeatThreadPaused = pause;
