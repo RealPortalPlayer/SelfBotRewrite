@@ -27,7 +27,7 @@ SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-Limit clearer", KILL) {
 SBR_THREADINTERNAL_CODE(RateLimitDetecter, "rate-limit detecter", JOIN) {
     BA_LOGGER_DEBUG("Hello, from rate-limit detecter\n");
 
-    while (sbrRateLimitClearerInitialized) {
+    while (sbrRateLimitDetecterInitialized) {
         if (SBR_Gateway_GetRequestCount() < 110)
             continue;
 
