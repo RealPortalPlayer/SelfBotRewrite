@@ -14,9 +14,9 @@ static BA_DynamicDictionary* sbrBotSettingsParsed;
 
 
 BA_Boolean SBR_Settings_Get(const char* key, char** output, BA_Boolean sensitive) {
-    *output = BA_DYNAMICDICTIONARY_GET_VALUE(char, sbrSensitiveSettingsParsed, key, sizeof(char) * (strlen(key) + 1));
+    *output = BA_DYNAMICDICTIONARY_GET_VALUE(char, sensitive ? sbrSensitiveSettingsParsed : sbrBotSettingsParsed, key, sizeof(char) * (strlen(key) + 1));
 
-    BA_LOGGER_TRACE("Settings: %s=%s", key, *output != NULL ? *output : "NULL");
+    BA_LOGGER_TRACE("%s Settings: %s=%s", sensitive ? "Sensitive" : "Bot", key, *output != NULL ? *output : "NULL");
     return *output != NULL;
 }
 
