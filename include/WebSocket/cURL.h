@@ -13,8 +13,9 @@
 CURL* SBR_cURL_Get(void);
 
 void SBR_cURL_Initialize(const char* url);
-CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, unsigned int cURLFlag);
+CURLcode SBR_cURL_Send(const void* data, size_t size, size_t* sent, unsigned int cURLFlag);
 void SBR_cURL_Close(void);
+BA_Boolean SRB_cURL_Recieve(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata);
 
 #define SBR_CURL_ASSERT(call, message) \
 do {                               \

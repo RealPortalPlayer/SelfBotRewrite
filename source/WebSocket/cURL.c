@@ -60,3 +60,16 @@ void SBR_cURL_Close(void) {
     SBR_cURL_Send("", 0, NULL, CURLWS_CLOSE);
     curl_easy_cleanup(sbrcURL);
 }
+
+BA_Boolean SRB_cURL_Recieve(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata) {
+    CURLcode result = curl_ws_recv(sbrcURL, buffer, bufferSize, receivedBytes, metadata);
+
+    if (result == CURLE_AGAIN) {
+        BA_LOGGER_TRACE("cURL buffer dry\n");
+        // TODO: Mark connection as cold after x amount of empty buffers
+        return BA_BOOLEAN_FALSE;
+    }
+
+    SBR_CURL_ASSERT(result, "Failed to receive buffer: %s\n");
+    return BA_BOOLEAN_TRUE;
+}

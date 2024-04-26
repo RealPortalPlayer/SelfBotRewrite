@@ -17,4 +17,26 @@ int main(int argc, char** argv) {
     SBR_cURL_Initialize("ws://127.0.0.1:1234");
     BA_LOGGER_INFO("Sending: %s\n", message);
     SBR_CURL_ASSERT(SBR_cURL_Send(message, strlen(message), NULL, CURLWS_TEXT), "Failed to send message: %s\n");
+    BA_LOGGER_INFO("Waiting for response\n");
+
+    while (BA_BOOLEAN_TRUE) {
+        size_t bufferSize = 1024;
+        char buffer[bufferSize];
+        size_t receivedBytes;
+        const struct curl_ws_frame* metadata;
+        
+        if (!SRB_cURL_Recieve(buffer, bufferSize, &receivedBytes, &metadata))
+            continue;
+
+        BA_LOGGER_INFO("Got response: ");
+
+        for (size_t i = 0; i < receivedBytes; i++)
+            BA_Logger_LogImplementation(BA_BOOLEAN_FALSE, BA_LOGGER_LOG_LEVEL_INFO, "%c", buffer[i]);
+
+        BA_Logger_LogImplementation(BA_BOOLEAN_FALSE, BA_LOGGER_LOG_LEVEL_INFO, "\n");
+        break;
+    }
+
+    BA_LOGGER_INFO("Closing cURL\n");
+    SBR_cURL_Close();
 }
