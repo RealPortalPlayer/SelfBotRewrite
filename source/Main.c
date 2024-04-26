@@ -41,10 +41,12 @@ BA_Boolean SBR_Main_EntryPoint(void) {
 
             break;
         }
-
+        
         if (errored)
             BA_LOGGER_INFO("Finally connected\n");
     }
+
+    sbrMainDisconnected = BA_BOOLEAN_FALSE;
     
     while (BA_BOOLEAN_TRUE) {
         char buffer[SBR_MAIN_PACKET_BUFFER_SIZE];

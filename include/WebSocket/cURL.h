@@ -13,7 +13,7 @@
 CURL* SBR_cURL_Get(void);
 
 BA_Boolean SBR_cURL_Initialize(const char* url);
-CURLcode SBR_cURL_Send(const void* data, size_t size, size_t* sent, unsigned int cURLFlag);
+BA_Boolean SBR_cURL_Send(const void* data, size_t size, size_t* sent, unsigned int cURLFlag);
 void SBR_cURL_Close(void);
 BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata);
 

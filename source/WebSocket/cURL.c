@@ -51,7 +51,7 @@ BA_Boolean SBR_cURL_Initialize(const char* url) {
     return BA_BOOLEAN_FALSE;
 }
 
-CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {
+BA_Boolean SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {
     size_t throwaway;
 
     BA_Thread_UseLock(&sbrcURLLock);
@@ -72,8 +72,15 @@ CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const 
         curl_easy_cleanup(sbrcURL);
     }
 
+    if (result == CURLE_OK) {
+        BA_Thread_Unlock(&sbrcURLLock);
+        return BA_BOOLEAN_TRUE;
+    }
+    
+    BA_LOGGER_ERROR("Failed to send message (%i): %s\n", cURLFlag, curl_easy_strerror(result));
+    SBR_Main_SignalDisconnected(); // TODO: Is this really required?
     BA_Thread_Unlock(&sbrcURLLock);
-    return result;
+    return BA_BOOLEAN_FALSE;
 }
 
 void SBR_cURL_Close(void) {

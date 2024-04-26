@@ -58,7 +58,7 @@ void SBR_GatewayEvent_Send(const SBR_GatewayEvent* event) {
 
     const char* results = json_object_to_json_string(json);
     
-    SBR_CURL_ASSERT(SBR_cURL_Send(results, strlen(results), NULL, CURLWS_TEXT), "Failed to send Gateway packet: %s\n");
+    SBR_cURL_Send(results, strlen(results), NULL, CURLWS_TEXT);
 }
 
 void SBR_GatewayEvent_Parse(const char* buffer) {
