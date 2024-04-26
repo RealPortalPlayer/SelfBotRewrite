@@ -14,13 +14,12 @@
 #include <BaconAPI/Math/Bitwise.h>
 #include <string.h>
 #include <curl/curl.h>
-
-#include "MainLoop.h"
-
 #include <BuiltInArguments.h>
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Number.h>
+#include <BaconAPI/String.h>
 
+#include "MainLoop.h"
 #include "WebSocket/cURL.h"
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Gateway.h"
@@ -50,7 +49,7 @@ static volatile BA_Boolean sbrMainShuttingDown = BA_BOOLEAN_FALSE;
 BA_Boolean SBR_MainLoop_Start(void) {
 #ifndef SBR_STATIC
     static int bufferSize = -1;
-
+    
     if (bufferSize == -1) {
         BA_ArgumentHandler_ShortResults results;
 
@@ -67,11 +66,15 @@ BA_Boolean SBR_MainLoop_Start(void) {
     sbrMainDisconnected = BA_BOOLEAN_FALSE;
     
     while (!SBR_MainLoop_IsShuttingDown()) {
-        char buffer[bufferSize];
         size_t receivedBytes;
         const struct curl_ws_frame* metadata;
-
+        char* buffer = malloc(bufferSize + 1);
+        
+        BA_ASSERT(buffer != NULL, "Failed to allocate memory for event buffer\n");
+        
         if (!SBR_cURL_Receive(buffer, bufferSize, &receivedBytes, &metadata)) {
+            free(buffer);
+            
             if (sbrMainDisconnected)
                 break;
 
@@ -79,6 +82,32 @@ BA_Boolean SBR_MainLoop_Start(void) {
         }
 
         buffer[receivedBytes] = '\0';
+
+        if (metadata->bytesleft != 0) {
+            BA_LOGGER_WARN("Buffer ran out of space\n");
+
+            BA_Boolean disconnected = BA_BOOLEAN_FALSE;
+            
+            while (metadata->bytesleft != 0) {
+                char temporaryBuffer[bufferSize + 1];
+                size_t temporaryReceivedBytes;
+
+                if (SBR_cURL_Receive(&temporaryBuffer, bufferSize, &temporaryReceivedBytes, &metadata)) {
+                    temporaryBuffer[receivedBytes] = '\0';
+                    
+                    BA_String_Append(&buffer, temporaryBuffer);
+                    continue;
+                }
+
+                free(buffer);
+                
+                disconnected = BA_BOOLEAN_TRUE;
+                break;
+            }
+
+            if (disconnected)
+                break;
+        }
 
         if (BA_BITWISE_IS_BIT_SET(metadata->flags, CURLWS_CLOSE)) {
             uint16_t code = 0;
@@ -90,6 +119,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
             code = ntohs(code);
 
             SBR_Gateway_ParseError(code, message);
+            free(buffer);
 
             if (!SBR_GatewayError_CanReconnect(code)) {
                 BA_LOGGER_INFO("Cannot reconnect, restarting bot\n");
@@ -106,6 +136,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
         }
         
         SBR_Gateway_Parse(buffer);
+        free(buffer);
     }
 
     BA_LOGGER_INFO("Closing cURL\n");
