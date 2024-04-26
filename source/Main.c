@@ -4,10 +4,13 @@
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
 #include <Discord/Configuration.h>
+#include <Discord/Gateway/Event.h>
 
 #include "Settings.h"
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
+
+#define SBR_MAIN_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
 
 int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
@@ -36,6 +39,22 @@ int main(int argc, char** argv) {
 
     BA_LOGGER_INFO("Starting cURL\n");
     SBR_cURL_Initialize(NULL);
+
+    // TODO: Console command thread
+    // TODO: Heartbeat thread
+    
+    while (BA_BOOLEAN_TRUE) {
+        char buffer[SBR_MAIN_PACKET_BUFFER_SIZE];
+        size_t receivedBytes;
+        const struct curl_ws_frame* metadata;
+
+        if (!SBR_cURL_Receive(buffer, SBR_MAIN_PACKET_BUFFER_SIZE, &receivedBytes, &metadata))
+            continue; // TODO: Quit if cold
+
+        buffer[receivedBytes] = '\0';
+        SBR_GatewayEvent_Parse(buffer);
+    }
+    
     BA_LOGGER_INFO("Closing cURL\n");
     SBR_cURL_Close();
     return 0;
