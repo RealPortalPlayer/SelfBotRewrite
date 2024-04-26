@@ -26,7 +26,8 @@ int main(int argc, char** argv) {
                        BA_ARGUMENTHANDLER_HELP_MESSAGE_ARGUMENTS(SBR_BUILTINARGUMENTS_DISCORD_CDN, SBR_BUILTINARGUMENTS_DISCORD_CDN_SHORT, "<url>", "Use custom Discord CDN\n")), BA_ArgumentHandler_GetHelpMessage());
         return BA_BOOLEAN_TRUE;
     }
-    
+
+    BA_LOGGER_INFO("Starting bot (internal version: " SRB_VERSION ")\n");
     SBR_Settings_Load();
     BA_LOGGER_DEBUG("Discord:\n"
                     "API version: %i\n"

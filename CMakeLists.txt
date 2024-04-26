@@ -18,6 +18,8 @@ add_subdirectory(dependencies/BaconAPI)
 add_subdirectory(dependencies/curl)
 add_subdirectory(dependencies/json-c)
 
+set(VERSION "1.0.0-incomplete")
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     add_compile_definitions(DEBUG BA_ALLOW_DEBUG_LOGS)
 elseif(BA_ALLOW_DEBUG_LOGS)
@@ -49,7 +51,8 @@ target_compile_definitions(SelfBotRewrite PUBLIC SBR_DISCORD_API_VERSION=${DISCO
                                                  SBR_DISCORD_API_URL="${DISCORD_API_URL}"
                                                  SBR_DISCORD_WEBSOCKET_URL="${DISCORD_WEBSOCKET_URL}"
                                                  SBR_DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION}
-                                                 SBR_DISCORD_CDN_URL="${DISCORD_CDN_URL}")
+                                                 SBR_DISCORD_CDN_URL="${DISCORD_CDN_URL}"
+                                                 SRB_VERSION="${VERSION}")
 
 ba_strip(SelfBotRewrite)
 
