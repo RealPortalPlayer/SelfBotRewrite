@@ -10,6 +10,7 @@
 #include "Token.h"
 #include "UserAgent.h"
 #include "Discord/Gateway/Gateway.h"
+#include "MainLoop.h"
 
 #define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(const json_object* data)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
@@ -29,6 +30,13 @@
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY(code, allowSending, allowReceiving) SBR_GATEWAYEVENTS_CREATE_ENTRY_ ## allowReceiving (code, allowSending)
 
 #define SBR_GATEWAYEVENTS_STUB_ENTRY {0, BA_BOOLEAN_FALSE, NULL}
+
+#define SBR_GATEWAYEVENTS_ENFORCE_DATA() \
+if (data == NULL) {                      \
+    BA_LOGGER_ERROR("Malformed packet: missing JSON field\n"); \
+    SBR_MainLoop_SignalDisconnected();   \
+    return;                              \
+}
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH);
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT);
@@ -66,6 +74,7 @@ const SBR_GatewayEvents_Information* SBR_GatewayEvents_Get(SBR_GatewayEvent_Code
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH) {
+    SBR_GATEWAYEVENTS_ENFORCE_DATA();
     BA_LOGGER_WARN("Stub\n");
 }
 
@@ -84,6 +93,7 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_INVALID_SES
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HELLO) {
+    SBR_GATEWAYEVENTS_ENFORCE_DATA();
     BA_LOGGER_TRACE("Discord said hello\n");
 
     json_object* interval = json_object_object_get(data, "heartbeat_interval");
