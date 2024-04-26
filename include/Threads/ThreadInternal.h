@@ -7,6 +7,8 @@
 #pragma once
 
 #include <BaconAPI/Thread.h>
+#include <BaconAPI/Debugging/Assert.h>
+#include <BaconAPI/Logger.h>
 
 #define SBR_THREADINTERNAL_HEADER(name) \
 void SBR_ ## name ## Thread_Create(void); \
