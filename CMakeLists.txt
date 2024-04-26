@@ -36,7 +36,8 @@ set(SOURCE source/Main.c
            source/Discord/Configuration.c
            source/Prefix.c
            source/Discord/Gateway/Events.c
-           source/Threads/Heartbeat.c)
+           source/Threads/Heartbeat.c
+           source/MainLoop.c)
 
 add_executable(SelfBotRewrite ${SOURCE})
 

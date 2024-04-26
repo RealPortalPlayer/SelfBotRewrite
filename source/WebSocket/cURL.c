@@ -16,7 +16,7 @@
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
 #include "Discord/Configuration.h"
-#include "Main.h"
+#include "MainLoop.h"
 
 static CURL* sbrcURL;
 static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;
@@ -78,7 +78,7 @@ BA_Boolean SBR_cURL_Send(const void* data, const size_t size, size_t* sent, cons
     }
     
     BA_LOGGER_ERROR("Failed to send message (%i): %s\n", cURLFlag, curl_easy_strerror(result));
-    SBR_Main_SignalDisconnected(); // TODO: Is this really required?
+    SBR_MainLoop_SignalDisconnected(); // TODO: Is this really required?
     BA_Thread_Unlock(&sbrcURLLock);
     return BA_BOOLEAN_FALSE;
 }
@@ -102,13 +102,13 @@ BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedByt
 
     if (result == CURLE_GOT_NOTHING) {
         BA_LOGGER_ERROR("Connection closed\n");
-        SBR_Main_SignalDisconnected();
+        SBR_MainLoop_SignalDisconnected();
         return BA_BOOLEAN_FALSE;
     }
 
     if (result == CURLE_RECV_ERROR) {
         BA_LOGGER_ERROR("Error occurred while receiving buffer\n");
-        SBR_Main_SignalDisconnected();
+        SBR_MainLoop_SignalDisconnected();
         return BA_BOOLEAN_FALSE;
     }
 

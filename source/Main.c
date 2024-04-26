@@ -4,70 +4,13 @@
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
 #include <Threads/Heartbeat.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
-
-#if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
-#   include <unistd.h>
-#elif BA_OPERATINGSYSTEM_WINDOWS
-#   include <Windows.h>
-#endif
 
 #include "Settings.h"
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
 #include "Discord/Configuration.h"
 #include "Discord/Gateway/Event.h"
-#include "Main.h"
-
-#define SBR_MAIN_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
-
-static volatile BA_Boolean sbrMainDisconnected = BA_BOOLEAN_FALSE;
-
-#ifndef SBR_STATIC
-BA_Boolean SBR_Main_EntryPoint(void) {
-    BA_LOGGER_INFO("Starting cURL\n");
-
-    {
-        BA_Boolean errored = BA_BOOLEAN_FALSE;
-
-        while (BA_BOOLEAN_TRUE) {
-            if (!SBR_cURL_Initialize(NULL)) {
-                errored = BA_BOOLEAN_TRUE;
-                
-                BA_LOGGER_WARN("Retrying in 5 seconds...\n");
-                sleep(5);
-                continue;
-            }
-
-            break;
-        }
-        
-        if (errored)
-            BA_LOGGER_INFO("Finally connected\n");
-    }
-
-    sbrMainDisconnected = BA_BOOLEAN_FALSE;
-    
-    while (BA_BOOLEAN_TRUE) {
-        char buffer[SBR_MAIN_PACKET_BUFFER_SIZE];
-        size_t receivedBytes;
-        const struct curl_ws_frame* metadata;
-
-        if (!SBR_cURL_Receive(buffer, SBR_MAIN_PACKET_BUFFER_SIZE, &receivedBytes, &metadata)) {
-            if (sbrMainDisconnected)
-                break;
-
-            continue;
-        }
-
-        buffer[receivedBytes] = '\0';
-        SBR_GatewayEvent_Parse(buffer);
-    }
-
-    BA_LOGGER_INFO("Closing cURL\n");
-    SBR_cURL_Close();
-    return !sbrMainDisconnected;
-}
+#include "MainLoop.h"
 
 int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
@@ -100,10 +43,8 @@ int main(int argc, char** argv) {
     // TODO: Heartbeat thread
 
     while (BA_BOOLEAN_TRUE) {
-        if (!SBR_Main_EntryPoint()) {
+        if (!SBR_MainLoop_Start()) {
             SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
-            
-            sbrMainDisconnected = BA_BOOLEAN_FALSE;
             continue;
         }
 
@@ -114,8 +55,4 @@ int main(int argc, char** argv) {
     SBR_HeartbeatThread_Destroy();
     return 0;
 }
-#endif
 
-void SBR_Main_SignalDisconnected(void) {
-    sbrMainDisconnected = BA_BOOLEAN_TRUE;
-}
