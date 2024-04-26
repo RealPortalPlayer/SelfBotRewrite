@@ -7,6 +7,7 @@
 #pragma once
 
 #include "Event.h"
+#include "../Status.h"
 
 typedef void (*SBR_GatewayEvents_Action)(const json_object* data);
 
@@ -20,3 +21,4 @@ const SBR_GatewayEvents_Information* SBR_GatewayEvents_Get(SBR_GatewayEvent_Code
 
 SBR_GatewayEvent* SBR_GatewayEvents_CreateHeartbeat(void);
 SBR_GatewayEvent* SBR_GatewayEvents_CreateIdentify(void);
+// SBR_GatewayEvent* SBR_GatewayEvents_CreatePresenceUpdate()

@@ -41,7 +41,8 @@ set(SOURCE source/Token.c
            source/MainLoop.c
            source/Discord/Gateway/Gateway.c
            source/Threads/RateLimit.c
-           source/Discord/Gateway/Errors.c)
+           source/Discord/Gateway/Errors.c
+           source/Discord/Status.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
