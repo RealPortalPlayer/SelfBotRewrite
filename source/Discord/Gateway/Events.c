@@ -128,3 +128,18 @@ SBR_GatewayEvent* SBR_GatewayEvents_CreateIdentify(void) {
     BA_ASSERT(!errors, "Failed to initialize JSON\n");
     return event;
 }
+
+SBR_GatewayEvent* SBR_GatewayEvents_CreatePresenceUpdate(SBR_DiscordStatus status, BA_Boolean afk) {
+    SBR_GatewayEvent* event = SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_PRESENCE_UPDATE, 0, "");
+    json_object* properties = json_object_new_object();
+
+    BA_ASSERT(properties != NULL, "Failed to create JSON properties\n");
+
+    int errors = json_object_object_add(properties, "activities", json_object_new_array());
+
+    errors = !errors && json_object_object_add(properties, "status", json_object_new_string(SBR_DiscordStatus_ToString(status)));
+    errors = !errors && json_object_object_add(properties, "afk", json_object_new_boolean(afk));
+
+    BA_ASSERT(!errors, "Failed to initialize JSON\n");
+    return event;
+}
