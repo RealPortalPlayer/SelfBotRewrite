@@ -3,11 +3,11 @@
 
 #include <BaconAPI/Configuration.h>
 #include <BaconAPI/Debugging/Assert.h>
-
-#include "Settings.h"
-
 #include <errno.h>
 #include <string.h>
+#include <BaconAPI/String.h>
+
+#include "Settings.h"
 
 static BA_DynamicDictionary* sbrSensitiveSettingsParsed;
 static BA_DynamicDictionary* sbrBotSettingsParsed;
@@ -44,4 +44,16 @@ void SBR_Settings_Load(void) {
 
     sbrBotSettingsParsed = BA_Configuration_ParseFromFile(bot);
     BA_ASSERT(sbrBotSettingsParsed != NULL, "Failed to parse bot settings file\n");
+}
+
+BA_Boolean SBR_Settings_IsDevelopmentMode(void) {
+    static BA_Boolean developmentMode = -1;
+
+    if (developmentMode == -1) {
+        char* type;
+
+        developmentMode = SBR_Settings_Get("TYPE", &type, BA_BOOLEAN_TRUE) && BA_String_Equals(type, "development", BA_BOOLEAN_FALSE);
+    }
+
+    return developmentMode;
 }

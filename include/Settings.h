@@ -9,5 +9,6 @@
 #include <BaconAPI/Internal/Boolean.h>
 
 BA_Boolean SBR_Settings_Get(const char* key, char** output, BA_Boolean sensitive);
+BA_Boolean SBR_Settings_IsDevelopmentMode(void);
 
 void SBR_Settings_Load(void);
