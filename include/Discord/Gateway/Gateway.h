@@ -9,6 +9,7 @@
 #include "Event.h"
 
 int SBR_Gateway_GetInterval(void);
+int SBR_Gateway_GetRequestCount(void);
 
 /**
  * You shouldn't need to call this directly
@@ -16,6 +17,7 @@ int SBR_Gateway_GetInterval(void);
 void SBR_Gateway_Send(const SBR_GatewayEvent* event);
 void SBR_Gateway_Parse(const char* buffer);
 void SBR_Gateway_SetInterval(int interval);
+void SBR_Gateway_ResetRequestCount(void);
 
 #define SBR_GATEWAY_SEND_AND_FREE(gateway) \
 do {                                       \

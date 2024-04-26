@@ -3,7 +3,6 @@
 
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
-#include <Threads/Heartbeat.h>
 
 #include "Settings.h"
 #include "WebSocket/cURL.h"
@@ -11,6 +10,8 @@
 #include "Discord/Configuration.h"
 #include "Discord/Gateway/Event.h"
 #include "MainLoop.h"
+#include "Threads/Heartbeat.h"
+#include "Threads/RateLimit.h"
 
 int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
@@ -39,8 +40,9 @@ int main(int argc, char** argv) {
 
     BA_LOGGER_INFO("Creating threads\n");
     SBR_HeartbeatThread_Create();
+    SBR_RateLimitClearerThread_Create();
+    SBR_RateLimitDetecterThread_Create();
     // TODO: Console command thread
-    // TODO: Heartbeat thread
 
     while (BA_BOOLEAN_TRUE) {
         if (!SBR_MainLoop_Start()) {
@@ -52,6 +54,8 @@ int main(int argc, char** argv) {
     }
 
     BA_LOGGER_INFO("Closing threads (press CTRL+C if frozen)\n");
+    SBR_RateLimitDetecterThread_Destroy();
+    SBR_RateLimitClearerThread_Create();
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
     SBR_HeartbeatThread_Destroy();
     return 0;

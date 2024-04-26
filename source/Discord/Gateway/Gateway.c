@@ -9,8 +9,10 @@
 #include "Discord/Gateway/Gateway.h"
 #include "WebSocket/cURL.h"
 #include "Discord/Gateway/Events.h"
+#include "Threads/RateLimit.h"
 
 static int sbrGatewayInterval = 0;
+static int sbrGatewayRequestCount = 0;
 
 void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
     static BA_Thread_Lock threadLock;
@@ -20,8 +22,14 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
         BA_ASSERT(BA_Thread_CreateLock(&threadLock), "Failed to create Gateway send thread lock\n");
     
     BA_Thread_UseLock(&threadLock);
+
+    sbrGatewayRequestCount++;
+    
     BA_ASSERT(SBR_GatewayEvent_CanSendCode(event->operationCode), "Code is receive only: %i\n", event->operationCode);
-    BA_LOGGER_TRACE("Sending: %i\n", event->operationCode);
+    BA_LOGGER_TRACE("Sending (%i): %i\n", sbrGatewayRequestCount, event->operationCode);
+
+    while (SBR_RateLimit_Sleeping())
+        continue;
 
     json_object* json = json_object_new_object();
     
@@ -66,4 +74,12 @@ void SBR_Gateway_SetInterval(int interval) {
     BA_LOGGER_DEBUG("Setting interval: %i\n", interval);
 
     sbrGatewayInterval = interval;
+}
+
+int SBR_Gateway_GetRequestCount(void) {
+    return sbrGatewayRequestCount;
+}
+
+void SBR_Gateway_ResetRequestCount(void) {
+    sbrGatewayRequestCount = 0;
 }
