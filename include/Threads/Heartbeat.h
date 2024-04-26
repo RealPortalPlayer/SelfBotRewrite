@@ -8,6 +8,8 @@
 
 #include <BaconAPI/Internal/Boolean.h>
 
-void SBR_HeartbeatThread_Create(void);
+#include "Threads/ThreadInternal.h"
+
+SBR_THREADINTERNAL_HEADER(Heartbeat);
+
 void SBR_HeartbeatThread_Pause(BA_Boolean pause);
-void SBR_HeartbeatThread_Destroy(void);
