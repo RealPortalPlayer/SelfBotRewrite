@@ -4,6 +4,7 @@
 #include <BaconAPI/Debugging/Assert.h>
 #include <string.h>
 #include <json_tokener.h>
+#include <BaconAPI/Thread.h>
 
 #include "Discord/Gateway/Gateway.h"
 #include "WebSocket/cURL.h"
@@ -12,6 +13,13 @@
 static int sbrGatewayInterval = 0;
 
 void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
+    static BA_Thread_Lock threadLock;
+    static BA_Boolean initialized = BA_BOOLEAN_FALSE;
+
+    if (!initialized)
+        BA_ASSERT(BA_Thread_CreateLock(&threadLock), "Failed to create Gateway send thread lock\n");
+    
+    BA_Thread_UseLock(&threadLock);
     BA_ASSERT(SBR_GatewayEvent_CanSendCode(event->operationCode), "Code is receive only: %i\n", event->operationCode);
     BA_LOGGER_TRACE("Sending: %i\n", event->operationCode);
 
@@ -30,6 +38,7 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
     const char* results = json_object_to_json_string(json);
     
     SBR_cURL_Send(results, strlen(results), NULL, CURLWS_TEXT);
+    BA_Thread_Unlock(&threadLock);
 }
 
 void SBR_Gateway_Parse(const char* buffer) {
