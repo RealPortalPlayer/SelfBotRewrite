@@ -10,6 +10,8 @@
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Events.h"
 
+// TODO: Packet queue
+
 BA_Boolean SBR_GatewayEvent_CanReceiveCode(SBR_GatewayEvent_Codes code) {
     return SBR_GatewayEvents_Get(code)->action != NULL;
 }

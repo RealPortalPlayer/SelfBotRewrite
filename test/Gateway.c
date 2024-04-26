@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     BA_LOGGER_INFO("Simulating response\n");
 
     {
-        char* fakePacket = BA_String_Copy("{ \"op\": %i, \"d\": { \"heartbeat_interval\": 0 } }");
+        char* fakePacket = BA_String_Copy("{ \"op\": %i, \"d\": { } }");
 
         BA_ASSERT(fakePacket != NULL, "Failed to allocate memory for fake packet\n");
         BA_ASSERT(BA_String_Format(&fakePacket, SBR_GATEWAYEVENT_CODE_HEARTBEAT_ACKNOWLEDGE), "Failed to format fake packet\n");
