@@ -11,6 +11,8 @@
 #   include <Windows.h>
 #endif
 
+#include <BaconAPI/Thread.h>
+
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
 #include "Discord/Configuration.h"
@@ -18,6 +20,7 @@
 
 static CURL* sbrcURL;
 static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;
+static BA_Thread_Lock sbrcURLLock;
 
 CURL* SBR_cURL_Get(void) {
     return sbrcURL;
@@ -28,6 +31,7 @@ BA_Boolean SBR_cURL_Initialize(const char* url) {
 
     sbrcURLInitialized = BA_BOOLEAN_TRUE;
 
+    BA_ASSERT(BA_Thread_CreateLock(&sbrcURLLock), "Failed to create cURL thread lock\n");
     BA_ASSERT((sbrcURL = curl_easy_init()), "Failed to initialize cURL\n");
 
     if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_CURL_VERBOSE, SBR_BUILTINARGUMENTS_CURL_VERBOSE_SHORT, BA_BOOLEAN_FALSE))
@@ -50,6 +54,8 @@ BA_Boolean SBR_cURL_Initialize(const char* url) {
 CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {
     size_t throwaway;
 
+    BA_Thread_UseLock(&sbrcURLLock);
+    
     if (cURLFlag == CURLWS_CLOSE && sbrcURLInitialized) {
         BA_LOGGER_WARN("Manual cURL close\n");
 
@@ -65,7 +71,8 @@ CURLcode SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const 
         SBR_CURL_ASSERT(result, "Failed to close cURL: %s\n");
         curl_easy_cleanup(sbrcURL);
     }
-    
+
+    BA_Thread_Unlock(&sbrcURLLock);
     return result;
 }
 
@@ -82,7 +89,7 @@ BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedByt
     CURLcode result = curl_ws_recv(sbrcURL, buffer, bufferSize, receivedBytes, metadata);
 
     if (result == CURLE_AGAIN) {
-        BA_LOGGER_TRACE("cURL buffer dry\n");
+        // BA_LOGGER_TRACE("cURL buffer dry\n");
         return BA_BOOLEAN_FALSE;
     }
 
