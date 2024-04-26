@@ -7,6 +7,8 @@
 #include <Threads/Heartbeat.h>
 
 #include "Discord/Gateway/Events.h"
+#include "Token.h"
+#include "UserAgent.h"
 
 #define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static const char* SBR_GatewayEvents_Action ## name(const json_object* data)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
@@ -81,6 +83,7 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HELLO) {
     BA_ASSERT(interval != NULL, "Malformed packet: missing JSON field\n");
     SBR_GatewayEvent_SetInterval(json_object_get_int(interval));
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_FALSE);
+    SBR_GatewayEvent_Send(SBR_GatewayEvents_CreateIdentify());
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_ACKNOWLEDGE) {
@@ -91,4 +94,22 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_A
 
 SBR_GatewayEvent* SBR_GatewayEvents_CreateHeartbeat(void) {
     return SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, "");
+}
+
+SBR_GatewayEvent* SBR_GatewayEvents_CreateIdentify(void) {
+    SBR_GatewayEvent* event = SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_IDENTIFY, 0, "");
+    json_object* properties = json_object_new_object();
+
+    BA_ASSERT(properties != NULL, "Failed to create JSON properties\n");
+    
+    int errors = json_object_object_add(properties, "os", json_object_new_string(BA_OPERATINGSYSTEM_NAME));
+    
+    errors = !errors && json_object_object_add(properties, "browser", json_object_new_string(SBR_UserAgent_Get()));
+    errors = !errors && json_object_object_add(properties, "device", json_object_new_string(SBR_UserAgent_Get()));
+    errors = !errors && json_object_object_add(event->data, "token", json_object_new_string(SBR_Token_Get()));
+    errors = !errors && json_object_object_add(event->data, "properties", properties);
+    errors = !errors && json_object_object_add(event->data, "intents", json_object_new_int(0));
+
+    BA_ASSERT(!errors, "Failed to initialize JSON\n");
+    return event;
 }
