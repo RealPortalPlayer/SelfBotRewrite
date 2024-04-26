@@ -97,6 +97,8 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
         cached = BA_String_Copy(*results.value);
 
         SBR_DISCORDCONFIGURATION_SETUP_URL("ws");
+        BA_String_Append(&cached, "?v=%i&encoding=json");
+        BA_String_Format(&cached, SBR_DiscordConfiguration_GetAPIVersion());
     }
 
     return cached;
