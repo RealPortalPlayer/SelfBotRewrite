@@ -92,9 +92,16 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        SBR_DISCORDCONFIGURATION_SETUP_STRING(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, SBR_DISCORD_WEBSOCKET_URL, NO_PATH);
+        const char* selected = SBR_DISCORD_WEBSOCKET_URL;
 
-        cached = BA_String_Copy(*results.value);
+        {
+            BA_ArgumentHandler_ShortResults results;
+
+            if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, BA_BOOLEAN_FALSE, &results) != 0)
+                selected = *results.value;
+        }
+
+        cached = BA_String_Copy(selected);
 
         SBR_DISCORDCONFIGURATION_SETUP_URL("ws");
         BA_String_Append(&cached, "?v=%i&encoding=json");
