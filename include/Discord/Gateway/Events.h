@@ -17,3 +17,5 @@ typedef struct {
 } SBR_GatewayEvents_Information;
 
 const SBR_GatewayEvents_Information* SBR_GatewayEvents_Get(SBR_GatewayEvent_Codes operationCode);
+
+SBR_GatewayEvent* SBR_GatewayEvents_CreateHeartbeat(void);

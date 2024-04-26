@@ -86,3 +86,7 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_A
     BA_LOGGER_TRACE("Heartbeat acknowledged\n");
     BA_LOGGER_WARN("Stub\n");
 }
+
+SBR_GatewayEvent* SBR_GatewayEvents_CreateHeartbeat(void) {
+    return SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, "");
+}
