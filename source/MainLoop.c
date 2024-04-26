@@ -20,43 +20,41 @@
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Gateway.h"
 #include "Discord/Gateway/Error.h"
+#include "Threads/Heartbeat.h"
 
-#define SBR_MAIN_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
+#define SBR_MAINLOOP_PACKET_BUFFER_SIZE 9000 // TODO: Get a more concrete number
+#define SBR_MAINLOOP_START_CURL() \
+do {                              \
+    BA_LOGGER_INFO("Starting cURL\n"); \
+    BA_Boolean errored = BA_BOOLEAN_FALSE; \
+    while (BA_BOOLEAN_TRUE) {     \
+        if (!SBR_cURL_Initialize(NULL)) { \
+            errored = BA_BOOLEAN_TRUE; \
+            BA_LOGGER_WARN("Retrying in 5 seconds...\n"); \
+            sleep(5);             \
+            continue;             \
+        }                         \
+        break;                    \
+    }                             \
+    if (errored)                  \
+        BA_LOGGER_INFO("Finally connected\n"); \
+} while (BA_BOOLEAN_FALSE)
 
 static volatile BA_Boolean sbrMainDisconnected = BA_BOOLEAN_FALSE;
 static volatile BA_Boolean sbrMainShuttingDown = BA_BOOLEAN_FALSE;
 
 BA_Boolean SBR_MainLoop_Start(void) {
 #ifndef SBR_STATIC
-    BA_LOGGER_INFO("Starting cURL\n");
-
-    {
-        BA_Boolean errored = BA_BOOLEAN_FALSE;
-
-        while (BA_BOOLEAN_TRUE) {
-            if (!SBR_cURL_Initialize(NULL)) {
-                errored = BA_BOOLEAN_TRUE;
-                
-                BA_LOGGER_WARN("Retrying in 5 seconds...\n");
-                sleep(5);
-                continue;
-            }
-
-            break;
-        }
-        
-        if (errored)
-            BA_LOGGER_INFO("Finally connected\n");
-    }
-
+    SBR_MAINLOOP_START_CURL();
+    
     sbrMainDisconnected = BA_BOOLEAN_FALSE;
     
     while (!SBR_MainLoop_IsShuttingDown()) {
-        char buffer[SBR_MAIN_PACKET_BUFFER_SIZE];
+        char buffer[SBR_MAINLOOP_PACKET_BUFFER_SIZE];
         size_t receivedBytes;
         const struct curl_ws_frame* metadata;
 
-        if (!SBR_cURL_Receive(buffer, SBR_MAIN_PACKET_BUFFER_SIZE, &receivedBytes, &metadata)) {
+        if (!SBR_cURL_Receive(buffer, SBR_MAINLOOP_PACKET_BUFFER_SIZE, &receivedBytes, &metadata)) {
             if (sbrMainDisconnected)
                 break;
 
@@ -82,8 +80,12 @@ BA_Boolean SBR_MainLoop_Start(void) {
                 break;
             }
 
-            // TODO: Reconncet
-            BA_ASSERT_NOT_IMPLEMENTED();
+            BA_LOGGER_INFO("Closing cURL\n");
+            SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
+            SBR_cURL_Close(BA_BOOLEAN_FALSE);
+            SBR_MAINLOOP_START_CURL();
+            BA_ASSERT_NOT_IMPLEMENTED(); // TODO: Resume
+            continue;
         }
         
         SBR_Gateway_Parse(buffer);
