@@ -3,10 +3,18 @@
 
 #include <BaconAPI/Internal/Boolean.h>
 #include <BaconAPI/ArgumentHandler.h>
+#include <BaconAPI/Internal/OperatingSystem.h>
+
+#if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
+#   include <unistd.h>
+#elif BA_OPERATINGSYSTEM_WINDOWS
+#   include <Windows.h>
+#endif
 
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
 #include "Discord/Configuration.h"
+#include "Main.h"
 
 static CURL* sbrcURL;
 static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;
@@ -75,7 +83,18 @@ BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedByt
 
     if (result == CURLE_AGAIN) {
         BA_LOGGER_TRACE("cURL buffer dry\n");
-        // TODO: Mark connection as cold after x amount of empty buffers
+        return BA_BOOLEAN_FALSE;
+    }
+
+    if (result == CURLE_GOT_NOTHING) {
+        BA_LOGGER_ERROR("Connection closed\n");
+        SBR_Main_SignalDisconnected();
+        return BA_BOOLEAN_FALSE;
+    }
+
+    if (result == CURLE_RECV_ERROR) {
+        BA_LOGGER_ERROR("Error occurred while receiving buffer\n");
+        SBR_Main_SignalDisconnected();
         return BA_BOOLEAN_FALSE;
     }
 
