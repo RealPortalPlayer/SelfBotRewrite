@@ -41,12 +41,8 @@ SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int seque
     return event;
 }
 
-BA_Boolean SBR_GatewayEvent_Send(const SBR_GatewayEvent* event) {
-    if (!SBR_GatewayEvent_CanSendCode(event->operationCode)) {
-        BA_LOGGER_ERROR("Code is receive only: %i\n", event->operationCode);
-        return BA_BOOLEAN_FALSE;
-    }
-
+void SBR_GatewayEvent_Send(const SBR_GatewayEvent* event) {
+    BA_ASSERT(SBR_GatewayEvent_CanSendCode(event->operationCode), "Code is receive only: %i\n", event->operationCode);
     BA_LOGGER_TRACE("Sending: %i\n", event->operationCode);
 
     json_object* json = json_object_new_object();
@@ -64,17 +60,13 @@ BA_Boolean SBR_GatewayEvent_Send(const SBR_GatewayEvent* event) {
     const char* results = json_object_to_json_string(json);
     
     SBR_CURL_ASSERT(SBR_cURL_Send(results, strlen(results), NULL, CURLWS_TEXT), "Failed to send Gateway packet: %s\n");
-    return BA_BOOLEAN_TRUE;
 }
 
-BA_Boolean SBR_GatewayEvent_Parse(const char* buffer) {
+void SBR_GatewayEvent_Parse(const char* buffer) {
     json_object* object = json_tokener_parse(buffer);
 
-    if (object == NULL) {
-        BA_LOGGER_WARN("Failed to parse buffer: %s\n", buffer);
-        return BA_BOOLEAN_FALSE;
-    }
-
+    BA_ASSERT(object != NULL, "Failed to parse buffer: %s\n", buffer);
+    
     json_object* operationCode = json_object_object_get(object, "op");
     json_object* data = json_object_object_get(object, "d");
 
