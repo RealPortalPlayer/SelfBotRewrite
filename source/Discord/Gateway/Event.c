@@ -10,6 +10,8 @@
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Events.h"
 
+static int sbrGatewayEventInterval = 0;
+
 // TODO: Packet queue
 
 BA_Boolean SBR_GatewayEvent_CanReceiveCode(SBR_GatewayEvent_Codes code) {
@@ -74,4 +76,14 @@ void SBR_GatewayEvent_Parse(const char* buffer) {
     BA_ASSERT(SBR_GatewayEvent_CanReceiveCode(parsedOperationCode), "Malformed packet: cannot receive code %i\n", parsedOperationCode);
     BA_LOGGER_TRACE("Received event: %i\n", parsedOperationCode);
     SBR_GatewayEvents_Get(parsedOperationCode)->action(data);
+}
+
+int SBR_GatewayEvent_GetInterval(void) {
+    return sbrGatewayEventInterval;
+}
+
+void SBR_GatewayEvent_SetInterval(int interval) {
+    BA_LOGGER_DEBUG("Setting interval: %i\n", interval);
+
+    sbrGatewayEventInterval = interval;
 }

@@ -76,10 +76,7 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HELLO) {
     json_object* interval = json_object_object_get(data, "heartbeat_interval");
 
     BA_ASSERT(interval != NULL, "Malformed packet: missing JSON field\n");
-
-    int parsedInterval = json_object_get_int(interval);
-
-    // TODO: Set interval
+    SBR_GatewayEvent_SetInterval(json_object_get_int(interval));
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_ACKNOWLEDGE) {
