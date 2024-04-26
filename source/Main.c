@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
         return BA_BOOLEAN_TRUE;
     }
     
-    BA_LOGGER_INFO("Starting bot (internal version: " SRB_VERSION ")\n");
+    BA_LOGGER_INFO("Starting bot (internal version: " SBR_VERSION ")\n");
     SBR_Settings_Load();
     BA_LOGGER_DEBUG("Discord:\n"
                     "API version: %i\n"

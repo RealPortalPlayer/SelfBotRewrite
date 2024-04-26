@@ -53,7 +53,7 @@ target_compile_definitions(SelfBotRewrite PUBLIC SBR_DISCORD_API_VERSION=${DISCO
                                                  SBR_DISCORD_WEBSOCKET_URL="${DISCORD_WEBSOCKET_URL}"
                                                  SBR_DISCORD_DEPRECATED_API_VERSION=${DISCORD_DEPRECATED_API_VERSION}
                                                  SBR_DISCORD_CDN_URL="${DISCORD_CDN_URL}"
-                                                 SRB_VERSION="${VERSION}")
+                                                 SBR_VERSION="${VERSION}")
 
 ba_strip(SelfBotRewrite)
 
