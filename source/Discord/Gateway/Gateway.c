@@ -61,6 +61,7 @@ void SBR_Gateway_Parse(const char* buffer) {
 
     int parsedOperationCode = json_object_get_int(operationCode);
 
+    BA_ASSERT(SBR_GatewayEvent_IsCodeValid(parsedOperationCode), "Malformed packet: invalid operation code %i\n", parsedOperationCode);
     BA_ASSERT(SBR_GatewayEvent_CanReceiveCode(parsedOperationCode), "Malformed packet: cannot receive code %i\n", parsedOperationCode);
     BA_LOGGER_TRACE("Received event: %i\n", parsedOperationCode);
     SBR_GatewayEvents_Get(parsedOperationCode)->action(data);
