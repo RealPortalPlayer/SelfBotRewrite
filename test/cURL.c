@@ -40,5 +40,5 @@ int main(int argc, char** argv) {
     }
     
     BA_LOGGER_INFO("Closing cURL\n");
-    SBR_cURL_Close();
+    SBR_cURL_Close(BA_BOOLEAN_TRUE);
 }

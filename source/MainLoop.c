@@ -90,7 +90,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
     }
 
     BA_LOGGER_INFO("Closing cURL\n");
-    SBR_cURL_Close();
+    SBR_cURL_Close(BA_BOOLEAN_TRUE);
     return !sbrMainDisconnected;
 #else
     BA_LOGGER_WARN("You're not supposed to call this\n");

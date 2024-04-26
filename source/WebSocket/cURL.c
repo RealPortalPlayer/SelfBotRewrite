@@ -7,11 +7,14 @@
 
 #if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
 #   include <unistd.h>
+#   include <arpa/inet.h>
 #elif BA_OPERATINGSYSTEM_WINDOWS
 #   include <Windows.h>
 #endif
 
 #include <BaconAPI/Thread.h>
+#include <string.h>
+#include <stdint.h>
 
 #include "WebSocket/cURL.h"
 #include "BuiltInArguments.h"
@@ -83,13 +86,19 @@ BA_Boolean SBR_cURL_Send(const void* data, const size_t size, size_t* sent, cons
     return BA_BOOLEAN_FALSE;
 }
 
-void SBR_cURL_Close(void) {
+void SBR_cURL_Close(BA_Boolean success) {
     BA_ASSERT(sbrcURLInitialized, "cURL is not initialized\n");
 
     sbrcURLInitialized = BA_BOOLEAN_FALSE;
 
-    SBR_cURL_Send("", 0, NULL, CURLWS_CLOSE);
+    char* codeCharacterPointer = malloc(sizeof(uint16_t));
+    uint16_t code = htons(success ? 1000 : 4000);
+
+    BA_ASSERT(codeCharacterPointer != NULL, "Failed to allocate closing code\n");
+    memcpy(codeCharacterPointer, &code, sizeof(uint16_t));
+    SBR_cURL_Send(codeCharacterPointer, sizeof(uint16_t), NULL, CURLWS_CLOSE);
     curl_easy_cleanup(sbrcURL);
+    free(codeCharacterPointer);
 }
 
 BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata) {
