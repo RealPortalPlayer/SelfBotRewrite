@@ -54,7 +54,7 @@ BA_Boolean SBR_cURL_Initialize(const char* url) {
     return BA_BOOLEAN_FALSE;
 }
 
-BA_Boolean SBR_cURL_Send(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {
+BA_Boolean SBR_cURL_WebSocketSend(const void* data, const size_t size, size_t* sent, const unsigned int cURLFlag) {
     size_t throwaway;
 
     BA_Thread_UseLock(&sbrcURLLock);
@@ -96,12 +96,12 @@ void SBR_cURL_Close(BA_Boolean success) {
 
     BA_ASSERT(codeCharacterPointer != NULL, "Failed to allocate closing code\n");
     memcpy(codeCharacterPointer, &code, sizeof(uint16_t));
-    SBR_cURL_Send(codeCharacterPointer, sizeof(uint16_t), NULL, CURLWS_CLOSE);
+    SBR_cURL_WebSocketSend(codeCharacterPointer, sizeof(uint16_t), NULL, CURLWS_CLOSE);
     curl_easy_cleanup(sbrcURL);
     free(codeCharacterPointer);
 }
 
-BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata) {
+BA_Boolean SBR_cURL_WebSocketReceive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata) {
     CURLcode result = curl_ws_recv(sbrcURL, buffer, bufferSize, receivedBytes, metadata);
 
     if (result == CURLE_AGAIN) {

@@ -54,7 +54,7 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
 
     const char* results = json_object_to_json_string(json);
     
-    SBR_cURL_Send(results, strlen(results), NULL, CURLWS_TEXT);
+    SBR_cURL_WebSocketSend(results, strlen(results), NULL, CURLWS_TEXT);
     BA_Thread_Unlock(&threadLock);
 }
 

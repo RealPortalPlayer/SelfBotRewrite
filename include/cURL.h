@@ -1,9 +1,9 @@
+// Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
+// Licensed under MIT <https://opensource.org/licenses/MIT>
+
 // Purpose: WebSocket wrapper around cURL
 // Created on: 4/23/24 @ 4:17 PM
 
-
-// Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
-// Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #pragma once
 
@@ -13,9 +13,9 @@
 CURL* SBR_cURL_Get(void);
 
 BA_Boolean SBR_cURL_Initialize(const char* url);
-BA_Boolean SBR_cURL_Send(const void* data, size_t size, size_t* sent, unsigned int cURLFlag);
+BA_Boolean SBR_cURL_WebSocketSend(const void* data, size_t size, size_t* sent, unsigned int cURLFlag);
 void SBR_cURL_Close(BA_Boolean success);
-BA_Boolean SBR_cURL_Receive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata);
+BA_Boolean SBR_cURL_WebSocketReceive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata);
 
 #define SBR_CURL_ASSERT(call, message) \
 do {                               \

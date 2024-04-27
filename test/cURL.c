@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
     SBR_cURL_Initialize("ws://127.0.0.1:1234");
     BA_LOGGER_INFO("Sending: %s\n", message);
 
-    if (SBR_cURL_Send(message, strlen(message), NULL, CURLWS_TEXT)) {
+    if (SBR_cURL_WebSocketSend(message, strlen(message), NULL, CURLWS_TEXT)) {
         BA_LOGGER_INFO("Waiting for response\n");
 
         while (BA_BOOLEAN_TRUE) {
@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
             size_t receivedBytes;
             const struct curl_ws_frame* metadata;
         
-            if (!SBR_cURL_Receive(buffer, bufferSize, &receivedBytes, &metadata))
+            if (!SBR_cURL_WebSocketReceive(buffer, bufferSize, &receivedBytes, &metadata))
                 continue;
 
             BA_LOGGER_INFO("Got response: ");

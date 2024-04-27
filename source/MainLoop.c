@@ -72,7 +72,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
         
         BA_ASSERT(buffer != NULL, "Failed to allocate memory for event buffer\n");
         
-        if (!SBR_cURL_Receive(buffer, bufferSize, &receivedBytes, &metadata)) {
+        if (!SBR_cURL_WebSocketReceive(buffer, bufferSize, &receivedBytes, &metadata)) {
             free(buffer);
             
             if (sbrMainDisconnected)
@@ -92,7 +92,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
                 char temporaryBuffer[bufferSize + 1];
                 size_t temporaryReceivedBytes;
 
-                if (SBR_cURL_Receive(&temporaryBuffer, bufferSize, &temporaryReceivedBytes, &metadata)) {
+                if (SBR_cURL_WebSocketReceive(&temporaryBuffer, bufferSize, &temporaryReceivedBytes, &metadata)) {
                     temporaryBuffer[receivedBytes] = '\0';
                     
                     BA_String_Append(&buffer, temporaryBuffer);
