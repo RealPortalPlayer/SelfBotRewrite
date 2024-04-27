@@ -2,7 +2,7 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/ArgumentHandler.h>
-#include <WebSocket/cURL.h>
+#include <cURL.h>
 #include <string.h>
 
 int main(int argc, char** argv) {
