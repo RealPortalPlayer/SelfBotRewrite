@@ -85,7 +85,10 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH) {
     SBR_GATEWAYEVENTS_ENFORCE_DATA();
     
     if (BA_String_Equals(eventName, "READY", BA_BOOLEAN_FALSE)) {
+        // TODO: API version
         json_object* user = json_object_object_get(data, "user");
+        json_object* sessionId = json_object_object_get(data, "session_id");
+        json_object* resumeGatewayUrl = json_object_object_get(data, "resume_gateway_url");
 
         if (user == NULL) {
             BA_LOGGER_ERROR("Malformed packet: missing JSON field\n");
@@ -98,7 +101,10 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH) {
 
         if (!BA_BITWISE_IS_BIT_SET(SBR_Bot_Get()->customFlags, SBR_DISCORDUSER_CUSTOM_FLAG_BOT))
             BA_LOGGER_WARN("\"Bot\" user is not actually a bot. Self-bots are against Discords TOS\n");
-
+        
+        SBR_Gateway_SetResumeData(json_object_get_string(resumeGatewayUrl), json_object_get_string(sessionId));
+        BA_LOGGER_TRACE("Resume URL: %s\n"
+                        "Session ID: %s\n", SBR_Gateway_GetResumeURL(), SBR_Gateway_GetSessionID());
         return;
     }
     

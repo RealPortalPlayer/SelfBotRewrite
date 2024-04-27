@@ -17,6 +17,8 @@
 
 static int sbrGatewayInterval = 0;
 static int sbrGatewayRequestCount = 0;
+static const char* sbrGatewayResumeUrl;
+static const char* sbrGatewaySessionId;
 
 void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
     static BA_Thread_Lock threadLock;
@@ -120,3 +122,17 @@ void SBR_Gateway_ParseError(uint16_t code, const char* message) {
     BA_ASSERT(information != NULL, "Unknown Discord error code (%u): %s\n", code, message);
     information->action(message);
 }
+
+const char* SBR_Gateway_GetResumeURL(void) {
+    return sbrGatewayResumeUrl;
+}
+
+const char* SBR_Gateway_GetSessionID(void) {
+    return sbrGatewaySessionId;
+}
+
+void SBR_Gateway_SetResumeData(const char* url, const char* id) {
+    sbrGatewayResumeUrl = url;
+    sbrGatewaySessionId = id;
+}
+

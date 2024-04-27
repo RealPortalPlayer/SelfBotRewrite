@@ -10,6 +10,8 @@
 
 int SBR_Gateway_GetInterval(void);
 int SBR_Gateway_GetRequestCount(void);
+const char* SBR_Gateway_GetResumeURL(void);
+const char* SBR_Gateway_GetSessionID(void);
 
 /**
  * You shouldn't need to call this directly
@@ -19,6 +21,7 @@ void SBR_Gateway_Parse(const char* buffer);
 void SBR_Gateway_SetInterval(int interval);
 void SBR_Gateway_ResetRequestCount(void);
 void SBR_Gateway_ParseError(uint16_t code, const char* message);
+void SBR_Gateway_SetResumeData(const char* url, const char* id);
 
 #define SBR_GATEWAY_SEND_AND_FREE(gateway) \
 do {                                       \
