@@ -19,6 +19,7 @@ static int sbrGatewayInterval = 0;
 static int sbrGatewayRequestCount = 0;
 static const char* sbrGatewayResumeUrl;
 static const char* sbrGatewaySessionId;
+static int sbrGatewayLastSequence;
 
 void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
     static BA_Thread_Lock threadLock;
@@ -92,6 +93,12 @@ void SBR_Gateway_Parse(const char* buffer) {
         return;
     }
 
+    if (sequence != NULL) {
+        sbrGatewayLastSequence = json_object_get_int(sequence);
+        
+        BA_LOGGER_TRACE("New sequence: %i\n", sbrGatewayLastSequence);
+    }
+
     BA_LOGGER_TRACE("Received event: %i\n", parsedOperationCode);
     SBR_GatewayEvents_Get(parsedOperationCode)->action(data, json_object_get_int(sequence), json_object_get_string(eventName));
 }
@@ -136,3 +143,6 @@ void SBR_Gateway_SetResumeData(const char* url, const char* id) {
     sbrGatewaySessionId = id;
 }
 
+int SBR_Gateway_GetLastSequence(void) {
+    return sbrGatewayLastSequence;
+}

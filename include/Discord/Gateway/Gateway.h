@@ -12,6 +12,7 @@ int SBR_Gateway_GetInterval(void);
 int SBR_Gateway_GetRequestCount(void);
 const char* SBR_Gateway_GetResumeURL(void);
 const char* SBR_Gateway_GetSessionID(void);
+int SBR_Gateway_GetLastSequence(void);
 
 /**
  * You shouldn't need to call this directly
