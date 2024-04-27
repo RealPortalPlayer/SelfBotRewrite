@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <BaconAPI/Internal/Boolean.h>
+
 typedef enum {
     SBR_DISCORD_LOCALE_INDONESIAN,
     SBR_DISCORD_LOCALE_DANISH,
@@ -13,6 +15,7 @@ typedef enum {
     SBR_DISCORD_LOCALE_BRITISH_ENGLISH,
     SBR_DISCORD_LOCALE_AMERICAN_ENGLISH,
     SBR_DISCORD_LOCALE_SPANISH,
+    SBR_DISCORD_LOCALE_LATIN_AMERICAN_SPANISH,
     SBR_DISCORD_LOCALE_FRENCH,
     SBR_DISCORD_LOCALE_CROATIAN,
     SBR_DISCORD_LOCALE_ITALIAN,
@@ -33,6 +36,23 @@ typedef enum {
     SBR_DISCORD_LOCALE_RUSSIAN,
     SBR_DISCORD_LOCALE_UKRAINIAN,
     SBR_DISCORD_LOCALE_HINDI,
+    SBR_DISCORD_LOCALE_THAI,
     SBR_DISCORD_LOCALE_CHINESE,
-    SBR_DISCORD_LOCALE_JAPANENSE
+    SBR_DISCORD_LOCALE_JAPANENSE,
+    SBR_DISCORD_LOCALE_TAIWAN,
+    SBR_DISCORD_LOCALE_KOREAN,
+
+    /**
+     * Not a real code
+     */
+    SBR_DISCORD_LOCALE_SIZE
 } SBR_DiscordLocales;
+
+const char* SBR_DiscordLocales_ToLanguageCode(SBR_DiscordLocales locale);
+
+
+/**
+ * @return SBR_DISCORD_LOCALE_AMERICAN_ENGLISH if it's invalid
+ */
+SBR_DiscordLocales SBR_DiscordLocales_FromLanguageCode(const char* code);
+BA_Boolean SBR_DiscordLocales_IsValid(SBR_DiscordLocales locale);
