@@ -3,7 +3,7 @@
 
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/String.h>
-#include <WebSocket/cURL.h>
+#include <cURL.h>
 #include <Discord/Gateway/Event.h>
 #include <BaconAPI/Internal/OperatingSystem.h>
 #include <Discord/Gateway/Gateway.h>
@@ -41,5 +41,5 @@ int main(int argc, char** argv) {
     }
 
     BA_LOGGER_INFO("Closing cURL\n");
-    SBR_cURL_Close();
+    SBR_cURL_Close(BA_BOOLEAN_TRUE);
 }
