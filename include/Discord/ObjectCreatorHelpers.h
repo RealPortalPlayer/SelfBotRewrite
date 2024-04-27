@@ -6,6 +6,11 @@
 
 #pragma once
 
+#include <BaconAPI/Debugging/Assert.h>
+#include <BaconAPI/Math/Bitwise.h>
+
+#include "Snowflake.h"
+
 #define SBR_OBJECTCREATORHELPERS_HEADER(type, assertMessage) \
 type* object = malloc(sizeof(type));                         \
 BA_ASSERT(object != NULL, "Failed to allocate memory for " assertMessage "\n")
@@ -25,25 +30,18 @@ if (name == NULL) {                                   \
 json_object* key = json_object_object_get(unparsedJsonData, SBR_OBJECTCREATORHELPERS_GET_KEY_STRING_ ## sameKey(key, keyString)); \
 SBR_OBJECTCREATORHELPERS_CHECK_ ## required(key)
 
-#define SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(key, keyString, type, sameKey) \
-SBR_OBJECTCREATORHELPERS_GET(key, keyString, type, sameKey);                  \
-object->key = SBR_Snowflake_ConvertFromNumber(json_object_get_int(key))
+#define SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) \
+SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);        \
+object->key
 
-#define SBR_OBJECTCREATORHELPERS_GET_STRING(key, keyString, type, sameKey) \
-SBR_OBJECTCREATORHELPERS_GET(key, keyString, type, sameKey);               \
-object->key = json_object_get_string(key)
+#define SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_Snowflake_ConvertFromNumber(json_object_get_int(keyString))
+#define SBR_OBJECTCREATORHELPERS_GET_STRING(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_string(keyString)
+#define SBR_OBJECTCREATORHELPERS_GET_BOOLEAN(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_boolean(keyString)
+#define SBR_OBJECTCREATORHELPERS_GET_INTEGER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_int(keyString)
 
-#define SBR_OBJECTCREATORHELPERS_GET_BOOLEAN(key, keyString, type, sameKey) \
-SBR_OBJECTCREATORHELPERS_GET(key, keyString, type, sameKey);                \
-object->key = json_object_get_boolean(key)
-
-#define SBR_OBJECTCREATORHELPERS_GET_INTEGER(key, keyString, type, sameKey) \
-SBR_OBJECTCREATORHELPERS_GET(key, keyString, type, sameKey);                \
-object->key = json_object_get_int(key)
-
-#define SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(key, keyString, type, sameKey, flags, bit) \
-SBR_OBJECTCREATORHELPERS_GET(key, keyString, type, sameKey);                                   \
-if (json_object_get_boolean(key))                                                              \
+#define SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(key, keyString, required, sameKey, flags, bit) \
+SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);                                   \
+if (json_object_get_boolean(key))                                                                  \
     BA_BITWISE_SET_BIT(object->flags, bit)
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object

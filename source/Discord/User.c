@@ -2,8 +2,6 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <stdlib.h>
-#include <BaconAPI/Debugging/Assert.h>
-#include <BaconAPI/Math/Bitwise.h>
 
 #include "Discord/User.h"
 #include "Discord/ObjectCreatorHelpers.h"
