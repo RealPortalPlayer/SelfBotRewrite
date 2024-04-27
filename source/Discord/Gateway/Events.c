@@ -8,15 +8,13 @@
 #include <BaconAPI/Math/Bitwise.h>
 
 #include "Discord/Gateway/Events.h"
-
-#include <cURL.h>
-
 #include "Token.h"
 #include "UserAgent.h"
 #include "Discord/Gateway/Gateway.h"
 #include "MainLoop.h"
 #include "Threads/Heartbeat.h"
 #include "Bot.h"
+#include "cURL.h"
 
 #define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(const json_object* data, int sequence, const char* eventName)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \

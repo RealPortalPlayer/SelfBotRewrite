@@ -89,4 +89,4 @@ typedef struct {
 
 SBR_DiscordChannel* SBR_DiscordChannel_Create(const json_object* unparsedJsonData);
 
-void SBR_DiscordChannel_Send(const SBR_Snowflake* id, const char* content);
+void SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content);

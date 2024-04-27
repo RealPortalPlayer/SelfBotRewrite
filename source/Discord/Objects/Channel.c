@@ -44,7 +44,7 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(const json_object* unparsedJsonDat
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
 
-void SBR_DiscordChannel_Send(const SBR_Snowflake* id, const char* content) {
-    SBR_DiscordAPIEvents_SendMessage(id, content);
-    // TODO: Return created channel
+void SBR_DiscordChannel_Send(SBR_DiscordChannel* channel, const char* content) {
+    // TODO: Check
+    SBR_DiscordAPIEvents_SendMessage(channel->id, content);
 }

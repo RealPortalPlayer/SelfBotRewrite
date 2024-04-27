@@ -75,6 +75,6 @@ void SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* conte
 
     SBR_DiscordAPI_Send(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE, data, &response, &variables);
 
-    // TODO: Create channel
+    // TODO: Create message
     json_object_put(response);
 }
