@@ -44,4 +44,7 @@ SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);                
 if (json_object_get_boolean(key))                                                                  \
     BA_BITWISE_SET_BIT(object->flags, bit)
 
+#define SBR_OBJECTCREATORHELPERS_GET_JSON_ARRAY(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_array(keyString)
+#define SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_object(keyString)
+
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
