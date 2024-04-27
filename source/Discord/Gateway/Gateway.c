@@ -17,7 +17,7 @@
 
 static int sbrGatewayInterval = 0;
 static int sbrGatewayRequestCount = 0;
-static const char* sbrGatewayResumeUrl = NULL;
+static char* sbrGatewayResumeUrl = NULL;
 static const char* sbrGatewaySessionId;
 static int sbrGatewayLastSequence;
 

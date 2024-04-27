@@ -10,4 +10,4 @@
 
 // TODO: Channel object
 
-char* SBR_DiscordChannel_Send(const SBR_Snowflake* id, const char* content);
+json_object* SBR_DiscordChannel_Send(const SBR_Snowflake* id, const char* content);

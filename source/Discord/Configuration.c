@@ -70,7 +70,7 @@ const char* SBR_DiscordConfiguration_GetAPIRootURL(void) {
     return cached;
 }
 
-const char* SBR_DiscordConfiguration_GetAPIURL(const char* path) {
+char* SBR_DiscordConfiguration_GetAPIURL(const char* path) {
     static char* cached = NULL;
 
     if (cached == NULL) {

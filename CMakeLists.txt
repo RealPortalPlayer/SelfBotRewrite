@@ -48,7 +48,10 @@ set(SOURCE source/Token.c
            source/Discord/Objects/Application.c
            source/Discord/Objects/Guild.c
            source/Discord/Locale.c
-           source/Discord/Objects/Channel.c)
+           source/Discord/Objects/Channel.c
+           source/Discord/API/Event.c
+           source/Discord/API/API.c
+           source/Discord/API/Events.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
