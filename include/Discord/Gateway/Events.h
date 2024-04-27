@@ -22,3 +22,5 @@ const SBR_GatewayEvents_Information* SBR_GatewayEvents_Get(SBR_GatewayEvent_Code
 SBR_GatewayEvent* SBR_GatewayEvents_CreateHeartbeat(void);
 SBR_GatewayEvent* SBR_GatewayEvents_CreateIdentify(void);
 SBR_GatewayEvent* SBR_GatewayEvents_CreatePresenceUpdate(SBR_DiscordStatus status, BA_Boolean afk); // TODO: Activities
+// TODO: SBR_GATEWAYEVENT_CODE_VOICE_STATUS_UPDATE
+SBR_GatewayEvent* SBR_GatewayEvents_CreateResume(void);

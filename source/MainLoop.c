@@ -25,21 +25,22 @@
 #include "Discord/Gateway/Gateway.h"
 #include "Discord/Gateway/Error.h"
 #include "Threads/Heartbeat.h"
+#include "Discord/Gateway/Events.h"
 
-#define SBR_MAINLOOP_START_CURL() \
-do {                              \
+#define SBR_MAINLOOP_START_CURL(url) \
+do {                                 \
     BA_LOGGER_INFO("Starting cURL\n"); \
     BA_Boolean errored = BA_BOOLEAN_FALSE; \
-    while (BA_BOOLEAN_TRUE) {     \
-        if (!SBR_cURL_Initialize(NULL)) { \
+    while (BA_BOOLEAN_TRUE) {        \
+        if (!SBR_cURL_Initialize(url)) { \
             errored = BA_BOOLEAN_TRUE; \
             BA_LOGGER_WARN("Retrying in 5 seconds...\n"); \
-            sleep(5);             \
-            continue;             \
-        }                         \
-        break;                    \
-    }                             \
-    if (errored)                  \
+            sleep(5);                \
+            continue;                \
+        }                            \
+        break;                       \
+    }                                \
+    if (errored)                     \
         BA_LOGGER_INFO("Finally connected\n"); \
 } while (BA_BOOLEAN_FALSE)
 
@@ -61,7 +62,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
         BA_LOGGER_DEBUG("Event buffer size: %i character(s)\n", bufferSize);
     }
     
-    SBR_MAINLOOP_START_CURL();
+    SBR_MAINLOOP_START_CURL(NULL);
     
     sbrMainDisconnected = BA_BOOLEAN_FALSE;
     
@@ -121,7 +122,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
             SBR_Gateway_ParseError(code, message);
             free(buffer);
 
-            if (!SBR_GatewayError_CanReconnect(code)) {
+            if (!SBR_GatewayError_CanReconnect(code) || sbrMainDisconnected) { // HACK: For invalidated session
                 BA_LOGGER_INFO("Cannot reconnect, restarting bot\n");
                 SBR_MainLoop_SignalDisconnected();
                 break;
@@ -130,8 +131,8 @@ BA_Boolean SBR_MainLoop_Start(void) {
             BA_LOGGER_INFO("Closing cURL\n");
             SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
             SBR_cURL_Close(BA_BOOLEAN_FALSE);
-            SBR_MAINLOOP_START_CURL();
-            BA_ASSERT_NOT_IMPLEMENTED(); // TODO: Resume
+            SBR_MAINLOOP_START_CURL(SBR_Gateway_GetResumeURL());
+            SBR_Gateway_Send(SBR_GatewayEvents_CreateResume());
             continue;
         }
         

@@ -7,17 +7,17 @@
 #include <BaconAPI/Thread.h>
 
 #include "Discord/Gateway/Gateway.h"
-
-#include <MainLoop.h>
-#include <Discord/Gateway/Errors.h>
-
 #include "cURL.h"
 #include "Discord/Gateway/Events.h"
 #include "Threads/RateLimit.h"
+#include "MainLoop.h"
+#include "BaconAPI/String.h"
+#include "Discord/Configuration.h"
+#include "Discord/Gateway/Errors.h"
 
 static int sbrGatewayInterval = 0;
 static int sbrGatewayRequestCount = 0;
-static const char* sbrGatewayResumeUrl;
+static const char* sbrGatewayResumeUrl = NULL;
 static const char* sbrGatewaySessionId;
 static int sbrGatewayLastSequence;
 
@@ -139,8 +139,11 @@ const char* SBR_Gateway_GetSessionID(void) {
 }
 
 void SBR_Gateway_SetResumeData(const char* url, const char* id) {
-    sbrGatewayResumeUrl = url;
+    sbrGatewayResumeUrl = BA_String_Copy(url);
     sbrGatewaySessionId = id;
+
+    BA_String_Append(&sbrGatewayResumeUrl, "?v=%i&encoding=json");
+    BA_String_Format(&sbrGatewayResumeUrl, SBR_DiscordConfiguration_GetAPIVersion());
 }
 
 int SBR_Gateway_GetLastSequence(void) {

@@ -13,7 +13,7 @@
 #include "Threads/RateLimit.h"
 #include "Discord/Gateway/Gateway.h"
 
-static BA_Boolean sbrRateLimitSleeping;
+static volatile BA_Boolean sbrRateLimitSleeping;
 
 SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-Limit clearer", KILL) {
     BA_LOGGER_DEBUG("Hello, from rate-limit clearer\n");

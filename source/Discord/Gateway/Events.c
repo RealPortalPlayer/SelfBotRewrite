@@ -8,6 +8,9 @@
 #include <BaconAPI/Math/Bitwise.h>
 
 #include "Discord/Gateway/Events.h"
+
+#include <cURL.h>
+
 #include "Token.h"
 #include "UserAgent.h"
 #include "Discord/Gateway/Gateway.h"
@@ -83,6 +86,11 @@ const SBR_GatewayEvents_Information* SBR_GatewayEvents_Get(SBR_GatewayEvent_Code
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH) {
     SBR_GATEWAYEVENTS_ENFORCE_DATA();
+
+    if (BA_String_Equals(eventName, "RESUMED", BA_BOOLEAN_FALSE)) {
+        BA_LOGGER_DEBUG("Successfully reconnected and resumed\n");
+        return;
+    }
     
     if (BA_String_Equals(eventName, "READY", BA_BOOLEAN_FALSE)) {
         // TODO: API version
@@ -118,17 +126,34 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT) 
 }
 
 SBR_GATEWAYEVENTS_STUB_FUNCTION(SBR_GATEWAYEVENT_CODE_RECONNECT)
-SBR_GATEWAYEVENTS_STUB_FUNCTION(SBR_GATEWAYEVENT_CODE_INVALID_SESSION)
+
+SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_INVALID_SESSION) {
+    BA_LOGGER_ERROR("Invalidated session\n");
+
+    if (json_object_get_boolean(data)) {
+        BA_LOGGER_WARN("Can reconnect (rare)\n");
+        return;
+    }
+
+    SBR_MainLoop_SignalDisconnected();
+}
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HELLO) {
     SBR_GATEWAYEVENTS_ENFORCE_DATA();
     BA_LOGGER_TRACE("Discord said hello\n");
 
     json_object* interval = json_object_object_get(data, "heartbeat_interval");
+    static BA_Boolean alreadySentIdentity = BA_BOOLEAN_FALSE;
 
     BA_ASSERT(interval != NULL, "Malformed packet: missing JSON field\n");
     SBR_Gateway_SetInterval(json_object_get_int(interval));
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_FALSE);
+
+    if (alreadySentIdentity)
+        return;
+
+    alreadySentIdentity = BA_BOOLEAN_TRUE;
+
     SBR_GATEWAY_SEND_AND_FREE(SBR_GatewayEvents_CreateIdentify());
 }
 
@@ -138,11 +163,15 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_A
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_FALSE);
 }
 
-#define SBR_GATEWAYEVENTS_CREATOR_START(code, sequence, eventName) \
+#define SBR_GATEWAYEVENTS_CREATOR_START_NO_PROPERTIES(code, sequence, eventName) \
 SBR_GatewayEvent* event = SBR_GatewayEvent_Create(code, sequence, eventName); \
-json_object* properties = json_object_new_object();                \
-BA_ASSERT(properties != NULL, "Failed to create JSON properties\n"); \
 BA_Boolean errors = BA_BOOLEAN_FALSE
+
+#define SBR_GATEWAYEVENTS_CREATOR_START(code, sequence, eventName) \
+SBR_GATEWAYEVENTS_CREATOR_START_NO_PROPERTIES(code, sequence, eventName); \
+json_object* properties = json_object_new_object();                \
+BA_ASSERT(properties != NULL, "Failed to create JSON properties\n") \
+
 
 #define SBR_GATEWAYEVENTS_JSON_ADD(json, key, value) errors = !errors && json_object_object_add(json, key, value)
 
@@ -166,9 +195,17 @@ SBR_GatewayEvent* SBR_GatewayEvents_CreateIdentify(void) {
 }
 
 SBR_GatewayEvent* SBR_GatewayEvents_CreatePresenceUpdate(SBR_DiscordStatus status, BA_Boolean afk) {
-    SBR_GATEWAYEVENTS_CREATOR_START(SBR_GATEWAYEVENT_CODE_PRESENCE_UPDATE, 0, "");
-    SBR_GATEWAYEVENTS_JSON_ADD(properties, "activities", json_object_new_array());
-    SBR_GATEWAYEVENTS_JSON_ADD(properties, "status", json_object_new_string(SBR_DiscordStatus_ToString(status)));
-    SBR_GATEWAYEVENTS_JSON_ADD(properties, "afk", json_object_new_boolean(afk));
+    SBR_GATEWAYEVENTS_CREATOR_START_NO_PROPERTIES(SBR_GATEWAYEVENT_CODE_PRESENCE_UPDATE, 0, "");
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "activities", json_object_new_array());
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "status", json_object_new_string(SBR_DiscordStatus_ToString(status)));
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "afk", json_object_new_boolean(afk));
+    SBR_GATEWAYEVENTS_CREATOR_END();
+}
+
+SBR_GatewayEvent* SBR_GatewayEvents_CreateResume(void) {
+    SBR_GATEWAYEVENTS_CREATOR_START_NO_PROPERTIES(SBR_GATEWAYEVENT_CODE_RESUME, 0, "");
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "token", json_object_new_string(SBR_Token_Get()));
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "session_id", json_object_new_string(SBR_Gateway_GetSessionID()));
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "seq", json_object_new_int(SBR_Gateway_GetLastSequence()));
     SBR_GATEWAYEVENTS_CREATOR_END();
 }

@@ -11,6 +11,7 @@
 #include "Discord/Configuration.h"
 #include "BuiltInArguments.h"
 #include "cURL.h"
+#include "Discord/Gateway/Gateway.h"
 
 #define SBR_DISCORDCONFIGURATION_HACK_STRING2(string) #string
 #define SBR_DISCORDCONFIGURATION_HACK_STRING1(string) SBR_DISCORDCONFIGURATION_HACK_STRING2(string)
@@ -93,9 +94,11 @@ const char* SBR_DiscordConfiguration_GetAPIURL(const char* path) {
 const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
     static char* cached = NULL;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
-
+    
     if (!initialized) {
         char* buffer = BA_String_CreateEmpty();
+
+        initialized = BA_BOOLEAN_TRUE;
 
         SBR_cURL_HTTPSend(SBR_DiscordConfiguration_GetAPIURL("gateway"), "{}", BA_BOOLEAN_FALSE, &buffer);
 
