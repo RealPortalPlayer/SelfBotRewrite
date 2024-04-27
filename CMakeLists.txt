@@ -28,7 +28,7 @@ endif()
 
 set(SOURCE source/Token.c
            source/Settings.c
-           source/WebSocket/cURL.c
+           source/cURL.c
            source/Discord/Snowflake.c
            source/Discord/Gateway/Event.c
            source/Discord/Gateway/Error.c

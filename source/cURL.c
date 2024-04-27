@@ -1,9 +1,9 @@
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
-#include <BaconAPI/Internal/Boolean.h>
-#include <BaconAPI/ArgumentHandler.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <../dependencies/BaconAPI/include/BaconAPI/Internal/Boolean.h>
+#include <../dependencies/BaconAPI/include/BaconAPI/ArgumentHandler.h>
+#include <../dependencies/BaconAPI/include/BaconAPI/Internal/OperatingSystem.h>
 
 #if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
 #   include <unistd.h>
@@ -12,14 +12,14 @@
 #   include <Windows.h>
 #endif
 
-#include <BaconAPI/Thread.h>
+#include <../dependencies/BaconAPI/include/BaconAPI/Thread.h>
 #include <string.h>
 #include <stdint.h>
 
-#include "WebSocket/cURL.h"
-#include "BuiltInArguments.h"
-#include "Discord/Configuration.h"
-#include "MainLoop.h"
+#include "cURL.h"
+#include "../include/BuiltInArguments.h"
+#include "../include/Discord/Configuration.h"
+#include "../include/MainLoop.h"
 
 static CURL* sbrcURL;
 static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;

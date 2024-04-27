@@ -11,7 +11,7 @@
 #include <MainLoop.h>
 #include <Discord/Gateway/Errors.h>
 
-#include "WebSocket/cURL.h"
+#include "cURL.h"
 #include "Discord/Gateway/Events.h"
 #include "Threads/RateLimit.h"
 

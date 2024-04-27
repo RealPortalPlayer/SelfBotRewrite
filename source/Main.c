@@ -6,7 +6,7 @@
 #include <signal.h>
 
 #include "Settings.h"
-#include "WebSocket/cURL.h"
+#include "cURL.h"
 #include "BuiltInArguments.h"
 #include "Discord/Configuration.h"
 #include "Discord/Gateway/Event.h"

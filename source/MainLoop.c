@@ -20,7 +20,7 @@
 #include <BaconAPI/String.h>
 
 #include "MainLoop.h"
-#include "WebSocket/cURL.h"
+#include "cURL.h"
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Gateway.h"
 #include "Discord/Gateway/Error.h"
