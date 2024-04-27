@@ -5,9 +5,12 @@
 #include <BaconAPI/Number.h>
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/String.h>
+#include <json_object.h>
+#include <json_tokener.h>
 
 #include "Discord/Configuration.h"
 #include "BuiltInArguments.h"
+#include "cURL.h"
 
 #define SBR_DISCORDCONFIGURATION_HACK_STRING2(string) #string
 #define SBR_DISCORDCONFIGURATION_HACK_STRING1(string) SBR_DISCORDCONFIGURATION_HACK_STRING2(string)
@@ -88,22 +91,25 @@ const char* SBR_DiscordConfiguration_GetAPIURL(const char* path) {
 }
 
 const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
-    static char* cached = SBR_DISCORD_ROOT_URL;
+    static char* cached = NULL;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        const char* selected = SBR_DISCORD_WEBSOCKET_URL;
+        char* buffer = BA_String_CreateEmpty();
 
-        {
-            BA_ArgumentHandler_ShortResults results;
+        SBR_cURL_HTTPSend(SBR_DiscordConfiguration_GetAPIURL("gateway"), "{}", BA_BOOLEAN_FALSE, &buffer);
 
-            if (BA_ArgumentHandler_GetInformationWithShort(SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET, SBR_BUILTINARGUMENTS_DISCORD_WEBSOCKET_SHORT, BA_BOOLEAN_FALSE, &results) != 0)
-                selected = *results.value;
-        }
+        json_object* object = json_tokener_parse(buffer);
 
-        cached = BA_String_Copy(selected);
+        BA_ASSERT(object != NULL, "Failed to parse Gateway URL\n");
+        
+        json_object* url = json_object_object_get(object, "url");
 
-        SBR_DISCORDCONFIGURATION_SETUP_URL("ws");
+        BA_ASSERT(url != NULL, "Failed to get Gateway URL\n");
+
+        cached = BA_String_Copy(json_object_get_string(url));
+
+        json_object_put(object);
         BA_String_Append(&cached, "?v=%i&encoding=json");
         BA_String_Format(&cached, SBR_DiscordConfiguration_GetAPIVersion());
     }
