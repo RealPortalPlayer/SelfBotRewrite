@@ -9,6 +9,7 @@
 #include <json_object.h>
 
 #include "Event.h"
+#include "Events.h"
 
 /**
  * 
@@ -17,4 +18,4 @@
  * @param output
  * @return False means there was an API error
  */
-BA_Boolean SBR_DiscordAPI_Send(SBR_DiscordAPIEvent_Codes code, json_object* data, json_object** output);
+BA_Boolean SBR_DiscordAPI_Send(SBR_DiscordAPIEvent_Codes code, json_object* data, json_object** output, const SBR_DiscordAPIEvents_Variables* variables);
