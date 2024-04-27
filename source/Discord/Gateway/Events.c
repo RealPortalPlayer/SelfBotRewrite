@@ -138,39 +138,37 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT_A
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_FALSE);
 }
 
+#define SBR_GATEWAYEVENTS_CREATOR_START(code, sequence, eventName) \
+SBR_GatewayEvent* event = SBR_GatewayEvent_Create(code, sequence, eventName); \
+json_object* properties = json_object_new_object();                \
+BA_ASSERT(properties != NULL, "Failed to create JSON properties\n"); \
+BA_Boolean errors = BA_BOOLEAN_FALSE
+
+#define SBR_GATEWAYEVENTS_JSON_ADD(json, key, value) errors = !errors && json_object_object_add(json, key, value)
+
+#define SBR_GATEWAYEVENTS_CREATOR_END() \
+BA_ASSERT(!errors, "Failed to initialize JSON\n"); \
+return event
+
 SBR_GatewayEvent* SBR_GatewayEvents_CreateHeartbeat(void) {
     return SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_HEARTBEAT, 0, "");
 }
 
 SBR_GatewayEvent* SBR_GatewayEvents_CreateIdentify(void) {
-    SBR_GatewayEvent* event = SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_IDENTIFY, 0, "");
-    json_object* properties = json_object_new_object();
-
-    BA_ASSERT(properties != NULL, "Failed to create JSON properties\n");
-    
-    int errors = json_object_object_add(properties, "os", json_object_new_string(BA_OPERATINGSYSTEM_NAME));
-    
-    errors = !errors && json_object_object_add(properties, "browser", json_object_new_string(SBR_UserAgent_Get()));
-    errors = !errors && json_object_object_add(properties, "device", json_object_new_string(SBR_UserAgent_Get()));
-    errors = !errors && json_object_object_add(event->data, "token", json_object_new_string(SBR_Token_Get()));
-    errors = !errors && json_object_object_add(event->data, "properties", properties);
-    errors = !errors && json_object_object_add(event->data, "intents", json_object_new_int(0));
-
-    BA_ASSERT(!errors, "Failed to initialize JSON\n");
-    return event;
+    SBR_GATEWAYEVENTS_CREATOR_START(SBR_GATEWAYEVENT_CODE_IDENTIFY, 0, "");
+    SBR_GATEWAYEVENTS_JSON_ADD(properties, "os", json_object_new_string(BA_OPERATINGSYSTEM_NAME));
+    SBR_GATEWAYEVENTS_JSON_ADD(properties, "browser", json_object_new_string(SBR_UserAgent_Get()));
+    SBR_GATEWAYEVENTS_JSON_ADD(properties, "device", json_object_new_string(SBR_UserAgent_Get()));
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "token", json_object_new_string(SBR_Token_Get()));
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "properties", properties);
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "intents", json_object_new_int(0));
+    SBR_GATEWAYEVENTS_CREATOR_END();
 }
 
 SBR_GatewayEvent* SBR_GatewayEvents_CreatePresenceUpdate(SBR_DiscordStatus status, BA_Boolean afk) {
-    SBR_GatewayEvent* event = SBR_GatewayEvent_Create(SBR_GATEWAYEVENT_CODE_PRESENCE_UPDATE, 0, "");
-    json_object* properties = json_object_new_object();
-
-    BA_ASSERT(properties != NULL, "Failed to create JSON properties\n");
-
-    int errors = json_object_object_add(properties, "activities", json_object_new_array());
-
-    errors = !errors && json_object_object_add(properties, "status", json_object_new_string(SBR_DiscordStatus_ToString(status)));
-    errors = !errors && json_object_object_add(properties, "afk", json_object_new_boolean(afk));
-
-    BA_ASSERT(!errors, "Failed to initialize JSON\n");
-    return event;
+    SBR_GATEWAYEVENTS_CREATOR_START(SBR_GATEWAYEVENT_CODE_PRESENCE_UPDATE, 0, "");
+    SBR_GATEWAYEVENTS_JSON_ADD(properties, "activities", json_object_new_array());
+    SBR_GATEWAYEVENTS_JSON_ADD(properties, "status", json_object_new_string(SBR_DiscordStatus_ToString(status)));
+    SBR_GATEWAYEVENTS_JSON_ADD(properties, "afk", json_object_new_boolean(afk));
+    SBR_GATEWAYEVENTS_CREATOR_END();
 }
