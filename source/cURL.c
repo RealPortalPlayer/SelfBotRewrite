@@ -30,8 +30,10 @@ static BA_Thread_Lock sbrcURLLock;
 static CURL* sbrcURLHTTP;
 static char* sbrcURLAuthorizationHeader = NULL;
 
-static size_t SBR_cURL_Write(void* buffer, size_t size, size_t newMemoryBytes, void* userPointer) {
-    BA_String_Append(userPointer, buffer);
+static size_t SBR_cURL_Write(char* buffer, size_t size, size_t newMemoryBytes, void* userPointer) {
+    for (int i = 0; i < newMemoryBytes; i++)
+        BA_String_AppendCharacter(userPointer, buffer[i]);
+    
     return size * newMemoryBytes;
 }
 
@@ -53,7 +55,7 @@ BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
         sbrcURLAuthorizationHeader = BA_String_Copy("Authorization: ");
 
         BA_ASSERT(sbrcURLAuthorizationHeader, "Failed to create authorization header\n");
-        BA_String_Append((char**) &sbrcURLAuthorizationHeader, SBR_Token_Get());
+        BA_String_Append(&sbrcURLAuthorizationHeader, SBR_Token_Get());
     }
 
     SBR_CURL_INITIALIZE(sbrcURLHTTP, "HTTP");
@@ -168,7 +170,6 @@ BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post,
     }
 
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_HTTPHEADER, list);
-
     // TODO: Don't crash
     SBR_CURL_ASSERT(curl_easy_perform(sbrcURLHTTP), "Failed to make HTTP request: %s\n");
     curl_slist_free_all(list);
