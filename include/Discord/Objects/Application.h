@@ -1,8 +1,8 @@
-// Purpose: Discord application. Bread and butter of a Discord bot
-// Created on: 4/27/24 @ 12:34 AM
-
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
+
+// Purpose: Discord application. Bread and butter of a Discord bot
+// Created on: 4/27/24 @ 12:34 AM
 
 #pragma once
 
@@ -11,6 +11,7 @@
 
 #include "Snowflake.h"
 #include "User.h"
+#include "Guild.h"
 
 typedef enum {
     /**
@@ -89,7 +90,7 @@ typedef struct {
     const char* verifyKey;
     // TODO: team
     SBR_Snowflake* guildId;
-    // TODO: guild
+    SBR_DiscordGuild* guild;
     SBR_Snowflake* primarySkuId;
     const char* storeSlug;
     const char* richPresenceCoverImage;

@@ -27,6 +27,9 @@ const char* SBR_DiscordLocales_ToLanguageCode(SBR_DiscordLocales locale) {
 }
 
 SBR_DiscordLocales SBR_DiscordLocales_FromLanguageCode(const char* code) {
+    if (code == NULL)
+        return SBR_DISCORD_LOCALE_AMERICAN_ENGLISH;
+    
     for (int i = 0; i < SBR_DISCORD_LOCALE_SIZE; i++) {
         if (!BA_String_Equals(sbrDiscordLocaleLookup[i], code, BA_BOOLEAN_TRUE))
             continue;

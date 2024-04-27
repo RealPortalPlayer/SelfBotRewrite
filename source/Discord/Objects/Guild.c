@@ -45,9 +45,7 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_STRING(bannerHash, "banner", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(boostLevel, "premium_tier", REQUIRED, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(boostCount, "premium_subscription_count", OPTIONAL, NOT_SAME);
-
-    object->preferredLocale = SBR_DISCORD_LOCALE_AMERICAN_ENGLISH; // TODO
-    
+    SBR_OBJECTCREATORHELPERS_GET_LOCALE(preferredLocale, "preferred_locale", REQUIRED, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(publicUpdatesChannelId, "public_updates_channel_id", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(maxStageVideoChannelUsers, "max_stage_video_channel_users", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(approximateMemberCount, "approximate_member_count", OPTIONAL, NOT_SAME);

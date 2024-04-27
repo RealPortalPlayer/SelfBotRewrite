@@ -12,6 +12,7 @@
 
 #include "./Snowflake.h"
 #include "./User.h"
+#include "../Locale.h"
 
 #define SBR_OBJECTCREATORHELPERS_HEADER(type, assertMessage) \
 if (unparsedJsonData == NULL)                                \
@@ -52,5 +53,6 @@ if (json_object_get_boolean(key))                                               
 
 #define SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = key
 #define SBR_OBJECTCREATORHELPERS_GET_USER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordUser_Create(key)
+#define SBR_OBJECTCREATORHELPERS_GET_LOCALE(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordLocales_FromLanguageCode(json_object_get_string(key))
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
