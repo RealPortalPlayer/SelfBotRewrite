@@ -67,6 +67,8 @@ void SBR_Gateway_Parse(const char* buffer) {
     
     json_object* operationCode = json_object_object_get(object, "op");
     json_object* data = json_object_object_get(object, "d");
+    json_object* sequence = json_object_object_get(object, "s");
+    json_object* eventName = json_object_object_get(object, "t");
 
     if (operationCode == NULL) {
         BA_LOGGER_ERROR("Malformed packet: missing JSON fields\n");
@@ -89,7 +91,7 @@ void SBR_Gateway_Parse(const char* buffer) {
     }
 
     BA_LOGGER_TRACE("Received event: %i\n", parsedOperationCode);
-    SBR_GatewayEvents_Get(parsedOperationCode)->action(data);
+    SBR_GatewayEvents_Get(parsedOperationCode)->action(data, json_object_get_int(sequence), json_object_get_string(eventName));
 }
 
 int SBR_Gateway_GetInterval(void) {

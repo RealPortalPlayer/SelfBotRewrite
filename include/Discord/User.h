@@ -120,6 +120,11 @@ typedef enum {
 typedef struct {
     SBR_Snowflake* id;
     const char* username;
+
+    /**
+     * @note Some users have not migrated yet. Bots are still unknown
+     * @deprecated
+     */
     const char* discriminator;
     const char* globalName;
     const char* avatarHash;

@@ -4,15 +4,18 @@
 #include <BaconAPI/Debugging/StaticAssert.h>
 #include <BaconAPI/Logger.h>
 #include <BaconAPI/Debugging/Assert.h>
-#include <Threads/Heartbeat.h>
+#include <BaconAPI/String.h>
+#include <BaconAPI/Math/Bitwise.h>
 
 #include "Discord/Gateway/Events.h"
 #include "Token.h"
 #include "UserAgent.h"
 #include "Discord/Gateway/Gateway.h"
 #include "MainLoop.h"
+#include "Threads/Heartbeat.h"
+#include "Bot.h"
 
-#define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(const json_object* data)
+#define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(const json_object* data, int sequence, const char* eventName)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
 {                                                                           \
     code,                                                                   \
@@ -78,7 +81,29 @@ const SBR_GatewayEvents_Information* SBR_GatewayEvents_Get(SBR_GatewayEvent_Code
     return NULL;
 }
 
-SBR_GATEWAYEVENTS_STUB_FUNCTION(SBR_GATEWAYEVENT_CODE_DISPATCH)
+SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH) {
+    SBR_GATEWAYEVENTS_ENFORCE_DATA();
+    
+    if (BA_String_Equals(eventName, "READY", BA_BOOLEAN_FALSE)) {
+        json_object* user = json_object_object_get(data, "user");
+
+        if (user == NULL) {
+            BA_LOGGER_ERROR("Malformed packet: missing JSON field\n");
+            SBR_MainLoop_SignalDisconnected();
+            return;
+        }
+        
+        SBR_Bot_Set(SBR_DiscordUser_Create(user));
+        BA_LOGGER_INFO("Bot is ready: %s#%s\n", SBR_Bot_Get()->username, SBR_Bot_Get()->discriminator);
+
+        if (!BA_BITWISE_IS_BIT_SET(SBR_Bot_Get()->customFlags, SBR_DISCORDUSER_CUSTOM_FLAG_BOT))
+            BA_LOGGER_WARN("\"Bot\" user is not actually a bot. Self-bots are against Discords TOS\n");
+
+        return;
+    }
+    
+    BA_LOGGER_WARN("Dispatch stub: %s\n", eventName);
+}
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HEARTBEAT) {
     BA_LOGGER_WARN("Requested heartbeat\n");
