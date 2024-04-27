@@ -52,7 +52,7 @@ BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
     sbrcURLInitialized = BA_BOOLEAN_TRUE;
 
     if (sbrcURLAuthorizationHeader == NULL) {
-        sbrcURLAuthorizationHeader = BA_String_Copy("Authorization: ");
+        sbrcURLAuthorizationHeader = BA_String_Copy("Authorization: Bot ");
 
         BA_ASSERT(sbrcURLAuthorizationHeader, "Failed to create authorization header\n");
         BA_String_Append(&sbrcURLAuthorizationHeader, SBR_Token_Get());
