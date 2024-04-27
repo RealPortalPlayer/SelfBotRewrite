@@ -139,4 +139,4 @@ typedef struct {
     const char* avatarDecoration;
 } SBR_DiscordUser;
 
-SBR_DiscordUser* SBR_DiscordUser_Create(json_object* userData);
+SBR_DiscordUser* SBR_DiscordUser_Create(json_object* unparsedJsonData);
