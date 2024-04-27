@@ -45,7 +45,8 @@ set(SOURCE source/Token.c
            source/Discord/Status.c
            source/Discord/Objects/User.c
            source/Bot.c
-           source/Discord/Objects/Application.c)
+           source/Discord/Objects/Application.c
+           source/Discord/Objects/Guild.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
