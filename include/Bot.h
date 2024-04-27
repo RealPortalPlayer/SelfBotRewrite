@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Discord/User.h"
+#include "Discord/Objects/User.h"
 
 const SBR_DiscordUser* SBR_Bot_Get(void);
 

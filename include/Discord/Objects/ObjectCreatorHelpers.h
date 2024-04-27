@@ -1,8 +1,8 @@
-// Purpose: Helper macros to help with creating Discord objects
-// Created on: 4/27/24 @ 1:17 AM
-
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
+
+// Purpose: Helper macros to help with creating Discord objects
+// Created on: 4/27/24 @ 1:17 AM
 
 #pragma once
 
@@ -10,8 +10,8 @@
 #include <BaconAPI/Math/Bitwise.h>
 #include <string.h>
 
-#include "Snowflake.h"
-#include "User.h"
+#include "./Snowflake.h"
+#include "./User.h"
 
 #define SBR_OBJECTCREATORHELPERS_HEADER(type, assertMessage) \
 if (unparsedJsonData == NULL)                                \
@@ -50,8 +50,7 @@ SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);                
 if (json_object_get_boolean(key))                                                                  \
     BA_BITWISE_SET_BIT(object->flags, bit)
 
-#define SBR_OBJECTCREATORHELPERS_GET_JSON_ARRAY(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_array(key)
-#define SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_object(key)
-#define SBR_OBJECTCREATORHELPERS_GET_USER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordUser_Create(json_object_get_object(key))
+#define SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = key
+#define SBR_OBJECTCREATORHELPERS_GET_USER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordUser_Create(key)
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object

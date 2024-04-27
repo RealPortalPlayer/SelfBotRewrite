@@ -29,7 +29,7 @@ endif()
 set(SOURCE source/Token.c
            source/Settings.c
            source/cURL.c
-           source/Discord/Snowflake.c
+           source/Discord/Objects/Snowflake.c
            source/Discord/Gateway/Event.c
            source/Discord/Gateway/Error.c
            source/UserAgent.c
@@ -43,9 +43,9 @@ set(SOURCE source/Token.c
            source/Threads/RateLimit.c
            source/Discord/Gateway/Errors.c
            source/Discord/Status.c
-           source/Discord/User.c
+           source/Discord/Objects/User.c
            source/Bot.c
-           source/Discord/Application.c)
+           source/Discord/Objects/Application.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 

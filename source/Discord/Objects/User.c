@@ -3,8 +3,8 @@
 
 #include <stdlib.h>
 
-#include "Discord/User.h"
-#include "Discord/ObjectCreatorHelpers.h"
+#include "Discord/Objects/User.h"
+#include "Discord/Objects/ObjectCreatorHelpers.h"
 
 SBR_DiscordUser* SBR_DiscordUser_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordUser, "Discord user");
@@ -17,7 +17,7 @@ SBR_DiscordUser* SBR_DiscordUser_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(system, "", OPTIONAL, SAME, customFlags, SBR_DISCORDUSER_CUSTOM_FLAG_SYSTEM);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(multiFactorAuthenticationEnabled, "mfa_enabled", OPTIONAL, NOT_SAME, customFlags, SBR_DISCORDUSER_CUSTOM_FLAG_MULTI_FACTOR_AUTHENTICATION_ENABLED);
     SBR_OBJECTCREATORHELPERS_GET_STRING(bannerHash, "banner", OPTIONAL, NOT_SAME);
-    SBR_OBJECTCREATORHELPERS_GET_STRING(accentColor, "accent_color", OPTIONAL, NOT_SAME);
+    SBR_OBJECTCREATORHELPERS_GET_INTEGER(accentColor, "accent_color", OPTIONAL, NOT_SAME);
 
     object->locale = SBR_DISCORDUSER_LOCALE_AMERICAN_ENGLISH; // TODO
 

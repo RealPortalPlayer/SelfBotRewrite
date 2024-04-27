@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <BaconAPI/Debugging/Assert.h>
 
-#include "Discord/Application.h"
-#include "Discord/ObjectCreatorHelpers.h"
+#include "Discord/Objects/Application.h"
+#include "Discord/Objects/ObjectCreatorHelpers.h"
 
 SBR_DiscordApplication* SBR_DiscordApplication_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordApplication, "Discord application");
@@ -26,9 +26,9 @@ SBR_DiscordApplication* SBR_DiscordApplication_Create(json_object* unparsedJsonD
     SBR_OBJECTCREATORHELPERS_GET_STRING(richPresenceCoverImage, "cover_image", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(officialFlags, "flags", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(approximateGuildCount, "approximate_guild_count", OPTIONAL, NOT_SAME);
-    SBR_OBJECTCREATORHELPERS_GET_JSON_ARRAY(redirectUris, "redirect_uris", OPTIONAL, NOT_SAME);
+    SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(redirectUris, "redirect_uris", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(roleConnectionsVerificationUrl, "role_connections_verification_url", OPTIONAL, NOT_SAME);
-    SBR_OBJECTCREATORHELPERS_GET_JSON_ARRAY(tags, "", OPTIONAL, SAME);
+    SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(tags, "", OPTIONAL, SAME);
     // TODO: install_params
     SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(integrationTypesConfiguration, "integration_types_config", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(customInstallationUrl, "custom_install_url", OPTIONAL, NOT_SAME);

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <BaconAPI/Debugging/Assert.h>
 
-#include "Discord/Snowflake.h"
+#include "Discord/Objects/Snowflake.h"
 
 SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
     SBR_Snowflake* snowflake = malloc(sizeof(SBR_Snowflake));
