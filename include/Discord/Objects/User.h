@@ -1,14 +1,15 @@
-// Purpose: Discord user
-// Created on: 4/26/24 @ 6:42 PM
-
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
+
+// Purpose: Discord user
+// Created on: 4/26/24 @ 6:42 PM
 
 #pragma once
 
 #include <json_object.h>
 
-#include "./Snowflake.h"
+#include "Snowflake.h"
+#include "../Locale.h"
 
 typedef enum {
     SBR_DISCORDUSER_CUSTOM_FLAG_NULL = 0,
@@ -25,37 +26,6 @@ typedef enum {
     SBR_DISCORDUSER_CUSTOM_FLAG_MULTI_FACTOR_AUTHENTICATION_ENABLED = 1 << 2,
     SBR_DISCORDUSER_CUSTOM_FLAG_EMAIL_VERIFIED = 1 << 3,
 } SBR_DiscordUser_CustomFlags;
-
-typedef enum {
-    SBR_DISCORDUSER_LOCALE_INDONESIAN,
-    SBR_DISCORDUSER_LOCALE_DANISH,
-    SBR_DISCORDUSER_LOCALE_GERMAN,
-    SBR_DISCORDUSER_LOCALE_BRITISH_ENGLISH,
-    SBR_DISCORDUSER_LOCALE_AMERICAN_ENGLISH,
-    SBR_DISCORDUSER_LOCALE_SPANISH,
-    SBR_DISCORDUSER_LOCALE_FRENCH,
-    SBR_DISCORDUSER_LOCALE_CROATIAN,
-    SBR_DISCORDUSER_LOCALE_ITALIAN,
-    SBR_DISCORDUSER_LOCALE_LITHUANIAN,
-    SBR_DISCORDUSER_LOCALE_HUNGARIAN,
-    SBR_DISCORDUSER_LOCALE_DUTCH,
-    SBR_DISCORDUSER_LOCALE_NORWEIGAN,
-    SBR_DISCORDUSER_LOCALE_POLISH,
-    SBR_DISCORDUSER_LOCALE_PORTUGUESE,
-    SBR_DISCORDUSER_LOCALE_ROMANIAN,
-    SBR_DISCORDUSER_LOCALE_FINNISH,
-    SBR_DISCORDUSER_LOCALE_SWEDISH,
-    SBR_DISCORDUSER_LOCALE_VIETNAMESE,
-    SBR_DISCORDUSER_LOCALE_TURKISH,
-    SBR_DISCORDUSER_LOCALE_CZECH,
-    SBR_DISCORDUSER_LOCALE_GREEK,
-    SBR_DISCORDUSER_LOCALE_BULGARIAN,
-    SBR_DISCORDUSER_LOCALE_RUSSIAN,
-    SBR_DISCORDUSER_LOCALE_UKRAINIAN,
-    SBR_DISCORDUSER_LOCALE_HINDI,
-    SBR_DISCORDUSER_LOCALE_CHINESE,
-    SBR_DISCORDUSER_LOCALE_JAPANENSE
-} SBR_DiscordUser_Locales;
 
 typedef enum {
     /**
@@ -131,7 +101,7 @@ typedef struct {
     SBR_DiscordUser_CustomFlags customFlags;
     const char* bannerHash;
     int accentColor;
-    SBR_DiscordUser_Locales locale;
+    SBR_DiscordLocales locale;
     const char* email;
     SBR_DiscordUser_OfficialFlags officialFlags;
     SBR_DiscordUser_NitroTypes nitro;
