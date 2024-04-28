@@ -73,6 +73,10 @@ typedef struct SBR_DiscordMessage {
     SBR_Snowflake* channelId;
     SBR_DiscordChannel* channel;
     SBR_DiscordUser* author;
+
+    /**
+     * @warning Will always be NULL if you don't set the intent SBR_DISCORDINTENT_MESSAGE_CONTENT
+     */
     const char* content;
     // TODO: timestamp
     // TODO: edited_timestamp
