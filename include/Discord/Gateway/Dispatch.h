@@ -8,7 +8,7 @@
 
 #include <json_object.h>
 
-typedef void (*SBR_GatewayDispatch_Action)(const json_object* data);
+typedef void (*SBR_GatewayDispatch_Action)(json_object* data);
 
 typedef struct {
     const char* code;

@@ -4,13 +4,14 @@
 #include <string.h>
 #include <BaconAPI/Logger.h>
 #include <BaconAPI/Math/Bitwise.h>
-#include <Discord/Gateway/Gateway.h>
 
 #include "Discord/Gateway/Dispatch.h"
+#include "Discord/Gateway/Gateway.h"
 #include "Bot.h"
 #include "MainLoop.h"
+#include "Discord/Objects/Message.h"
 
-#define SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayDispatch_Action ## name(const json_object* data)
+#define SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayDispatch_Action ## name(json_object* data)
 
 #define SBR_GATEWAYDISPATCH_CREATE_ENTRY(code) \
 {                                              \
@@ -20,10 +21,12 @@
 
 SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(READY);
 SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(RESUMED);
+SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(MESSAGE_CREATE);
 
 static SBR_GatewayDispatch_Information sbrGatewayDispatches[] = {
     SBR_GATEWAYDISPATCH_CREATE_ENTRY(READY),
-    SBR_GATEWAYDISPATCH_CREATE_ENTRY(RESUMED)
+    SBR_GATEWAYDISPATCH_CREATE_ENTRY(RESUMED),
+    SBR_GATEWAYDISPATCH_CREATE_ENTRY(MESSAGE_CREATE)
 };
 const size_t lengthOfDispatchArray = sizeof(sbrGatewayDispatches) / sizeof(sbrGatewayDispatches[0]);
 
@@ -63,4 +66,8 @@ SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(READY) {
 
 SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(RESUMED) {
     BA_LOGGER_DEBUG("Successfully reconnected and resumed\n");
+}
+
+SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(MESSAGE_CREATE) {
+    // TODO: Do something with the message
 }
