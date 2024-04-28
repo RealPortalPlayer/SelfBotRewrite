@@ -5,7 +5,7 @@
 #include <BaconAPI/Logger.h>
 #include <BaconAPI/Number.h>
 #include <BaconAPI/Debugging/Assert.h>
-#include <Discord/Snowflake.h>
+#include <Discord/Objects/Snowflake.h>
 
 #define ASSERT(variable, equals) BA_ASSERT(snowflake->variable == equals, "Invalid " #variable "\n")
 
