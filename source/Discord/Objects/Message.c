@@ -7,8 +7,10 @@
 SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordMessage, "Discord message");
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
-    // TODO: channel
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(channelId, "channel_id", REQUIRED, NOT_SAME);
+
+    object->channel = SBR_DiscordChannel_Get(object->channelId);
+    
     SBR_OBJECTCREATORHELPERS_GET_USER(author, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(content, "", REQUIRED, SAME);
     // TODO: timestamp
