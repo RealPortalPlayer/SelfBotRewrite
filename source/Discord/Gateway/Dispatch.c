@@ -55,7 +55,6 @@ SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(READY) {
     }
         
     SBR_Bot_Set(SBR_DiscordUser_Create(user));
-    BA_LOGGER_INFO("Bot is ready: %s#%s\n", SBR_Bot_Get()->username, SBR_Bot_Get()->discriminator);
 
     if (!BA_BITWISE_IS_BIT_SET(SBR_Bot_Get()->customFlags, SBR_DISCORDUSER_CUSTOM_FLAG_BOT))
         BA_LOGGER_WARN("\"Bot\" user is not actually a bot. Self-bots are against Discords TOS\n");
@@ -63,6 +62,7 @@ SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(READY) {
     SBR_Gateway_SetResumeData(json_object_get_string(resumeGatewayUrl), json_object_get_string(sessionId));
     BA_LOGGER_TRACE("Resume URL: %s\n"
                     "Session ID: %s\n", SBR_Gateway_GetResumeURL(), SBR_Gateway_GetSessionID());
+    SBR_Events_Ready();
 }
 
 SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(RESUMED) {

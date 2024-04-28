@@ -14,3 +14,4 @@ void SBR_Events_ ## name(__VA_ARGS__) {             \
     sbrEvents ## name
 
 SBR_EVENTS_SETUP_EVENT_FUNCTIONS(MessageSent, SBR_DiscordMessage* message)(message);}
+SBR_EVENTS_SETUP_EVENT_FUNCTIONS(Ready)();}
