@@ -24,9 +24,10 @@ int main(int argc, char** argv) {
                    "Timestamp: %li\n"
                    "Worker ID: %i\n"
                    "Process ID: %i\n"
-                   "Increment: %i\n"
-                   "Original: %li\n", snowflake->timestamp, snowflake->workerId, snowflake->processId, snowflake->increment, snowflake->original);
+                   "Increment: %i\n", snowflake->timestamp, snowflake->workerId, snowflake->processId, snowflake->increment);
 
+    BA_ASSERT(snowflakeId == SBR_Snowflake_ConvertToNumber(snowflake), "Failed to convert snowflake back into number\n");
+    
     if (!doAsserts)
         return 0;
 
@@ -34,5 +35,4 @@ int main(int argc, char** argv) {
     ASSERT(workerId, 1);
     ASSERT(processId, 0);
     ASSERT(increment, 1);
-    ASSERT(original, 353541155729833985);
 }
