@@ -72,7 +72,7 @@ SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_GET_C
     return parsed;
 }
 
-SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content) {
+SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content, SBR_EmbedCreator_Embed* embed) {
     if (content == NULL) {
         BA_LOGGER_ERROR("Message contents is null\n");
         return NULL;
@@ -105,6 +105,15 @@ SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, co
         .snowflake = id
     };
     json_object* response;
+    json_object* parsedEmbed = NULL;
+    json_object* embedArray = json_object_new_array();
+    
+    if (embed != NULL && embedArray != NULL) {
+        parsedEmbed = SBR_EmbedCreator_Build(embed);
+
+        if (json_object_array_add(embedArray, parsedEmbed) || json_object_object_add(data, "embeds", embedArray))
+            BA_LOGGER_ERROR("Failed to add embeds to JSON\n");
+    }
 
     SBR_DiscordAPI_Send(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE, data, &response, &variables);
 

@@ -44,7 +44,7 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
 
-SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content) {
+SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content, SBR_EmbedCreator_Embed* embed) {
     if (channel == NULL) {
         BA_LOGGER_ERROR("Channel is null\n");
         return NULL;
@@ -56,7 +56,7 @@ SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, c
     }
 
     // TODO: Check permissions
-    return SBR_DiscordAPIEvents_SendMessage(channel->id, content);
+    return SBR_DiscordAPIEvents_SendMessage(channel->id, content, embed);
 }
 
 SBR_DiscordChannel* SBR_DiscordChannel_Get(const SBR_Snowflake* id) {

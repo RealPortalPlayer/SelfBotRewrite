@@ -9,6 +9,7 @@
 #include <json_object.h>
 
 #include "Snowflake.h"
+#include "../EmbedCreator.h"
 
 typedef enum {
     SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT,
@@ -91,5 +92,5 @@ typedef struct SBR_DiscordMessage SBR_DiscordMessage;
 
 SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData);
 
-SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content);
+SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content, SBR_EmbedCreator_Embed* embed);
 SBR_DiscordChannel* SBR_DiscordChannel_Get(const SBR_Snowflake* id);

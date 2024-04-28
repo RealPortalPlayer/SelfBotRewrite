@@ -90,6 +90,10 @@ SBR_EmbedCreator_Embed* SBR_EmbedCreator_AddField(SBR_EmbedCreator_Embed* embed,
 
 #define SBR_EMBEDCREATOR_ADD_EMBED_FIELD(type, name) json_object_object_add(object, #name, json_object_new_ ## type(embed->name))
 
+#define SBR_EMBEDCREATOR_ADD_EMBED_FIELD_NULL_CHECK(type, name) \
+if (embed->name != NULL) \
+    SBR_EMBEDCREATOR_ADD_EMBED_FIELD(type, name)
+
 json_object* SBR_EmbedCreator_Build(SBR_EmbedCreator_Embed* embed) {
     // TODO: Limits
 
@@ -100,9 +104,9 @@ json_object* SBR_EmbedCreator_Build(SBR_EmbedCreator_Embed* embed) {
         return NULL;
     }
 
-    SBR_EMBEDCREATOR_ADD_EMBED_FIELD(string, title);
+    SBR_EMBEDCREATOR_ADD_EMBED_FIELD_NULL_CHECK(string, title);
     json_object_object_add(object, "type", json_object_new_string("rich"));
-    SBR_EMBEDCREATOR_ADD_EMBED_FIELD(string, description);
+    SBR_EMBEDCREATOR_ADD_EMBED_FIELD_NULL_CHECK(string, description);
     SBR_EMBEDCREATOR_ADD_EMBED_FIELD(int, color);
     // TODO
     return object;
