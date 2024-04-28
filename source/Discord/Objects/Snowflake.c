@@ -16,6 +16,12 @@ SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
     snowflake->workerId = (number & 0x3E0000) >> 17;
     snowflake->processId = (number & 0x1F000) >> 12;
     snowflake->increment = number & 0xFFF;
-    snowflake->original = number;
     return snowflake;
+}
+
+uint64_t SBR_Snowflake_ConvertToNumber(const SBR_Snowflake* snowflake) {
+    return snowflake->timestamp - SBR_SNOWFLAKE_EPOCH << 22 |
+           snowflake->workerId << 17 |
+           snowflake->processId << 12 |
+           snowflake->increment;
 }

@@ -21,13 +21,9 @@ typedef struct {
      * Increments with every ID generated on the same process
      */
     uint32_t increment;
-
-    /**
-     * Original unporsed snowflake
-     */
-    uint64_t original;
 } SBR_Snowflake;
 
 SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number);
+uint64_t SBR_Snowflake_ConvertToNumber(const SBR_Snowflake* snowflake);
 
 #define SBR_SNOWFLAKE_EPOCH 1420070400000
