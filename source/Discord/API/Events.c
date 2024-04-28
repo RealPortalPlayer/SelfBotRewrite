@@ -103,3 +103,17 @@ SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, co
     json_object_put(response);
     return message;
 }
+
+SBR_DiscordChannel* SBR_DiscordAPIEvents_GetChannel(const SBR_Snowflake* id) {
+    SBR_DiscordAPIEvents_Variables variables = {
+        .snowflake = id
+    };
+    json_object* response;
+
+    SBR_DiscordAPI_Send(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL, NULL, &response, &variables);
+
+    SBR_DiscordChannel* channel = SBR_DiscordChannel_Create(response);
+
+    json_object_put(response);
+    return channel;
+}
