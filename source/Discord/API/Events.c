@@ -73,6 +73,16 @@ SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_GET_C
 }
 
 SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content) {
+    if (content == NULL) {
+        BA_LOGGER_ERROR("Message contents is null\n");
+        return NULL;
+    }
+
+    if (id == NULL) {
+        BA_LOGGER_ERROR("Channel ID is null\n");
+        return NULL;
+    }
+
     if (content[0] == '\0') {
         BA_LOGGER_ERROR("Message contents cannot be empty\n");
         return NULL;

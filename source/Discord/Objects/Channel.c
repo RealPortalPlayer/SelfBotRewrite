@@ -45,6 +45,11 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData) {
 }
 
 SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content) {
+    if (channel == NULL) {
+        BA_LOGGER_ERROR("Channel is null\n");
+        return NULL;
+    }
+    
     if (channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_CATEGORY || channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_DIRECTORY || channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_MEDIA) {
         BA_LOGGER_ERROR("Invalid channel: the specified channel doesn't accept messages (%i)\n", channel->type);
         return NULL;
