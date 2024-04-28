@@ -87,6 +87,8 @@ typedef struct {
     int defaultForumLayout;
 } SBR_DiscordChannel;
 
+typedef struct SBR_DiscordMessage SBR_DiscordMessage;
+
 SBR_DiscordChannel* SBR_DiscordChannel_Create(const json_object* unparsedJsonData);
 
-void SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content);
+SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content);

@@ -54,18 +54,18 @@ SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_CREAT
     return parsed;
 }
 
-void SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content) {
+SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content) {
     json_object* data = json_object_new_object();
 
     if (data == NULL) {
         BA_LOGGER_ERROR("Failed to create send message data\n");
-        return;
+        return NULL;
     }
 
     if (json_object_object_add(data, "content", json_object_new_string(content))) {
         BA_LOGGER_ERROR("Failed to initialize JSON\n");
         json_object_put(data);
-        return;
+        return NULL;
     }
 
     SBR_DiscordAPIEvents_Variables variables = {
@@ -75,6 +75,8 @@ void SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* conte
 
     SBR_DiscordAPI_Send(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE, data, &response, &variables);
 
-    // TODO: Create message
+    SBR_DiscordMessage* message = SBR_DiscordMessage_Create(response);
+    
     json_object_put(response);
+    return message;
 }
