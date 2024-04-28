@@ -23,6 +23,7 @@ void SBR_Gateway_SetInterval(int interval);
 void SBR_Gateway_ResetRequestCount(void);
 void SBR_Gateway_ParseError(uint16_t code, const char* message);
 void SBR_Gateway_SetResumeData(const char* url, const char* id);
+void SBR_Gateway_AttemptReconnect(void);
 
 #define SBR_GATEWAY_SEND_AND_FREE(gateway) \
 do {                                       \

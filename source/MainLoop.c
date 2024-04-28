@@ -111,10 +111,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
                 break;
             }
 
-            SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
-            SBR_cURL_Close(BA_BOOLEAN_FALSE);
-            SBR_cURL_LooopInitialize(SBR_Gateway_GetResumeURL());
-            SBR_Gateway_Send(SBR_GatewayEvents_CreateResume());
+            SBR_Gateway_AttemptReconnect();
             continue;
         }
         

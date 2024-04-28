@@ -14,6 +14,7 @@
 #include "BaconAPI/String.h"
 #include "Discord/Configuration.h"
 #include "Discord/Gateway/Errors.h"
+#include "Threads/Heartbeat.h"
 
 static int sbrGatewayInterval = 0;
 static int sbrGatewayRequestCount = 0;
@@ -148,4 +149,11 @@ void SBR_Gateway_SetResumeData(const char* url, const char* id) {
 
 int SBR_Gateway_GetLastSequence(void) {
     return sbrGatewayLastSequence;
+}
+
+void SBR_Gateway_AttemptReconnect(void) {
+    SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
+    SBR_cURL_Close(BA_BOOLEAN_FALSE);
+    SBR_cURL_LooopInitialize(SBR_Gateway_GetResumeURL());
+    SBR_Gateway_Send(SBR_GatewayEvents_CreateResume());
 }
