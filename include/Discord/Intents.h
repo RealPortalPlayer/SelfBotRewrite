@@ -41,3 +41,8 @@ typedef enum {
     SBR_DISCORDINTENT_GUILD_MESSAGE_POLLS = 1 << 24,
     SBR_DISCORDINTENT_DIRECT_MESSAGE_POLLS = 1 << 25
 } SBR_DiscordIntents;
+
+SBR_DiscordIntents SBR_DiscordIntents_Get(void);
+
+void SBR_DiscordIntents_Set(SBR_DiscordIntents intents);
+void SBR_DiscordIntents_Add(SBR_DiscordIntents intents);

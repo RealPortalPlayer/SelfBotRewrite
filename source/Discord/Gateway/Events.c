@@ -14,6 +14,7 @@
 #include "Threads/Heartbeat.h"
 #include "cURL.h"
 #include "Discord/Gateway/Dispatch.h"
+#include "Discord/Intents.h"
 
 #define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(json_object* data, int sequence, const char* eventName)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
@@ -170,7 +171,7 @@ SBR_GatewayEvent* SBR_GatewayEvents_CreateIdentify(void) {
     SBR_GATEWAYEVENTS_JSON_ADD(properties, "device", json_object_new_string(SBR_UserAgent_Get()));
     SBR_GATEWAYEVENTS_JSON_ADD(event->data, "token", json_object_new_string(SBR_Token_Get()));
     SBR_GATEWAYEVENTS_JSON_ADD(event->data, "properties", properties);
-    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "intents", json_object_new_int(0));
+    SBR_GATEWAYEVENTS_JSON_ADD(event->data, "intents", json_object_new_int(SBR_DiscordIntents_Get()));
     SBR_GATEWAYEVENTS_CREATOR_END();
 }
 
