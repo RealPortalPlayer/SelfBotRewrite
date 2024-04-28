@@ -5,7 +5,6 @@
 #include <BaconAPI/Logger.h>
 #include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/String.h>
-#include <BaconAPI/Math/Bitwise.h>
 
 #include "Discord/Gateway/Events.h"
 #include "Token.h"
@@ -13,8 +12,8 @@
 #include "Discord/Gateway/Gateway.h"
 #include "MainLoop.h"
 #include "Threads/Heartbeat.h"
-#include "Bot.h"
 #include "cURL.h"
+#include "Discord/Gateway/Dispatch.h"
 
 #define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(const json_object* data, int sequence, const char* eventName)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
@@ -83,34 +82,13 @@ const SBR_GatewayEvents_Information* SBR_GatewayEvents_Get(SBR_GatewayEvent_Code
 }
 
 SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_DISPATCH) {
-    SBR_GATEWAYEVENTS_ENFORCE_DATA();
+    SBR_GATEWAYEVENTS_ENFORCE_DATA(); // TODO: Does every dispatch event use data?
+    BA_LOGGER_TRACE("Got dispatch: %s\n", eventName);
 
-    if (BA_String_Equals(eventName, "RESUMED", BA_BOOLEAN_FALSE)) {
-        BA_LOGGER_DEBUG("Successfully reconnected and resumed\n");
-        return;
-    }
-    
-    if (BA_String_Equals(eventName, "READY", BA_BOOLEAN_FALSE)) {
-        // TODO: API version
-        json_object* user = json_object_object_get(data, "user");
-        json_object* sessionId = json_object_object_get(data, "session_id");
-        json_object* resumeGatewayUrl = json_object_object_get(data, "resume_gateway_url");
+    const SBR_GatewayDispatch_Information* information = SBR_GatewayDispatch_Get(eventName);
 
-        if (user == NULL) {
-            BA_LOGGER_ERROR("Malformed packet: missing JSON field\n");
-            SBR_MainLoop_SignalDisconnected();
-            return;
-        }
-        
-        SBR_Bot_Set(SBR_DiscordUser_Create(user));
-        BA_LOGGER_INFO("Bot is ready: %s#%s\n", SBR_Bot_Get()->username, SBR_Bot_Get()->discriminator);
-
-        if (!BA_BITWISE_IS_BIT_SET(SBR_Bot_Get()->customFlags, SBR_DISCORDUSER_CUSTOM_FLAG_BOT))
-            BA_LOGGER_WARN("\"Bot\" user is not actually a bot. Self-bots are against Discords TOS\n");
-        
-        SBR_Gateway_SetResumeData(json_object_get_string(resumeGatewayUrl), json_object_get_string(sessionId));
-        BA_LOGGER_TRACE("Resume URL: %s\n"
-                        "Session ID: %s\n", SBR_Gateway_GetResumeURL(), SBR_Gateway_GetSessionID());
+    if (information != NULL) {
+        information->action(data);
         return;
     }
     
