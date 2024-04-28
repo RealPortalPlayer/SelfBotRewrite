@@ -20,8 +20,13 @@ SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
 }
 
 uint64_t SBR_Snowflake_ConvertToNumber(const SBR_Snowflake* snowflake) {
-    return snowflake->timestamp - SBR_SNOWFLAKE_EPOCH << 22 |
-           snowflake->workerId << 17 |
-           snowflake->processId << 12 |
-           snowflake->increment;
+    return SBR_Snowflake_Create(snowflake->timestamp, snowflake->workerId, snowflake->processId, snowflake->increment);
 }
+
+uint64_t SBR_Snowflake_Create(uint64_t timestamp, uint8_t workerId, uint8_t processId, uint32_t increment) {
+    return timestamp - SBR_SNOWFLAKE_EPOCH << 22 |
+           workerId << 17 |
+           processId << 12 |
+           increment;
+}
+
