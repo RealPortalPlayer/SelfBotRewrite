@@ -10,6 +10,7 @@
 #include "Bot.h"
 #include "MainLoop.h"
 #include "Discord/Objects/Message.h"
+#include "Events.h"
 
 #define SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayDispatch_Action ## name(json_object* data)
 
@@ -69,5 +70,12 @@ SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(RESUMED) {
 }
 
 SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(MESSAGE_CREATE) {
-    // TODO: Do something with the message
+    SBR_DiscordMessage* message = SBR_DiscordMessage_Create(data);
+
+    if (message == NULL) {
+        BA_LOGGER_ERROR("Failed to parse message: %s\n", json_object_to_json_string(data));
+        return;
+    }
+
+    SBR_Events_MessageSent(message);
 }
