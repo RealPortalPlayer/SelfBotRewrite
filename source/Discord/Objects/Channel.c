@@ -5,7 +5,7 @@
 #include "Discord/API/Events.h"
 #include "Discord/Objects/ObjectCreatorHelpers.h"
 
-SBR_DiscordChannel* SBR_DiscordChannel_Create(const json_object* unparsedJsonData) {
+SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordChannel, "Discord channel");
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(type, "", REQUIRED, SAME);
@@ -45,6 +45,11 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(const json_object* unparsedJsonDat
 }
 
 SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content) {
-    // TODO: Check
+    if (channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_CATEGORY || channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_DIRECTORY || channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_MEDIA) {
+        BA_LOGGER_ERROR("Invalid channel: the specified channel doesn't accept messages (%i)\n", channel->type);
+        return NULL;
+    }
+
+    // TODO: Check permissions
     return SBR_DiscordAPIEvents_SendMessage(channel->id, content);
 }

@@ -4,7 +4,7 @@
 #include "Discord/Objects/Message.h"
 #include "Discord/Objects/ObjectCreatorHelpers.h"
 
-SBR_DiscordMessage* SBR_DiscordMessage_Create(const json_object* unparsedJsonData) {
+SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordMessage, "Discord message");
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
     // TODO: channel

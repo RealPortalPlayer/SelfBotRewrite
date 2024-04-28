@@ -104,4 +104,4 @@ typedef struct SBR_DiscordMessage {
     // TODO: poll
 } SBR_DiscordMessage;
 
-SBR_DiscordMessage* SBR_DiscordMessage_Create(const json_object* unparsedJsonData);
+SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData);

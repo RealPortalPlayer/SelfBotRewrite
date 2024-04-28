@@ -55,6 +55,11 @@ SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_CREAT
 }
 
 SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content) {
+    if (content[0] == '\0') {
+        BA_LOGGER_ERROR("Message contents cannot be empty\n");
+        return NULL;
+    }
+    
     json_object* data = json_object_new_object();
 
     if (data == NULL) {

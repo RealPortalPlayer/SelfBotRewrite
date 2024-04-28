@@ -89,6 +89,6 @@ typedef struct {
 
 typedef struct SBR_DiscordMessage SBR_DiscordMessage;
 
-SBR_DiscordChannel* SBR_DiscordChannel_Create(const json_object* unparsedJsonData);
+SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData);
 
 SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content);
