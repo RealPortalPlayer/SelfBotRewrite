@@ -53,3 +53,7 @@ SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, c
     // TODO: Check permissions
     return SBR_DiscordAPIEvents_SendMessage(channel->id, content);
 }
+
+SBR_DiscordChannel* SBR_DiscordChannel_Get(const SBR_Snowflake* id) {
+    return SBR_DiscordAPIEvents_GetChannel(id);
+}
