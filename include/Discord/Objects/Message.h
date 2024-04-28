@@ -76,6 +76,7 @@ typedef struct SBR_DiscordMessage {
 
     /**
      * @warning Will always be NULL if you don't set the intent SBR_DISCORDINTENT_MESSAGE_CONTENT
+     * @deprecated Rumors of it potentially getting removed in the future
      */
     const char* content;
     // TODO: timestamp
@@ -86,7 +87,15 @@ typedef struct SBR_DiscordMessage {
         BA_DynamicArray* roles;
         BA_DynamicArray* channels;
     } mentions;
+
+    /**
+     * @deprecated Rumors of it potentially getting removed in the future
+     */
     BA_DynamicArray* attachments;
+
+    /**
+     * @deprecated Rumors of it potentially getting removed in the future
+     */
     BA_DynamicArray* embeds;
     BA_DynamicArray* reactions;
     const char* nonce;
@@ -100,6 +109,10 @@ typedef struct SBR_DiscordMessage {
     struct SBR_DiscordMessage* referencedMessage;
     // TODO: interaction_metadata
     SBR_DiscordChannel* thread;
+
+    /**
+     * @deprecated Rumors of it potentially getting removed in the future
+     */
     BA_DynamicArray* components;
     BA_DynamicArray* stickerItems;
     int position;
