@@ -13,6 +13,7 @@
 #include "MainLoop.h"
 #include "Threads/Heartbeat.h"
 #include "Threads/RateLimit.h"
+#include "BotSetup.h"
 
 void SignalHandler(int signal) {
     if (signal != SIGINT)
@@ -54,6 +55,7 @@ int main(int argc, char** argv) {
     SBR_RateLimitClearerThread_Create();
     SBR_RateLimitDetecterThread_Create();
     // TODO: Console command thread
+    SBR_BotSetup_Main();
 
     while (BA_BOOLEAN_TRUE) {
         if (!SBR_MainLoop_Start()) {

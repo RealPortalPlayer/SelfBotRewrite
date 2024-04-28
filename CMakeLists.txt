@@ -53,7 +53,8 @@ set(SOURCE source/Token.c
            source/Discord/API/API.c
            source/Discord/API/Events.c
            source/Discord/Objects/Message.c
-           source/Discord/Gateway/Dispatch.c)
+           source/Discord/Gateway/Dispatch.c
+           source/BotSetup.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
