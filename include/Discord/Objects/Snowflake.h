@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <inttypes.h>
+#include <stdint.h>
 
 typedef struct {
     /**
