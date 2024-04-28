@@ -44,7 +44,7 @@ SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_CREAT
     char* url = SBR_DiscordConfiguration_GetAPIURL("channels/%lu/messages");
     char* response = BA_String_CreateEmpty();
     
-    SBR_cURL_HTTPSend(BA_String_Format(&url, variables->snowflake->original), json_object_to_json_string(data), BA_BOOLEAN_TRUE, &response);
+    SBR_cURL_HTTPSend(BA_String_Format(&url, SBR_Snowflake_ConvertToNumber(variables->snowflake)), json_object_to_json_string(data), BA_BOOLEAN_TRUE, &response);
 
     json_object* parsed = json_tokener_parse(response);
 
@@ -60,7 +60,7 @@ SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_GET_C
     char* url = SBR_DiscordConfiguration_GetAPIURL("channels/%lu");
     char* response = BA_String_CreateEmpty();
 
-    SBR_cURL_HTTPSend(BA_String_Format(&url, variables->snowflake->original), "", BA_BOOLEAN_FALSE, &response);
+    SBR_cURL_HTTPSend(BA_String_Format(&url, SBR_Snowflake_ConvertToNumber(variables->snowflake)), "", BA_BOOLEAN_FALSE, &response);
 
     json_object* parsed = json_tokener_parse(response);
 
