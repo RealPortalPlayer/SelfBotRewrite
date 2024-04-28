@@ -20,9 +20,11 @@
 }
 
 SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE);
+SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL);
 
 static SBR_DiscordAPIEvents_Information sbrDiscordAPIEvents[] = {
-    SBR_DISCORDAPIEVENTS_CREATE_ENTRY(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE)
+    SBR_DISCORDAPIEVENTS_CREATE_ENTRY(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE),
+    SBR_DISCORDAPIEVENTS_CREATE_ENTRY(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL)
 };
 
 BA_STATIC_ASSERT_LOOKUP_TABLE_CHECK(sbrDiscordAPIEvents, SBR_DISCORDAPIEVENT_CODE_SIZE);
@@ -48,6 +50,22 @@ SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_CREAT
 
     if (parsed == NULL)
         BA_LOGGER_ERROR("Failed to parse response: %s\n", response);
+
+    free(response);
+    free(url);
+    return parsed;
+}
+
+SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL) {
+    char* url = SBR_DiscordConfiguration_GetAPIURL("channels/%lu");
+    char* response = BA_String_CreateEmpty();
+
+    SBR_cURL_HTTPSend(BA_String_Format(&url, variables->snowflake->original), "", BA_BOOLEAN_FALSE, &response);
+
+    json_object* parsed = json_tokener_parse(response);
+
+    if (parsed == NULL)
+        BA_LOGGER_ERROR("Failed to parse respone: %s\n", response);
 
     free(response);
     free(url);

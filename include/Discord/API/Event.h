@@ -10,6 +10,7 @@
 
 typedef enum {
     SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE,
+    SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL,
 
     /**
      * Not a real code
