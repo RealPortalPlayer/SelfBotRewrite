@@ -158,7 +158,9 @@ BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post,
     BA_Thread_UseLock(&sbrcURLLock);
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_URL, url);
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_WRITEDATA, response);
-
+    curl_easy_setopt(sbrcURLHTTP, CURLOPT_POST, post);
+    curl_easy_setopt(sbrcURLHTTP, CURLOPT_HTTPGET, !post);
+    
     struct curl_slist* list = NULL;
     
     list = curl_slist_append(list, sbrcURLAuthorizationHeader);
