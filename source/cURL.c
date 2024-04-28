@@ -48,7 +48,8 @@ if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_CURL_VERBOSE
 
 BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
     BA_ASSERT(!sbrcURLInitialized, "Already initialized cURL\n");
-
+    BA_LOGGER_INFO("Starting cURL\n");
+    
     sbrcURLInitialized = BA_BOOLEAN_TRUE;
 
     if (sbrcURLAuthorizationHeader == NULL) {
@@ -112,6 +113,7 @@ BA_Boolean SBR_cURL_WebSocketSend(const void* data, const size_t size, size_t* s
 
 void SBR_cURL_Close(BA_Boolean success) {
     BA_ASSERT(sbrcURLInitialized, "cURL is not initialized\n");
+    BA_LOGGER_INFO("Closing cURL\n");
 
     sbrcURLInitialized = BA_BOOLEAN_FALSE;
 
@@ -177,4 +179,25 @@ BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post,
     curl_slist_free_all(list);
     BA_Thread_Unlock(&sbrcURLLock);
     return BA_BOOLEAN_TRUE;
+}
+
+void SBR_cURL_LooopInitialize(const char* webSocketUrl) {
+    int attempts = 0;
+    
+    while (BA_BOOLEAN_TRUE) {
+        if (!SBR_cURL_Initialize(webSocketUrl)) {
+            attempts++;
+            
+            BA_LOGGER_WARN("Retrying in 5 seconds...\n");
+            sleep(5);
+            continue;
+        }
+
+        break;
+    }
+
+    if (attempts == 0)
+        return;
+
+    BA_LOGGER_INFO("Finally connected after %i tries\n", attempts);
 }

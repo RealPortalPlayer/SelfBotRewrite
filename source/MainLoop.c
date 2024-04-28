@@ -27,25 +27,8 @@
 #include "Threads/Heartbeat.h"
 #include "Discord/Gateway/Events.h"
 
-#define SBR_MAINLOOP_START_CURL(url) \
-do {                                 \
-    BA_LOGGER_INFO("Starting cURL\n"); \
-    BA_Boolean errored = BA_BOOLEAN_FALSE; \
-    while (BA_BOOLEAN_TRUE) {        \
-        if (!SBR_cURL_Initialize(url)) { \
-            errored = BA_BOOLEAN_TRUE; \
-            BA_LOGGER_WARN("Retrying in 5 seconds...\n"); \
-            sleep(5);                \
-            continue;                \
-        }                            \
-        break;                       \
-    }                                \
-    if (errored)                     \
-        BA_LOGGER_INFO("Finally connected\n"); \
-} while (BA_BOOLEAN_FALSE)
-
-static volatile BA_Boolean sbrMainDisconnected = BA_BOOLEAN_FALSE;
-static volatile BA_Boolean sbrMainShuttingDown = BA_BOOLEAN_FALSE;
+static volatile BA_Boolean sbrMainLoopDisconnected = BA_BOOLEAN_FALSE;
+static volatile BA_Boolean sbrMainLoopShuttingDown = BA_BOOLEAN_FALSE;
 
 BA_Boolean SBR_MainLoop_Start(void) {
 #ifndef SBR_STATIC
@@ -62,9 +45,9 @@ BA_Boolean SBR_MainLoop_Start(void) {
         BA_LOGGER_DEBUG("Event buffer size: %i character(s)\n", bufferSize);
     }
     
-    SBR_MAINLOOP_START_CURL(NULL);
+    SBR_cURL_LooopInitialize(NULL);
     
-    sbrMainDisconnected = BA_BOOLEAN_FALSE;
+    sbrMainLoopDisconnected = BA_BOOLEAN_FALSE;
     
     while (!SBR_MainLoop_IsShuttingDown()) {
         size_t receivedBytes;
@@ -76,7 +59,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
         if (!SBR_cURL_WebSocketReceive(buffer, bufferSize, &receivedBytes, &metadata)) {
             free(buffer);
             
-            if (sbrMainDisconnected)
+            if (sbrMainLoopDisconnected)
                 break;
 
             continue;
@@ -122,16 +105,15 @@ BA_Boolean SBR_MainLoop_Start(void) {
             SBR_Gateway_ParseError(code, message);
             free(buffer);
 
-            if (!SBR_GatewayError_CanReconnect(code) || sbrMainDisconnected) { // HACK: For invalidated session
+            if (!SBR_GatewayError_CanReconnect(code) || sbrMainLoopDisconnected) { // HACK: For invalidated session
                 BA_LOGGER_INFO("Cannot reconnect, restarting bot\n");
                 SBR_MainLoop_SignalDisconnected();
                 break;
             }
 
-            BA_LOGGER_INFO("Closing cURL\n");
             SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
             SBR_cURL_Close(BA_BOOLEAN_FALSE);
-            SBR_MAINLOOP_START_CURL(SBR_Gateway_GetResumeURL());
+            SBR_cURL_LooopInitialize(SBR_Gateway_GetResumeURL());
             SBR_Gateway_Send(SBR_GatewayEvents_CreateResume());
             continue;
         }
@@ -140,9 +122,8 @@ BA_Boolean SBR_MainLoop_Start(void) {
         free(buffer);
     }
 
-    BA_LOGGER_INFO("Closing cURL\n");
     SBR_cURL_Close(BA_BOOLEAN_TRUE);
-    return !sbrMainDisconnected;
+    return !sbrMainLoopDisconnected;
 #else
     BA_LOGGER_WARN("You're not supposed to call this\n");
     return BA_BOOLEAN_TRUE;
@@ -150,13 +131,13 @@ BA_Boolean SBR_MainLoop_Start(void) {
 }
 
 void SBR_MainLoop_SignalDisconnected(void) {
-    sbrMainDisconnected = BA_BOOLEAN_TRUE;
+    sbrMainLoopDisconnected = BA_BOOLEAN_TRUE;
 }
 
 void SBR_MainLoop_Shutdown(void) {
-    sbrMainShuttingDown = BA_BOOLEAN_TRUE;
+    sbrMainLoopShuttingDown = BA_BOOLEAN_TRUE;
 }
 
 BA_Boolean SBR_MainLoop_IsShuttingDown(void) {
-    return sbrMainShuttingDown;
+    return sbrMainLoopShuttingDown;
 }
