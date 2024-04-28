@@ -9,7 +9,7 @@
 #include "Event.h"
 #include "../Status.h"
 
-typedef void (*SBR_GatewayEvents_Action)(const json_object* data, int sequence, const char* eventName);
+typedef void (*SBR_GatewayEvents_Action)(json_object* data, int sequence, const char* eventName);
 
 typedef struct {
     SBR_GatewayEvent_Codes operationCode;
