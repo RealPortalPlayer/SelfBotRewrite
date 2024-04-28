@@ -15,7 +15,7 @@
 
 static volatile BA_Boolean sbrRateLimitSleeping;
 
-SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-Limit clearer", KILL) {
+SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-limit clearer", KILL) {
     BA_LOGGER_DEBUG("Hello, from rate-limit clearer\n");
     
     while (sbrRateLimitClearerInitialized) {
