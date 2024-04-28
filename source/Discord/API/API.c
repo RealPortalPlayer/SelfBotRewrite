@@ -18,6 +18,24 @@ BA_Boolean SBR_DiscordAPI_Send(SBR_DiscordAPIEvent_Codes code, json_object* data
     }
     
     *output = SBR_DiscordAPIEvents_Get(code)->action(data, variables);
-    // TODO: Parse error
+
+    if (*output == NULL)
+        return BA_BOOLEAN_FALSE;
+
+    {
+        json_object* errorCode = json_object_object_get(*output, "code");
+        json_object* errorMessage = json_object_object_get(*output, "message");
+        
+        if (json_object_get_type(errorCode) != json_type_null) {
+            BA_LOGGER_ERROR("Discord API error (%i): %s\n", json_object_get_int(errorCode), json_object_get_string(errorMessage));
+            return BA_BOOLEAN_FALSE;
+        }
+
+        if (json_object_get_type(errorCode) != json_type_null) {
+            BA_LOGGER_ERROR("Discord API error (HTTP): %s\n", json_object_get_string(errorMessage));
+            return BA_BOOLEAN_FALSE;
+        }
+    }
+    
     return BA_BOOLEAN_TRUE;
 }
