@@ -98,8 +98,9 @@ json_object* SBR_EmbedCreator_Build(SBR_EmbedCreator_Embed* embed) {
     // TODO: Limits
 
     json_object* object = json_object_new_object();
+    json_object* fieldsArray = json_object_new_array();
 
-    if (object == NULL) {
+    if (object == NULL || fieldsArray == NULL) {
         BA_LOGGER_ERROR("Failed to create embed json\n");
         return NULL;
     }
@@ -108,6 +109,17 @@ json_object* SBR_EmbedCreator_Build(SBR_EmbedCreator_Embed* embed) {
     json_object_object_add(object, "type", json_object_new_string("rich"));
     SBR_EMBEDCREATOR_ADD_EMBED_FIELD_NULL_CHECK(string, description);
     SBR_EMBEDCREATOR_ADD_EMBED_FIELD(int, color);
-    // TODO
+    json_object_object_add(object, "fields", fieldsArray);
+
+    for (int i = 0; i < embed->fields.used; i++) {
+        json_object* fieldData = json_object_new_object();
+        SBR_EmbedCreator_Field* field = BA_DYNAMICARRAY_GET_ELEMENT(SBR_EmbedCreator_Field, embed->fields, i);
+
+        json_object_object_add(fieldData, "name", json_object_new_string(field->name));
+        json_object_object_add(fieldData, "value", json_object_new_string(field->value));
+        json_object_object_add(fieldData, "inline", json_object_new_boolean(field->inlined));
+        json_object_array_add(fieldsArray, fieldData);
+    }
+
     return object;
 }
