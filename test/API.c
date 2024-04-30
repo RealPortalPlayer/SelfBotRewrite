@@ -14,6 +14,6 @@ int main(int argc, char** argv) {
 
     SBR_Snowflake* snowflake = SBR_Snowflake_ConvertFromNumber(570600829330128906);
     
-    SBR_DiscordAPIEvents_SendMessage(snowflake, "Hello, from APITest");
+    SBR_DiscordAPIEvents_SendMessage(snowflake, "Hello, from APITest", NULL);
     SBR_cURL_Close(BA_BOOLEAN_TRUE);
 }
