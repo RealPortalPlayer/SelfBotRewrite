@@ -57,7 +57,8 @@ set(SOURCE source/Token.c
            source/BotSetup.c
            source/Discord/Intents.c
            source/Events.c
-           source/Discord/EmbedCreator.c)
+           source/Discord/EmbedCreator.c
+           source/Sleep.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
