@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
                    "Nitro: %i\n"
                    "Public Official Flags: %i\n"
                    "Avatar Decoration: %s\n",
-                   user->id->timestamp, user->id->workerId, user->id->processId, user->id->increment, user->id->original,
+                   user->id->timestamp, user->id->workerId, user->id->processId, user->id->increment, SBR_Snowflake_ConvertToNumber(user->id),
                    user->username,
                    user->discriminator,
                    VALUE_OR_NULL(user->globalName),
@@ -62,7 +62,6 @@ int main(int argc, char** argv) {
     ASSERT(user->id->workerId == 1);
     ASSERT(user->id->processId == 0);
     ASSERT(user->id->increment == 1);
-    ASSERT(user->id->original == 353541155729833985);
     ASSERT(strcmp(user->username, "baconflavorhair") == 0);
     ASSERT(strcmp(user->discriminator, "0000") == 0);
     ASSERT(strcmp(user->globalName, "BaconFlavorHair") == 0);
