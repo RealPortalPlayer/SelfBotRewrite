@@ -123,3 +123,44 @@ json_object* SBR_EmbedCreator_Build(SBR_EmbedCreator_Embed* embed) {
 
     return object;
 }
+
+#define SBR_EMBEDCREATOR_EASY_FREE(variable) \
+if (embed->variable != NULL) {               \
+    free(embed->variable);                   \
+    embed->variable = NULL;                  \
+} (void) NULL
+
+#define SBR_EMBEDCREATOR_EASY_FREE_MEDIA(media) \
+SBR_EMBEDCREATOR_EASY_FREE(media.url);          \
+SBR_EMBEDCREATOR_EASY_FREE(media.proxyUrl)
+
+void SBR_EmbedCreator_Free(SBR_EmbedCreator_Embed* embed) {
+    SBR_EMBEDCREATOR_EASY_FREE(title);
+    SBR_EMBEDCREATOR_EASY_FREE(description);
+    SBR_EMBEDCREATOR_EASY_FREE(footer.text);
+    SBR_EMBEDCREATOR_EASY_FREE(footer.iconUrl);
+    SBR_EMBEDCREATOR_EASY_FREE(footer.proxyIconUrl);
+    SBR_EMBEDCREATOR_EASY_FREE_MEDIA(image);
+    SBR_EMBEDCREATOR_EASY_FREE_MEDIA(thumbnail);
+    SBR_EMBEDCREATOR_EASY_FREE_MEDIA(video);
+    SBR_EMBEDCREATOR_EASY_FREE(provider.name);
+    SBR_EMBEDCREATOR_EASY_FREE(provider.url);
+    SBR_EMBEDCREATOR_EASY_FREE(author.name);
+    SBR_EMBEDCREATOR_EASY_FREE(author.url);
+    SBR_EMBEDCREATOR_EASY_FREE(author.iconUrl);
+    SBR_EMBEDCREATOR_EASY_FREE(author.proxyIconUrl);
+
+    if (embed->fields.internalArray != NULL) {
+        for (int i = 0; i < embed->fields.used; i++) {
+            SBR_EmbedCreator_Field* field = BA_DYNAMICARRAY_GET_ELEMENT(SBR_EmbedCreator_Field, embed->fields, i);
+
+            free(field->name);
+            free(field->value);
+            free(field);
+        }
+    }
+
+    SBR_EMBEDCREATOR_EASY_FREE(fields.internalArray);
+
+    embed->characterCount = 0;
+}

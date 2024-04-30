@@ -75,3 +75,5 @@ SBR_EmbedCreator_Embed* SBR_EmbedCreator_AddField(SBR_EmbedCreator_Embed* embed,
  * You usually shouldn't need to call this directly 
  */
 json_object* SBR_EmbedCreator_Build(SBR_EmbedCreator_Embed* embed);
+
+void SBR_EmbedCreator_Free(SBR_EmbedCreator_Embed* embed);
