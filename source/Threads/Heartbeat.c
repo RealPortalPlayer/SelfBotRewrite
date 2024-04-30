@@ -14,11 +14,23 @@
 static BA_Boolean sbrHeartbeatThreadPaused = BA_BOOLEAN_TRUE;
 
 SBR_THREADINTERNAL_CODE(Heartbeat, "heartbeat", KILL) {
+    static BA_Boolean first = BA_BOOLEAN_TRUE;
+    
     BA_LOGGER_DEBUG("Hello, from heartbeat thread\n");
     
     while (sbrHeartbeatInitialized) {
         if (sbrHeartbeatThreadPaused)
             continue;
+
+        if (first) {
+            int jitter = rand() % 2 ? 1 : 0;
+
+            BA_LOGGER_DEBUG("Jitter: %i\n", jitter);
+            SBR_Sleep(SBR_Gateway_GetInterval() * jitter);
+
+            first = BA_BOOLEAN_FALSE;
+        }
+
 
         SBR_GATEWAY_SEND_AND_FREE(SBR_GatewayEvents_CreateHeartbeat());
         SBR_Sleep(SBR_Gateway_GetInterval());
