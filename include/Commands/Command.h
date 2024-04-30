@@ -45,6 +45,7 @@ typedef struct SBR_Command {
  * @param filter 0 will return any command that matches
  */
 const SBR_Command* SBR_Command_Get(const char* name, SBR_Command_Type filter);
+const BA_DynamicArray* SBR_Command_GetAll(void);
 
 void SBR_Command_Initialize(void);
 void SBR_Command_Register(const char* name, const char* description, SBR_Command_Type type, SBR_Command_Action Action);

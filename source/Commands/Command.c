@@ -62,3 +62,7 @@ void SBR_Command_Destroy(void) {
     free(sbrCommandRegistered->internalArray);
     free(sbrCommandRegistered);
 }
+
+const BA_DynamicArray* SBR_Command_GetAll(void) {
+    return sbrCommandRegistered;
+}
