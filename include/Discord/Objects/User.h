@@ -110,3 +110,4 @@ typedef struct {
 } SBR_DiscordUser;
 
 SBR_DiscordUser* SBR_DiscordUser_Create(json_object* unparsedJsonData);
+const char* SBR_DiscordUser_NitroTypeToString(SBR_DiscordUser_NitroTypes nitroType);

@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
                    "Accent Color: %i\n"
                    "Email: %s\n"
                    "Official Flags: %i\n"
-                   "Nitro: %i\n"
+                   "Nitro: %s (%i)\n"
                    "Public Official Flags: %i\n"
                    "Avatar Decoration: %s\n",
                    user->id->timestamp, user->id->workerId, user->id->processId, user->id->increment, SBR_Snowflake_ConvertToNumber(user->id),
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
                    user->accentColor,
                    VALUE_OR_NULL(user->email),
                    user->officialFlags,
-                   user->nitro,
+                   SBR_DiscordUser_NitroTypeToString(user->nitro), user->nitro,
                    user->publicOfficialFlags,
                    VALUE_OR_NULL(user->avatarDecoration));
 
@@ -71,6 +71,7 @@ int main(int argc, char** argv) {
     ASSERT(user->accentColor == 0);
     ASSERT(user->email == NULL);
     ASSERT(user->officialFlags == SBR_DISCORDUSER_OFFICIAL_FLAG_HYPESQUAD_BRAVERY_HOUSE | SBR_DISCORDUSER_OFFICIAL_FLAG_EARY_NITRO_SUPPORTER);
+    ASSERT(strcmp(SBR_DiscordUser_NitroTypeToString(user->nitro), "None") == 0);
     ASSERT(user->nitro == SBR_DISCORDUSER_NITRO_TYPE_NONE);
     ASSERT(user->publicOfficialFlags == SBR_DISCORDUSER_OFFICIAL_FLAG_HYPESQUAD_BRAVERY_HOUSE | SBR_DISCORDUSER_OFFICIAL_FLAG_EARY_NITRO_SUPPORTER);
     ASSERT(user->avatarDecoration == NULL);

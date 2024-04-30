@@ -27,3 +27,15 @@ SBR_DiscordUser* SBR_DiscordUser_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_STRING(avatarDecoration, "avatar_decoration", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
+
+const char* SBR_DiscordUser_NitroTypeToString(SBR_DiscordUser_NitroTypes nitroType) {
+    switch (nitroType) {
+        case SBR_DISCORDUSER_NITRO_TYPE_NONE: return "None";
+        case SBR_DISCORDUSER_NITRO_TYPE_NITRO_CLASSIC: return "Nitro Classic";
+        case SBR_DISCORDUSER_NITRO_TYPE_NITRO: return "Nitro";
+        case SBR_DISCORDUSER_NITRO_TYPE_NITRO_BASIC: return "Nitro Basic";
+        default:
+            BA_LOGGER_WARN("Invalid Nitro type: %i\n", nitroType);
+            return "Unknown";
+    }
+}
