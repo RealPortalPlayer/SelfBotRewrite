@@ -19,7 +19,7 @@
 #define SBR_DISCORDCONFIGURATION_ADD_PATH() \
 if (path != NULL) {                         \
     char* cloned = BA_String_Copy(cached);  \
-    if (!BA_String_EndsWith(&cloned, "/", BA_BOOLEAN_FALSE)) \
+    if (!BA_String_EndsWith(cloned, "/", BA_BOOLEAN_FALSE)) \
         BA_String_Append(&cloned, "/"); \
     return BA_String_Append(&cloned, path); \
 } (void) NULL
