@@ -83,7 +83,7 @@ SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, co
         return NULL;
     }
 
-    if (content[0] == '\0') {
+    if (content[0] == '\0' && embed == NULL) {
         BA_LOGGER_ERROR("Message contents cannot be empty\n");
         return NULL;
     }
