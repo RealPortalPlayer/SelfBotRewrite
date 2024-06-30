@@ -34,7 +34,7 @@ SBR_EMBEDCREATOR_CREATE_MEDIA_SETTER(name) {                \
 }
 
 SBR_EmbedCreator_Embed* SBR_EmbedCreator_Create(void) {
-    SBR_EmbedCreator_Embed* embed = calloc(1, sizeof(SBR_EmbedCreator_Embed*));
+    SBR_EmbedCreator_Embed* embed = calloc(1, sizeof(SBR_EmbedCreator_Embed));
 
     BA_ASSERT(embed != NULL, "Failed to allocate memory for embed creator\n");
     BA_DynamicArray_Create(&embed->fields, 5);
@@ -76,8 +76,8 @@ SBR_EMBEDCREATOR_CREATE_SETTER(Author, SBR_DiscordUser* user) {
 SBR_EmbedCreator_Embed* SBR_EmbedCreator_AddField(SBR_EmbedCreator_Embed* embed, const char* name, const char* value, BA_Boolean inlined) {
     // TODO: Limits
     
-    SBR_EmbedCreator_Field* field = malloc(sizeof(SBR_EmbedCreator_Field));
-
+    SBR_EmbedCreator_Field* field = calloc(1, sizeof(SBR_EmbedCreator_Field));
+    
     BA_ASSERT(field != NULL, "Failed to allocate memory for embed field\n");
     SBR_EMBEDCREATOR_SET_STRING(field, name, name);
     SBR_EMBEDCREATOR_SET_STRING(field, value, value);
