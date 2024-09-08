@@ -12,6 +12,7 @@
 
 #include "Threads/RateLimit.h"
 #include "Discord/Gateway/Gateway.h"
+#include "Sleep.h"
 
 static volatile BA_Boolean sbrRateLimitSleeping;
 
@@ -19,7 +20,7 @@ SBR_THREADINTERNAL_CODE(RateLimitClearer, "rate-limit clearer", KILL) {
     BA_LOGGER_DEBUG("Hello, from rate-limit clearer\n");
     
     while (sbrRateLimitClearerInitialized) {
-        sleep(60);
+        SBR_Sleep(60000);
         SBR_Gateway_ResetRequestCount();
     }
 
@@ -37,7 +38,7 @@ SBR_THREADINTERNAL_CODE(RateLimitDetecter, "rate-limit detecter", JOIN) {
 
         sbrRateLimitSleeping = BA_BOOLEAN_TRUE;
 
-        sleep(60);
+        SBR_Sleep(60000);
         BA_LOGGER_TRACE("Rate-limit over\n");
 
         sbrRateLimitSleeping = BA_BOOLEAN_FALSE;

@@ -23,6 +23,7 @@
 #include "MainLoop.h"
 #include "Token.h"
 #include "UserAgent.h"
+#include "Sleep.h"
 
 static CURL* sbrcURLWebSocket;
 static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;
@@ -197,7 +198,7 @@ void SBR_cURL_LoopInitialize(const char* webSocketUrl) {
             attempts++;
             
             BA_LOGGER_WARN("Retrying in 5 seconds...\n");
-            sleep(5);
+            SBR_Sleep(5000);
             continue;
         }
 
