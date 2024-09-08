@@ -9,15 +9,15 @@
 #include "Commands/Command.h"
 
 #define SBR_COMMANDS_CREATE_COMMAND_HEADER(name) void SBR_Commands_ ## name(const SBR_Command* this, SBR_DiscordMessage* message)
-#define SBR_COMMANDS_REGISTER(name, description, type) SBR_Command_Register(#name, description, type, (SBR_Command_Action) &SBR_Commands_ ## name)
+#define SBR_COMMANDS_REGISTER(name, description, category, type) SBR_Command_Register(#name, description, category, type, (SBR_Command_Action) &SBR_Commands_ ## name)
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(test);
 SBR_COMMANDS_CREATE_COMMAND_HEADER(help);
 
 void SBR_Commands_Register(void) {
     BA_LOGGER_INFO("Registering all commands\n");
-    SBR_COMMANDS_REGISTER(test, "Testing command", SBR_COMMAND_TYPE_CLASSIC);
-    SBR_COMMANDS_REGISTER(help, "Information about each command", SBR_COMMAND_TYPE_CLASSIC);
+    SBR_COMMANDS_REGISTER(test, "Testing command", "misc", SBR_COMMAND_TYPE_CLASSIC);
+    SBR_COMMANDS_REGISTER(help, "Information about each command", "misc", SBR_COMMAND_TYPE_CLASSIC);
 }
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(test) {

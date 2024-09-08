@@ -12,6 +12,7 @@
 #include "Commands/Commands.h"
 #include "Commands/Command.h"
 #include "Prefix.h"
+#include "Commands/Categories.h"
 
 void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
     if (message->content == NULL ||
@@ -48,6 +49,7 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
 void SBR_BotSetup_Ready(void) {
     BA_LOGGER_INFO("Bot is ready: %s#%s\n", SBR_Bot_Get()->username, SBR_Bot_Get()->discriminator);
     SBR_Commands_Register();
+    SBR_Categories_Register();
 }
 
 void SBR_BotSetup_Main(void) {

@@ -22,7 +22,7 @@ void SBR_Command_Initialize(void) {
     BA_ASSERT(BA_DynamicArray_Create(sbrCommandRegistered, 10), "Failed to initialize registered commands array\n");
 }
 
-void SBR_Command_Register(const char* name, const char* description, SBR_Command_Type type, SBR_Command_Action Action) {
+void SBR_Command_Register(const char* name, const char* description, const char* categoryName, SBR_Command_Type type, SBR_Command_Action Action) {
     // TODO: Checks
 
     SBR_Command* command = malloc(sizeof(SBR_Command));
@@ -31,6 +31,7 @@ void SBR_Command_Register(const char* name, const char* description, SBR_Command
 
     command->name = name;
     command->description = description;
+    command->categoryName = categoryName;
     command->type = type;
     command->Action = Action;
 
