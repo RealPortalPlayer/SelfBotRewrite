@@ -18,7 +18,7 @@ add_subdirectory(dependencies/BaconAPI)
 add_subdirectory(dependencies/curl)
 add_subdirectory(dependencies/json-c)
 
-set(VERSION "1.0.0-incomplete")
+set(VERSION "0.1.0")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     add_compile_definitions(DEBUG BA_ALLOW_DEBUG_LOGS)
