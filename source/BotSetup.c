@@ -57,6 +57,11 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
             parsedId = BA_String_Copy("%lu");
 
             SBR_EmbedCreator_AddField(embed, "Guild ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guildId)), BA_BOOLEAN_TRUE);
+            free(parsedId);
+
+            parsedId = BA_String_Copy("%lu");
+
+            SBR_EmbedCreator_AddField(embed, "Guild Owner ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guild->ownerId)), BA_BOOLEAN_TRUE);
         }
 
         if (results != NULL)
