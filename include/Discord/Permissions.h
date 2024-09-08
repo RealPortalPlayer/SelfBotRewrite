@@ -7,6 +7,9 @@
 #pragma once
 
 #include <BaconAPI/Internal/Boolean.h>
+#include <stdint.h>
+
+typedef uint64_t SBR_DiscordPermissions;
 
 #define SBR_DISCORDPERMISSION_CREATE_INSTANT_INVITE (1UL << 0)
 #define SBR_DISCORDPERMISSION_KICK_MEMBERS (1UL << 1)
@@ -120,9 +123,9 @@
 #define SBR_DISCORDPERMISSION_VIDEO SBR_DISCORDPERMISSION_STREAM
 #define SBR_DISCORDPERMISSION_USE_ACTIVITIES SBR_DISCORDPERMISSION_USE_EMBEDDED_ACTIVITIES
 
-BA_Boolean SBR_DiscordPermissions_Requires2FA(unsigned long permission);
-BA_Boolean SBR_DiscordPermissions_IsTextChannelPermission(unsigned long permission);
-BA_Boolean SBR_DiscordPermissions_IsVoicePermission(unsigned long permission);
-BA_Boolean SBR_DiscordPermissions_IsStagePermission(unsigned long permission);
-char* SBR_DiscordPermissions_ConvertToString(unsigned long permission);
-unsigned long SBR_DiscordPermissions_ConvertFromString(const char* permission);
+BA_Boolean SBR_DiscordPermissions_Requires2FA(SBR_DiscordPermissions permission);
+BA_Boolean SBR_DiscordPermissions_IsTextChannelPermission(SBR_DiscordPermissions permission);
+BA_Boolean SBR_DiscordPermissions_IsVoicePermission(SBR_DiscordPermissions permission);
+BA_Boolean SBR_DiscordPermissions_IsStagePermission(SBR_DiscordPermissions permission);
+char* SBR_DiscordPermissions_ConvertToString(SBR_DiscordPermissions permission);
+SBR_DiscordPermissions SBR_DiscordPermissions_ConvertFromString(const char* permission);

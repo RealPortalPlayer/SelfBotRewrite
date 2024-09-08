@@ -7,7 +7,7 @@
 
 #include "Discord/Permissions.h"
 
-BA_Boolean SBR_DiscordPermissions_Requires2FA(unsigned long permission) {
+BA_Boolean SBR_DiscordPermissions_Requires2FA(SBR_DiscordPermissions permission) {
     return BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_KICK_MEMBERS) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_BAN_MEMBERS) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_ADMINISTRATOR) ||
@@ -21,7 +21,7 @@ BA_Boolean SBR_DiscordPermissions_Requires2FA(unsigned long permission) {
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_VIEW_CREATOR_MONETIZATION_ANALYTICS);
 }
 
-BA_Boolean SBR_DiscordPermissions_IsTextChannelPermission(unsigned long permission) {
+BA_Boolean SBR_DiscordPermissions_IsTextChannelPermission(SBR_DiscordPermissions permission) {
     return BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_CREATE_INSTANT_INVITE) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_MANAGE_CHANNELS) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_ADD_REACTIONS) ||
@@ -46,7 +46,7 @@ BA_Boolean SBR_DiscordPermissions_IsTextChannelPermission(unsigned long permissi
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_SEND_POLLS);
 }
 
-BA_Boolean SBR_DiscordPermissions_IsVoicePermission(unsigned long permission) {
+BA_Boolean SBR_DiscordPermissions_IsVoicePermission(SBR_DiscordPermissions permission) {
     return BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_CREATE_INSTANT_INVITE) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_MANAGE_CHANNELS) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_ADD_REACTIONS) ||
@@ -80,7 +80,7 @@ BA_Boolean SBR_DiscordPermissions_IsVoicePermission(unsigned long permission) {
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_SEND_POLLS);
 }
 
-BA_Boolean SBR_DiscordPermissions_IsStagePermission(unsigned long permission) {
+BA_Boolean SBR_DiscordPermissions_IsStagePermission(SBR_DiscordPermissions permission) {
     return BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_CREATE_INVITE) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_MANAGE_CHANNELS) ||
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_ADD_REACTIONS) ||
@@ -108,12 +108,12 @@ BA_Boolean SBR_DiscordPermissions_IsStagePermission(unsigned long permission) {
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_SEND_POLLS);
 }
 
-char* SBR_DiscordPermissions_ConvertToString(unsigned long permission) {
+char* SBR_DiscordPermissions_ConvertToString(SBR_DiscordPermissions permission) {
     char* formatter = BA_String_Copy("%lu");
 
     return BA_String_Format(&formatter, permission);
 }
 
-unsigned long SBR_DiscordPermissions_ConvertFromString(const char* permission) {
+SBR_DiscordPermissions SBR_DiscordPermissions_ConvertFromString(const char* permission) {
     return BA_Number_StringToUnsignedLong(permission, NULL, NULL, "Invalid permissions\n", 0);
 }
