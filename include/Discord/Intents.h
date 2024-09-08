@@ -16,7 +16,7 @@ typedef enum {
     
     /**
      * Enables: GUILD_MEMBER_ADD, GUILD_MEMBER_UPDATE, GUILD_MEMBER_REMOVE, and THREAD_MEMBERS_UPDATE
-     * @note This one is priviledged
+     * @note This one is privileged
      */
     SBR_DISCORDINTENT_GUILD_MEMBERS = 1 << 1,
 
@@ -52,7 +52,7 @@ typedef enum {
     
     /**
      * Enables: PRESENCE_UPDATE
-     * @note This one is priviledged
+     * @note This one is privileged
      */
     SBR_DISCORDINTENT_GUILD_PRESENCES = 1 << 8,
     
@@ -88,7 +88,7 @@ typedef enum {
     
     /**
      * This doesn't enable any events
-     * @note This one is priviledged
+     * @note This one is privileged
      */
     SBR_DISCORDINTENT_MESSAGE_CONTENT = 1 << 15,
 
