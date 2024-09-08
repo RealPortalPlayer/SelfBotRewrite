@@ -174,8 +174,16 @@ BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post,
     }
 
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_HTTPHEADER, list);
-    // TODO: Don't crash
-    SBR_CURL_ASSERT(curl_easy_perform(sbrcURLHTTP), "Failed to make HTTP request: %s\n");
+
+    {
+        CURLcode code = curl_easy_perform(sbrcURLHTTP);
+
+        if (code != CURLE_OK) {
+            BA_LOGGER_ERROR("Failed to make HTTP request: %s\n", curl_easy_strerror(code));
+            return BA_BOOLEAN_FALSE;
+        }
+    }
+    
     curl_slist_free_all(list);
     BA_Thread_Unlock(&sbrcURLLock);
     return BA_BOOLEAN_TRUE;
