@@ -9,4 +9,5 @@
 void SBR_Categories_Register(void) {
     BA_LOGGER_INFO("Registering all categories\n");
     SBR_Category_Register("misc", "Commands that don't fit a specific category");
+    SBR_Category_Register("information", "Informational commands");
 }

@@ -19,7 +19,7 @@ SBR_COMMANDS_CREATE_COMMAND_HEADER(help);
 void SBR_Commands_Register(void) {
     BA_LOGGER_INFO("Registering all commands\n");
     SBR_COMMANDS_REGISTER(test, "Testing command", "misc", SBR_COMMAND_TYPE_CLASSIC);
-    SBR_COMMANDS_REGISTER(help, "Information about each command", "misc", SBR_COMMAND_TYPE_CLASSIC);
+    SBR_COMMANDS_REGISTER(help, "Information about each command", "information", SBR_COMMAND_TYPE_CLASSIC);
 }
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(test) {
