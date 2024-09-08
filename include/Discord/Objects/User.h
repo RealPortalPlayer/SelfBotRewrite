@@ -92,8 +92,7 @@ typedef struct {
     const char* username;
 
     /**
-     * @note Some users have not migrated yet. Bots are still unknown
-     * @deprecated
+     * @note Always "0000" for non-bot users
      */
     const char* discriminator;
     const char* globalName;
