@@ -5,6 +5,7 @@
 
 #include "Discord/Objects/User.h"
 #include "Discord/Objects/ObjectCreatorHelpers.h"
+#include "Discord/API/Events.h"
 
 SBR_DiscordUser* SBR_DiscordUser_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordUser, "Discord user");
@@ -38,4 +39,8 @@ const char* SBR_DiscordUser_NitroTypeToString(SBR_DiscordUser_NitroTypes nitroTy
             BA_LOGGER_WARN("Invalid Nitro type: %i\n", nitroType);
             return "Unknown";
     }
+}
+
+SBR_DiscordUser* SBR_DiscordUser_Get(const SBR_Snowflake* id) {
+    return SBR_DiscordAPIEvents_GetUser(id);
 }
