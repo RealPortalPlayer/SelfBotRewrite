@@ -45,10 +45,12 @@ returnType SBR_DiscordAPIEvents_Get ## type(const SBR_Snowflake* id) {          
 
 SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE);
 SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL);
+SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_DISCORDAPIEVENT_CODE_GET_GUILD);
 
 static SBR_DiscordAPIEvents_Information sbrDiscordAPIEvents[] = {
     SBR_DISCORDAPIEVENTS_CREATE_ENTRY(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE),
-    SBR_DISCORDAPIEVENTS_CREATE_ENTRY(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL)
+    SBR_DISCORDAPIEVENTS_CREATE_ENTRY(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL),
+    SBR_DISCORDAPIEVENTS_CREATE_ENTRY(SBR_DISCORDAPIEVENT_CODE_GET_GUILD),
 };
 
 BA_STATIC_ASSERT_LOOKUP_TABLE_CHECK(sbrDiscordAPIEvents, SBR_DISCORDAPIEVENT_CODE_SIZE);
@@ -66,6 +68,7 @@ const SBR_DiscordAPIEvents_Information* SBR_DiscordAPIEvents_Get(SBR_DiscordAPIE
 
 SBR_DISCORDAPIEVENTS_CREATE_EVENT_DEFAULT(SBR_DISCORDAPIEVENT_CODE_CREATE_MESSAGE, "channels/%lu/messages", json_object_to_json_string(data), BA_BOOLEAN_TRUE)
 SBR_DISCORDAPIEVENTS_CREATE_EVENT_DEFAULT(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL, "channels/%lu", "", BA_BOOLEAN_FALSE)
+SBR_DISCORDAPIEVENTS_CREATE_EVENT_DEFAULT(SBR_DISCORDAPIEVENT_CODE_GET_GUILD, "guilds/%lu", "", BA_BOOLEAN_FALSE)
 
 SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content, SBR_EmbedCreator_Embed* embed) {
     if (content == NULL) {
@@ -135,16 +138,4 @@ SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, co
     return message;
 }
 
-SBR_DiscordChannel* SBR_DiscordAPIEvents_GetChannel(const SBR_Snowflake* id) {
-    SBR_DiscordAPIEvents_Variables variables = {
-        .snowflake = id
-    };
-    json_object* response;
-
-    SBR_DiscordAPI_Send(SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL, NULL, &response, &variables);
-
-    SBR_DiscordChannel* channel = SBR_DiscordChannel_Create(response);
-
-    json_object_put(response);
-    return channel;
-}
+SBR_DISCORDAPIEVENTS_CREATE_GETTER_DEFAULT(SBR_DiscordChannel*, Channel, SBR_DISCORDAPIEVENT_CODE_GET_CHANNEL)
