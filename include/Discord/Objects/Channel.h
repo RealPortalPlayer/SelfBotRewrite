@@ -11,6 +11,7 @@
 #include "Snowflake.h"
 #include "../EmbedCreator.h"
 #include "Guild.h"
+#include "../Permissions.h"
 
 typedef enum {
     SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT,
@@ -78,7 +79,7 @@ typedef struct SBR_DiscordChannel {
     // TODO: thread_metadata
     // TODO: member
     SBR_DiscordChannel_AutomaticArchiveDurations defaultAutomaticArchiveDuration;
-    // TODO: permissions
+    SBR_DiscordPermissions permissions;
     SBR_DiscordChannel_OfficialFlags officialFlags;
     int totalMessageSent;
     // TODO: available_tags

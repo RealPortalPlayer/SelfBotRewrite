@@ -32,7 +32,7 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData) {
     // TODO: thread_metadata
     // TODO: member
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(defaultAutomaticArchiveDuration, "default_auto_archive_duration", OPTIONAL, NOT_SAME);
-    // TODO: permissions
+    SBR_OBJECTCREATORHELPERS_GET_PERMISSIONS(permissions, "", OPTIONAL, SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(officialFlags, "flags", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(totalMessageSent, "total_message_sent", OPTIONAL, NOT_SAME);
     // TODO: available_tags
