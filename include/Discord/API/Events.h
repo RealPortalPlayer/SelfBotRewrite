@@ -31,3 +31,4 @@ const SBR_DiscordAPIEvents_Information* SBR_DiscordAPIEvents_Get(SBR_DiscordAPIE
  */
 SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, const char* content, SBR_EmbedCreator_Embed* embed);
 SBR_DiscordChannel* SBR_DiscordAPIEvents_GetChannel(const SBR_Snowflake* id);
+SBR_DiscordGuild* SBR_DiscordAPIEvents_GetGuild(const SBR_Snowflake* id);
