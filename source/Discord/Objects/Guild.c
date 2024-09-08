@@ -18,8 +18,11 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_STRING(templateIconHash, "icon_hash", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(splashHash, "splash", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(discoverySplashHash, "discovery_splash", OPTIONAL, NOT_SAME);
-    // TODO: owner
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(ownerId, "owner_id", REQUIRED, NOT_SAME);
+
+    object->owner = SBR_DiscordUser_Get(object->ownerId);
+
+    SBR_OBJECTCREATORHELPERS_CHECK_REQUIRED(object->owner);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(afkChannelId, "afk_channel_id", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(afkTimeoutSeconds, "afk_timeout", REQUIRED, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(widgetEnabled, "widget_enabled", OPTIONAL, NOT_SAME, customFlags, SBR_DISCORDGUILD_CUSTOM_FLAG_WIDGETS_ENABLED);

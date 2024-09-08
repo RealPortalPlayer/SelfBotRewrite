@@ -12,6 +12,7 @@
 #include "json_object.h"
 #include "Snowflake.h"
 #include "../Locale.h"
+#include "User.h"
 
 typedef enum {
     SBR_DISCORDGUILD_VERIFICATION_LEVEL_NULL,
@@ -133,7 +134,7 @@ typedef struct {
     const char* templateIconHash;
     const char* splashHash;
     const char* discoverySplashHash;
-    // TODO: owner (Discord API says boolean, but a guild member would fit better)
+    SBR_DiscordUser* owner;
     SBR_Snowflake* ownerId;
     SBR_Snowflake* afkChannelId;
     int afkTimeoutSeconds;
