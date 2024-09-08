@@ -29,13 +29,18 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
     prefixlessMessage[messageLength] = '\0';
 
     BA_DynamicArray* arguments = BA_String_SplitCharacter(prefixlessMessage, ' ');
-    const SBR_Command* command = SBR_Command_Get(arguments->internalArray[0], SBR_COMMAND_TYPE_CLASSIC);
+    char* name = arguments->internalArray[0];
+    const SBR_Command* command = SBR_Command_Get(name, SBR_COMMAND_TYPE_CLASSIC);
 
+    BA_DynamicArray_RemoveFirstElement(arguments);
+    
     if (command == NULL)
         goto destroy;
 
     command->Action(command, message);
     destroy:
+    free(name);
+    
     for (int i = 0; i < arguments->used; i++)
         free(arguments->internalArray[i]);
 
