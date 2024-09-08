@@ -72,7 +72,7 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
 #define SBR_GUILD_GET_CHANNEL(name) \
 do {                                \
     if (object->name ## Id != NULL) { \
-        object->name = SBR_DiscordGuild_Get(object->name ## Id); \
+        object->name = SBR_DiscordChannel_Get(object->name ## Id); \
         object->name->guild = object; \
     }                               \
 } while (BA_BOOLEAN_FALSE)
