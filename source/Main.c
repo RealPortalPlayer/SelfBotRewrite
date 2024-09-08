@@ -15,6 +15,7 @@
 #include "Threads/RateLimit.h"
 #include "BotSetup.h"
 #include "Commands/Command.h"
+#include "Commands/Category.h"
 
 void SignalHandler(int signal) {
     if (signal != SIGINT)
@@ -56,6 +57,7 @@ int main(int argc, char** argv) {
     SBR_RateLimitClearerThread_Create();
     SBR_RateLimitDetecterThread_Create();
     SBR_Command_Initialize();
+    SBR_Category_Initialize();
     // TODO: Console command thread
     SBR_BotSetup_Main();
 
@@ -68,6 +70,7 @@ int main(int argc, char** argv) {
         break;
     }
 
+    SBR_Category_Destroy();
     SBR_Command_Destroy();
     BA_LOGGER_INFO("Closing threads (press CTRL+C if frozen)\n");
     SBR_RateLimitDetecterThread_Destroy();

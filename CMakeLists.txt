@@ -60,7 +60,8 @@ set(SOURCE source/Token.c
            source/Discord/EmbedCreator.c
            source/Sleep.c
            source/Commands/Command.c
-           source/Commands/Commands.c)
+           source/Commands/Commands.c
+           source/Commands/Category.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
