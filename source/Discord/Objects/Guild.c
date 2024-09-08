@@ -33,10 +33,9 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(defaultMessageNotifications, "default_message_notifications", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDGUILD_CUSTOM_FLAG_NOTIFICATIONS_MENTIONS_ONLY);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(filterLevel, "explicit_content_filter", REQUIRED, NOT_SAME);
 
-    object->roles = NULL; // TODO
-    object->emojis = NULL; // TODO
-    object->features = SBR_DISCORDGUILD_FEATURE_NULL; // TODO
-
+    // TODO: roles
+    // TODO: emojis
+    // TODO: features
     // NOTE: Same as above
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(multiFactorAuthenticationLevel, "mfa_level", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDGUILD_CUSTOM_FLAG_REQUIRES_MULTI_FACTOR_AUTHENTICATION);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(applicationId, "application_id", OPTIONAL, NOT_SAME);
