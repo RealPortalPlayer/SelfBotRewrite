@@ -53,7 +53,7 @@ typedef enum {
     SBR_DISCORDCHANNEL_VIDEO_QUALITY_MODE_FULL = 2
 } SBR_DiscordChannel_VideoQualityModes;
 
-typedef struct {
+typedef struct SBR_DiscordChannel {
     SBR_Snowflake* id;
     SBR_DiscordChannel_Types type;
     SBR_Snowflake* guildId;

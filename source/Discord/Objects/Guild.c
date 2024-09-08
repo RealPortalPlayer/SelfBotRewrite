@@ -61,6 +61,10 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
 
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(premiumProgressBarEnabled, "premium_progress_bar_enabled", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDGUILD_CUSTOM_FLAG_PREMIUM_PROGRESS_BAR_ENABLED);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(safetyAlertsChannelId, "safety_alerts_channel_id", OPTIONAL, NOT_SAME);
+
+    if (object->systemChannelId != NULL)
+        object->systemChannel = SBR_DiscordChannel_Get(object->systemChannelId);
+    
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
 
