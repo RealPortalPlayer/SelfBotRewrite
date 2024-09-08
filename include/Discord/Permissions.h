@@ -125,3 +125,4 @@ BA_Boolean SBR_DiscordPermissions_IsTextChannelPermission(unsigned long permissi
 BA_Boolean SBR_DiscordPermissions_IsVoicePermission(unsigned long permission);
 BA_Boolean SBR_DiscordPermissions_IsStagePermission(unsigned long permission);
 char* SBR_DiscordPermissions_ConvertToString(unsigned long permission);
+unsigned long SBR_DiscordPermissions_ConvertFromString(const char* permission);

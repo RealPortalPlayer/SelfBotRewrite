@@ -3,6 +3,7 @@
 
 #include <BaconAPI/Math/Bitwise.h>
 #include <BaconAPI/String.h>
+#include <BaconAPI/Number.h>
 
 #include "Discord/Permissions.h"
 
@@ -111,4 +112,8 @@ char* SBR_DiscordPermissions_ConvertToString(unsigned long permission) {
     char* formatter = BA_String_Copy("%lu");
 
     return BA_String_Format(&formatter, permission);
+}
+
+unsigned long SBR_DiscordPermissions_ConvertFromString(const char* permission) {
+    return BA_Number_StringToUnsignedLong(permission, NULL, NULL, "Invalid permissions\n", 0);
 }
