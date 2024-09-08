@@ -2,6 +2,7 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Math/Bitwise.h>
+#include <BaconAPI/String.h>
 
 #include "Discord/Permissions.h"
 
@@ -106,3 +107,8 @@ BA_Boolean SBR_DiscordPermissions_IsStagePermission(unsigned long permission) {
            BA_BITWISE_IS_BIT_SET(permission, SBR_DISCORDPERMISSION_SEND_POLLS);
 }
 
+char* SBR_DiscordPermissions_ConvertToString(unsigned long permission) {
+    char* formatter = BA_String_Copy("%lu");
+
+    return BA_String_Format(&formatter, permission);
+}

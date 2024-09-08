@@ -124,3 +124,4 @@ BA_Boolean SBR_DiscordPermissions_Requires2FA(unsigned long permission);
 BA_Boolean SBR_DiscordPermissions_IsTextChannelPermission(unsigned long permission);
 BA_Boolean SBR_DiscordPermissions_IsVoicePermission(unsigned long permission);
 BA_Boolean SBR_DiscordPermissions_IsStagePermission(unsigned long permission);
+char* SBR_DiscordPermissions_ConvertToString(unsigned long permission);
