@@ -74,6 +74,11 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
         object->systemChannel->guild = object;
     }
 
+    if (object->rulesChannelId != NULL) {
+        object->rulesChannel = SBR_DiscordChannel_Get(object->rulesChannelId);
+        object->rulesChannel->guild = object;
+    }
+
     creatingGuild = BA_BOOLEAN_FALSE;
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }

@@ -171,6 +171,7 @@ typedef struct {
     BA_DynamicArray* stickers;
     SBR_Snowflake* safetyAlertsChannelId;
     struct SBR_DiscordChannel* systemChannel;
+    struct SBR_DiscordChannel* rulesChannel;
 } SBR_DiscordGuild;
 
 SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData);
