@@ -10,7 +10,7 @@
 int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
     SBR_Settings_Load();
-    SBR_cURL_LooopInitialize(NULL);
+    SBR_cURL_LoopInitialize(NULL);
 
     SBR_Snowflake* snowflake = SBR_Snowflake_ConvertFromNumber(570600829330128906);
     

@@ -17,7 +17,7 @@ BA_Boolean SBR_cURL_WebSocketSend(const void* data, size_t size, size_t* sent, u
 void SBR_cURL_Close(BA_Boolean success);
 BA_Boolean SBR_cURL_WebSocketReceive(void* buffer, size_t bufferSize, size_t* receivedBytes, const struct curl_ws_frame** metadata);
 BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post, char** response);
-void SBR_cURL_LooopInitialize(const char* webSocketUrl);
+void SBR_cURL_LoopInitialize(const char* webSocketUrl);
 
 #define SBR_CURL_ASSERT(call, message) \
 do {                               \

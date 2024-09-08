@@ -181,7 +181,7 @@ BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post,
     return BA_BOOLEAN_TRUE;
 }
 
-void SBR_cURL_LooopInitialize(const char* webSocketUrl) {
+void SBR_cURL_LoopInitialize(const char* webSocketUrl) {
     int attempts = 0;
     
     while (BA_BOOLEAN_TRUE) {

@@ -45,7 +45,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
         BA_LOGGER_DEBUG("Event buffer size: %i character(s)\n", bufferSize);
     }
     
-    SBR_cURL_LooopInitialize(NULL);
+    SBR_cURL_LoopInitialize(NULL);
     
     sbrMainLoopDisconnected = BA_BOOLEAN_FALSE;
     
