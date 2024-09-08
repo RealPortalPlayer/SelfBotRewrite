@@ -83,10 +83,27 @@ SBR_DiscordMessage* SBR_DiscordAPIEvents_SendMessage(const SBR_Snowflake* id, co
         return NULL;
     }
 
-    if (content[0] == '\0' && embed == NULL) {
+#define SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(parameter) (embed->parameter == NULL || embed->parameter[0] == '\0')
+#define SBR_DISCORDEVENTS_MEDIA_IS_NULL_OR_EMPTY(parameter) SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(parameter.url) && SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(parameter.proxyUrl)
+    if (content[0] == '\0' &&
+        (embed == NULL ||
+            (SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(title) &&
+             SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(description) &&
+             SBR_DISCORDEVENTS_MEDIA_IS_NULL_OR_EMPTY(image) &&
+             SBR_DISCORDEVENTS_MEDIA_IS_NULL_OR_EMPTY(thumbnail) &&
+             SBR_DISCORDEVENTS_MEDIA_IS_NULL_OR_EMPTY(video) &&
+             SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(provider.name) &&
+             SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(provider.url) &&
+             SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(author.name) &&
+             SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(author.url) &&
+             SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(author.iconUrl) &&
+             SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY(author.proxyIconUrl) &&
+             embed->fields.used == 0))) {
         BA_LOGGER_ERROR("Message contents cannot be empty\n");
         return NULL;
     }
+#undef SBR_DISCORDEVENTS_MEDIA_IS_NULL_OR_EMPTY
+#undef SBR_DISCORDEVENTS_IS_NULL_OR_EMPTY
     
     json_object* data = json_object_new_object();
 
