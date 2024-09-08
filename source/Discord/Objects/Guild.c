@@ -78,6 +78,7 @@ do {                                \
 } while (BA_BOOLEAN_FALSE)
 
     SBR_GUILD_GET_CHANNEL(afkChannel);
+    SBR_GUILD_GET_CHANNEL(widgetChannel);
     SBR_GUILD_GET_CHANNEL(systemChannel);
     SBR_GUILD_GET_CHANNEL(rulesChannel);
 
