@@ -6,12 +6,21 @@
 #include "Discord/API/Events.h"
 
 SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
+    static BA_Boolean creatingGuild = BA_BOOLEAN_FALSE;
+
+    if (creatingGuild)
+        return NULL;
+
+    creatingGuild = BA_BOOLEAN_TRUE;
+    
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordGuild, "Discord guild");
     SBR_OBJECTCREATORHELPERS_GET_BOOLEAN(unavailable, "", OPTIONAL, SAME);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
 
-    if (object->unavailable)
+    if (object->unavailable) {
+        creatingGuild = BA_BOOLEAN_FALSE;
         SBR_OBJECTCREATORHELPERS_FOOTER();
+    }
 
     SBR_OBJECTCREATORHELPERS_GET_STRING(name, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(iconHash, "icon", OPTIONAL, NOT_SAME);
@@ -56,15 +65,14 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(approximatePresenceCount, "approximate_presence_count", OPTIONAL, NOT_SAME);
     // TODO: welcome_screen
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(notSafeForWorkLevel, "nsfw_level", REQUIRED, NOT_SAME);
-
-    object->stickers = NULL; // TODO
-
+    // TODO: stickers
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(premiumProgressBarEnabled, "premium_progress_bar_enabled", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDGUILD_CUSTOM_FLAG_PREMIUM_PROGRESS_BAR_ENABLED);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(safetyAlertsChannelId, "safety_alerts_channel_id", OPTIONAL, NOT_SAME);
 
     if (object->systemChannelId != NULL)
         object->systemChannel = SBR_DiscordChannel_Get(object->systemChannelId);
-    
+
+    creatingGuild = BA_BOOLEAN_FALSE;
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
 
