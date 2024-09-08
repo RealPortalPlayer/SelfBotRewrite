@@ -174,6 +174,7 @@ typedef struct {
     struct SBR_DiscordChannel* widgetChannel;
     struct SBR_DiscordChannel* systemChannel;
     struct SBR_DiscordChannel* rulesChannel;
+    struct SBR_DiscordChannel* publicUpdatesChannel;
 } SBR_DiscordGuild;
 
 SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData);

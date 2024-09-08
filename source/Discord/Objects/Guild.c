@@ -81,6 +81,7 @@ do {                                \
     SBR_GUILD_GET_CHANNEL(widgetChannel);
     SBR_GUILD_GET_CHANNEL(systemChannel);
     SBR_GUILD_GET_CHANNEL(rulesChannel);
+    SBR_GUILD_GET_CHANNEL(publicUpdatesChannel);
 
     if (object->rulesChannelId != NULL) {
         object->rulesChannel = SBR_DiscordChannel_Get(object->rulesChannelId);
