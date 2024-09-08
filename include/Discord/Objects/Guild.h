@@ -172,3 +172,5 @@ typedef struct {
 } SBR_DiscordGuild;
 
 SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData);
+
+SBR_DiscordGuild* SBR_DiscordGuild_Get(const SBR_Snowflake* id);

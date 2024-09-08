@@ -3,6 +3,7 @@
 
 #include "Discord/Objects/Guild.h"
 #include "Discord/Objects/ObjectCreatorHelpers.h"
+#include "Discord/API/Events.h"
 
 SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordGuild, "Discord guild");
@@ -59,3 +60,8 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(safetyAlertsChannelId, "safety_alerts_channel_id", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
+
+SBR_DiscordGuild* SBR_DiscordGuild_Get(const SBR_Snowflake* id) {
+    return SBR_DiscordAPIEvents_GetGuild(id);
+}
+
