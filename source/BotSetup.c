@@ -5,6 +5,7 @@
 #include <BaconAPI/Logger.h>
 #include <BaconAPI/String.h>
 #include <BaconAPI/Math/Bitwise.h>
+#include <BaconAPI/String.h>
 
 #include "Discord/Intents.h"
 #include "Events.h"
@@ -38,8 +39,35 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
     
     if (command == NULL)
         goto destroy;
+    
+    {
+        const char* results = command->Action(command, message);
+        SBR_EmbedCreator_Embed* embed = SBR_EmbedCreator_Create();
+        char* parsedId = BA_String_Copy("%ld");
 
-    command->Action(command, message);
+        SBR_EmbedCreator_AddField(embed, "Success", results == NULL ? "true" : "false", BA_BOOLEAN_TRUE);
+        SBR_EmbedCreator_AddField(embed, "Command", name, BA_BOOLEAN_TRUE);
+        SBR_EmbedCreator_AddField(embed, "Arguments", "None", BA_BOOLEAN_TRUE); // TODO
+        SBR_EmbedCreator_AddField(embed, "Message", message->content, BA_BOOLEAN_TRUE);
+        SBR_EmbedCreator_AddField(embed, "ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->author->id)), BA_BOOLEAN_TRUE);
+
+        if (message->channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT) {
+            free(parsedId);
+
+            parsedId = BA_String_Copy("%ld");
+
+            SBR_EmbedCreator_AddField(embed, "Guild ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guildId)), BA_BOOLEAN_TRUE);
+            // TODO: Guild Owner ID
+        }
+
+        if (results != NULL)
+            SBR_EmbedCreator_AddField(embed, "Reason", results, BA_BOOLEAN_TRUE);
+
+        SBR_SupportChannels_SendLogsMessage("", embed);
+        free(parsedId);
+        SBR_EmbedCreator_Free(embed);
+    }
+    
     destroy:
     free(name);
     
