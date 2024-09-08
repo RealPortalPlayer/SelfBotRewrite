@@ -12,7 +12,7 @@
 #include "Commands/Category.h"
 #include "DebugInformation.h"
 
-#define SBR_COMMANDS_CREATE_COMMAND_HEADER(name) void SBR_Commands_ ## name(const SBR_Command* this, SBR_DiscordMessage* message)
+#define SBR_COMMANDS_CREATE_COMMAND_HEADER(name) const char* SBR_Commands_ ## name(const SBR_Command* this, SBR_DiscordMessage* message)
 #define SBR_COMMANDS_REGISTER(name, description, category, type) SBR_Command_Register(#name, description, category, type, (SBR_Command_Action) &SBR_Commands_ ## name)
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(test);
@@ -31,6 +31,7 @@ SBR_COMMANDS_CREATE_COMMAND_HEADER(test) {
     
     SBR_DiscordChannel_Send(message->channel, BA_String_Format(&newMessage, this->name), NULL);
     free(newMessage);
+    return NULL;
 }
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(help) {
@@ -46,6 +47,7 @@ SBR_COMMANDS_CREATE_COMMAND_HEADER(help) {
 
     SBR_DiscordChannel_Send(message->channel, "", embed);
     SBR_EmbedCreator_Free(embed);
+    return NULL;
 }
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(debug) {
@@ -53,4 +55,5 @@ SBR_COMMANDS_CREATE_COMMAND_HEADER(debug) {
     
     SBR_DiscordChannel_Send(message->channel, newMessage, NULL);
     free(newMessage);
+    return NULL;
 }
