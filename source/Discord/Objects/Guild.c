@@ -69,10 +69,17 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(premiumProgressBarEnabled, "premium_progress_bar_enabled", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDGUILD_CUSTOM_FLAG_PREMIUM_PROGRESS_BAR_ENABLED);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(safetyAlertsChannelId, "safety_alerts_channel_id", OPTIONAL, NOT_SAME);
 
-    if (object->systemChannelId != NULL) {
-        object->systemChannel = SBR_DiscordChannel_Get(object->systemChannelId);
-        object->systemChannel->guild = object;
-    }
+#define SBR_GUILD_GET_CHANNEL(name) \
+do {                                \
+    if (object->name ## Id != NULL) { \
+        object->name = SBR_DiscordGuild_Get(object->name ## Id); \
+        object->name->guild = object; \
+    }                               \
+} while (BA_BOOLEAN_FALSE)
+
+    SBR_GUILD_GET_CHANNEL(afkChannel);
+    SBR_GUILD_GET_CHANNEL(systemChannel);
+    SBR_GUILD_GET_CHANNEL(rulesChannel);
 
     if (object->rulesChannelId != NULL) {
         object->rulesChannel = SBR_DiscordChannel_Get(object->rulesChannelId);

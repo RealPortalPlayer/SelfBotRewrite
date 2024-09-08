@@ -170,6 +170,7 @@ typedef struct {
     SBR_DiscordGuild_NotSafeForWorkLevels notSafeForWorkLevel;
     BA_DynamicArray* stickers;
     SBR_Snowflake* safetyAlertsChannelId;
+    struct SBR_DiscordChannel* afkChannel;
     struct SBR_DiscordChannel* systemChannel;
     struct SBR_DiscordChannel* rulesChannel;
 } SBR_DiscordGuild;
