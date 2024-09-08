@@ -51,12 +51,12 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
         SBR_EmbedCreator_AddField(embed, "Message", message->content, BA_BOOLEAN_TRUE);
         SBR_EmbedCreator_AddField(embed, "ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->author->id)), BA_BOOLEAN_TRUE);
 
-        if (message->channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT) {
+        if (message->channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT && !message->channel->guild->unavailable) {
             free(parsedId);
 
             parsedId = BA_String_Copy("%lu");
 
-            SBR_EmbedCreator_AddField(embed, "Guild ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guildId)), BA_BOOLEAN_TRUE);
+            SBR_EmbedCreator_AddField(embed, "Guild ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guild->id)), BA_BOOLEAN_TRUE);
             free(parsedId);
 
             parsedId = BA_String_Copy("%lu");
