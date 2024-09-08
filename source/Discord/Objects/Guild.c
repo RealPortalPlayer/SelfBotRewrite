@@ -71,9 +71,10 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
 
 #define SBR_GUILD_GET_CHANNEL(name) \
 do {                                \
-    if (object->name ## Id != NULL) { \
+    if (object->name ## Id->timestamp != SBR_SNOWFLAKE_EPOCH) { \
         object->name = SBR_DiscordChannel_Get(object->name ## Id); \
-        object->name->guild = object; \
+        if (object->name != NULL)   \
+            object->name->guild = object; \
     }                               \
 } while (BA_BOOLEAN_FALSE)
 
@@ -82,12 +83,7 @@ do {                                \
     SBR_GUILD_GET_CHANNEL(systemChannel);
     SBR_GUILD_GET_CHANNEL(rulesChannel);
     SBR_GUILD_GET_CHANNEL(publicUpdatesChannel);
-
-    if (object->rulesChannelId != NULL) {
-        object->rulesChannel = SBR_DiscordChannel_Get(object->rulesChannelId);
-        object->rulesChannel->guild = object;
-    }
-
+    
     creatingGuild = BA_BOOLEAN_FALSE;
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }

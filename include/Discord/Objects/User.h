@@ -1,8 +1,8 @@
-// Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
-// Licensed under MIT <https://opensource.org/licenses/MIT>
-
 // Purpose: Discord user
 // Created on: 4/26/24 @ 6:42 PM
+
+// Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
+// Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #pragma once
 
