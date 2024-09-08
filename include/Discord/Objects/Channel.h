@@ -10,6 +10,7 @@
 
 #include "Snowflake.h"
 #include "../EmbedCreator.h"
+#include "Guild.h"
 
 typedef enum {
     SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT,
@@ -86,6 +87,7 @@ typedef struct {
     int defaultThreadRateLimitPerUser;
     int defaultSortOrder;
     int defaultForumLayout;
+    SBR_DiscordGuild* guild;
 } SBR_DiscordChannel;
 
 typedef struct SBR_DiscordMessage SBR_DiscordMessage;

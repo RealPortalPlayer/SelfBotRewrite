@@ -41,6 +41,16 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(defaultThreadRateLimitPerUser, "default_thread_rate_limit_per_user", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(defaultSortOrder, "default_sort_order", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(defaultForumLayout, "default_forum_layout", OPTIONAL, NOT_SAME);
+
+    // TODO: Turn into own macro
+    object->guild = NULL;
+
+    if (object->type == SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT) {
+        object->guild = SBR_DiscordGuild_Get(object->guildId);
+
+        SBR_OBJECTCREATORHELPERS_CHECK_REQUIRED(object->guild);
+    }
+
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
 
