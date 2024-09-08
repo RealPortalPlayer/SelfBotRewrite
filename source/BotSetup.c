@@ -43,7 +43,7 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
     {
         const char* results = command->Action(command, message);
         SBR_EmbedCreator_Embed* embed = SBR_EmbedCreator_Create();
-        char* parsedId = BA_String_Copy("%ld");
+        char* parsedId = BA_String_Copy("%lu");
 
         SBR_EmbedCreator_AddField(embed, "Success", results == NULL ? "true" : "false", BA_BOOLEAN_TRUE);
         SBR_EmbedCreator_AddField(embed, "Command", name, BA_BOOLEAN_TRUE);
@@ -54,10 +54,9 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
         if (message->channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT) {
             free(parsedId);
 
-            parsedId = BA_String_Copy("%ld");
+            parsedId = BA_String_Copy("%lu");
 
             SBR_EmbedCreator_AddField(embed, "Guild ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guildId)), BA_BOOLEAN_TRUE);
-            // TODO: Guild Owner ID
         }
 
         if (results != NULL)
