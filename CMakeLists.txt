@@ -62,7 +62,8 @@ set(SOURCE source/Token.c
            source/Commands/Command.c
            source/Commands/Commands.c
            source/Commands/Category.c
-           source/Commands/Categories.c)
+           source/Commands/Categories.c
+           source/SupportChannels.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
