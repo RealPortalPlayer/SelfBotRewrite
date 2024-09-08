@@ -39,6 +39,7 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
     // NOTE: Same as above
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(multiFactorAuthenticationLevel, "mfa_level", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDGUILD_CUSTOM_FLAG_REQUIRES_MULTI_FACTOR_AUTHENTICATION);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(applicationId, "application_id", OPTIONAL, NOT_SAME);
+    SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(systemChannelId, "system_channel_id", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(systemChannelFlags, "system_channel_flags", REQUIRED, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(rulesChannelId, "rules_channel_id", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(maxPresences, "max_presences", OPTIONAL, NOT_SAME);
