@@ -5,6 +5,7 @@
 #include <BaconAPI/String.h>
 #include <BaconAPI/Math/Bitwise.h>
 #include <BaconAPI/Storage/DynamicDictionary.h>
+#include <BaconAPI/Internal/OperatingSystem.h>
 
 #include "Commands/Commands.h"
 #include "Commands/Command.h"
@@ -51,7 +52,8 @@ SBR_COMMANDS_CREATE_COMMAND_HEADER(debug) {
                                       "Classic categories: %i\n"
                                       "Classic commands: %i\n"
                                       "Slash commands: %i\n"
-                                      "Version: %s");
+                                      "Version: %s\n"
+                                      "OS: %s");
 
     int terminalCommands = 0;
     int classicCommands = 0;
@@ -76,6 +78,7 @@ SBR_COMMANDS_CREATE_COMMAND_HEADER(debug) {
                                                                             SBR_Category_GetAll()->keys.used,
                                                                             classicCommands,
                                                                             slashCommands,
-                                                                            SBR_VERSION), NULL);
+                                                                            SBR_VERSION,
+                                                                            BA_OPERATINGSYSTEM_NAME), NULL);
     free(newMessage);
 }
