@@ -39,28 +39,33 @@ json_object* key = json_object_object_get(unparsedJsonData, SBR_OBJECTCREATORHEL
 SBR_OBJECTCREATORHELPERS_CHECK_ ## required(key)
 
 #define SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) \
-SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);        \
-object->key
+do {                                                                    \
+    SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);    \
+    object->key
 
 #define SBR_OBJECTCREATORHELPERS_GRAB(key, required, caller) \
-object->key = caller(object->key ## Id);                     \
-SBR_OBJECTCREATORHELPERS_CHECK_ ## required(object->key)
+do {                                                         \
+    object->key = caller(object->key ## Id);                 \
+    SBR_OBJECTCREATORHELPERS_CHECK_ ## required(object->key); \
+} while (BA_BOOLEAN_FALSE)
 
 
-#define SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_Snowflake_ConvertFromNumber(json_object_get_uint64(key))
-#define SBR_OBJECTCREATORHELPERS_GET_STRING(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_string(key)
-#define SBR_OBJECTCREATORHELPERS_GET_BOOLEAN(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_boolean(key)
-#define SBR_OBJECTCREATORHELPERS_GET_INTEGER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_int(key)
+#define SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_Snowflake_ConvertFromNumber(json_object_get_uint64(key)); } while (BA_BOOLEAN_FALSE)
+#define SBR_OBJECTCREATORHELPERS_GET_STRING(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_string(key); } while (BA_BOOLEAN_FALSE)
+#define SBR_OBJECTCREATORHELPERS_GET_BOOLEAN(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_boolean(key); } while (BA_BOOLEAN_FALSE)
+#define SBR_OBJECTCREATORHELPERS_GET_INTEGER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_int(key); } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(key, keyString, required, sameKey, flags, bit) \
-SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);                                   \
-if (json_object_get_boolean(key))                                                                  \
-    BA_BITWISE_SET_BIT(object->flags, bit)
+do {                                                                                               \
+    SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey);                               \
+    if (json_object_get_boolean(key))                                                              \
+        BA_BITWISE_SET_BIT(object->flags, bit);                                                    \
+} while (BA_BOOLEAN_FALSE)
 
-#define SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = key
-#define SBR_OBJECTCREATORHELPERS_GET_USER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordUser_Create(key)
-#define SBR_OBJECTCREATORHELPERS_GET_LOCALE(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordLocales_FromLanguageCode(json_object_get_string(key))
-#define SBR_OBJECTCREATORHELPERS_GET_PERMISSIONS(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordPermissions_ConvertFromString(json_object_get_string(key))
+#define SBR_OBJECTCREATORHELPERS_GET_JSON_OBJECT(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = key; } while (BA_BOOLEAN_FALSE)
+#define SBR_OBJECTCREATORHELPERS_GET_USER(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordUser_Create(key); } while (BA_BOOLEAN_FALSE)
+#define SBR_OBJECTCREATORHELPERS_GET_LOCALE(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordLocales_FromLanguageCode(json_object_get_string(key)); } while (BA_BOOLEAN_FALSE)
+#define SBR_OBJECTCREATORHELPERS_GET_PERMISSIONS(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordPermissions_ConvertFromString(json_object_get_string(key)); } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_GRAB_GUILD(key, required) SBR_OBJECTCREATORHELPERS_GRAB(key, required, SBR_DiscordGuild_Get)
 
