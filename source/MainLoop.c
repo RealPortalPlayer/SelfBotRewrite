@@ -26,6 +26,7 @@
 #include "Discord/Gateway/Error.h"
 #include "Threads/Heartbeat.h"
 #include "Discord/Gateway/Events.h"
+#include "Memory.h"
 
 static volatile BA_Boolean sbrMainLoopDisconnected = BA_BOOLEAN_FALSE;
 static volatile BA_Boolean sbrMainLoopShuttingDown = BA_BOOLEAN_FALSE;
@@ -52,12 +53,10 @@ BA_Boolean SBR_MainLoop_Start(void) {
     while (!SBR_MainLoop_IsShuttingDown()) {
         size_t receivedBytes;
         const struct curl_ws_frame* metadata;
-        char* buffer = malloc(bufferSize + 1);
-        
-        BA_ASSERT(buffer != NULL, "Failed to allocate memory for event buffer\n");
-        
+        char* buffer = BA_Memory_Allocate(bufferSize + 1, SBR_MEMORY_TYPE_EVENT_BUFFER);
+            
         if (!SBR_cURL_WebSocketReceive(buffer, bufferSize, &receivedBytes, &metadata)) {
-            free(buffer);
+            BA_Memory_Deallocate(buffer, bufferSize + 1, SBR_MEMORY_TYPE_EVENT_BUFFER);
             
             if (sbrMainLoopDisconnected)
                 break;
@@ -79,11 +78,12 @@ BA_Boolean SBR_MainLoop_Start(void) {
                 if (SBR_cURL_WebSocketReceive(&temporaryBuffer, bufferSize, &temporaryReceivedBytes, &metadata)) {
                     temporaryBuffer[temporaryReceivedBytes] = '\0';
                     
+                    BA_Memory_AddSize(temporaryReceivedBytes, SBR_MEMORY_TYPE_EVENT_BUFFER);
                     BA_String_Append(&buffer, temporaryBuffer);
                     continue;
                 }
 
-                free(buffer);
+                BA_Memory_Deallocate(buffer, sizeof(char) * (strlen(buffer) + 1), SBR_MEMORY_TYPE_EVENT_BUFFER);
                 
                 disconnected = BA_BOOLEAN_TRUE;
                 break;
@@ -103,7 +103,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
             code = ntohs(code);
 
             SBR_Gateway_ParseError(code, message);
-            free(buffer);
+            BA_Memory_Deallocate(buffer, sizeof(char) * (strlen(buffer) + 1), SBR_MEMORY_TYPE_EVENT_BUFFER);
 
             if (!SBR_GatewayError_CanReconnect(code) || sbrMainLoopDisconnected) { // HACK: For invalidated session
                 BA_LOGGER_INFO("Cannot reconnect, restarting bot\n");
@@ -116,7 +116,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
         }
         
         SBR_Gateway_Parse(buffer);
-        free(buffer);
+        BA_Memory_Deallocate(buffer, sizeof(char) * (strlen(buffer) + 1), SBR_MEMORY_TYPE_EVENT_BUFFER);
     }
 
     SBR_cURL_Close(BA_BOOLEAN_TRUE);
