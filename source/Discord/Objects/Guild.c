@@ -92,3 +92,32 @@ SBR_DiscordGuild* SBR_DiscordGuild_Get(const SBR_Snowflake* id) {
     return SBR_DiscordAPIEvents_GetGuild(id);
 }
 
+void SBR_DiscordGuild_Deallocate(SBR_DiscordGuild* guild) {
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->id, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(guild->owner, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->ownerId, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->afkChannelId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->widgetChannelId, OPTIONAL);
+    // TODO: roles
+    // TODO: emojis
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->applicationId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->systemChannelId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->rulesChannelId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->publicUpdatesChannelId, OPTIONAL);
+    // TODO: welcomeScreen
+    // TODO: stickers
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->safetyAlertsChannelId, OPTIONAL);
+
+#define SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(variable) \
+SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_OPTIONAL(variable) \
+variable->guild = NULL;                               \
+SBR_DiscordChannel_Deallocate(variable);              \
+variable = NULL; } } while (BA_BOOLEAN_FALSE)
+
+    SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(guild->afkChannel);
+    SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(guild->widgetChannel);
+    SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(guild->systemChannel);
+    SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(guild->rulesChannel);
+    SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(guild->publicUpdatesChannel);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(guild, sizeof(SBR_DiscordGuild), SBR_MEMORY_TYPE_GUILD, REQUIRED);
+}
