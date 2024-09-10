@@ -21,3 +21,13 @@ SBR_DiscordGuildMember* SBR_DiscordGuildMember_Create(json_object* unparsedJsonD
     // TODO: avatar_decoration_data
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
+
+void SBR_DiscordGuildMember_Deallocate(SBR_DiscordGuildMember* guildMember) {
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(guildMember->user, OPTIONAL);
+    // TODO: roles
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->joinedAt, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->premiumSince, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->communicationDisabledUntil, OPTIONAL);
+    // TODO: avatar_decoration_data
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(guildMember, sizeof(SBR_DiscordGuildMember), SBR_MEMORY_TYPE_GUILD_MEMBER, REQUIRED);
+}

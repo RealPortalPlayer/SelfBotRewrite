@@ -53,3 +53,5 @@ typedef struct {
 } SBR_DiscordGuildMember;
 
 SBR_DiscordGuildMember* SBR_DiscordGuildMember_Create(json_object* unparsedJsonData);
+
+void SBR_DiscordGuildMember_Deallocate(SBR_DiscordGuildMember* guildMember);
