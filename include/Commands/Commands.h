@@ -6,4 +6,9 @@
 
 #pragma once
 
+#include "Discord/Objects/Message.h"
+#include "Command.h"
+
 void SBR_Commands_Register(void);
+
+#define SBR_COMMANDS_CREATE_COMMAND_HEADER(name) const char* SBR_Commands_ ## name(const SBR_Command* this, SBR_DiscordMessage* message)

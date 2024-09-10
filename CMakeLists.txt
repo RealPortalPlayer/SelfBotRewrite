@@ -67,7 +67,10 @@ set(SOURCE source/Token.c
            source/DebugInformation.c
            source/Discord/Objects/Emoji.c
            source/Discord/Objects/GuildMember.c
-           source/Time.c)
+           source/Time.c
+           source/Commands/TestCommand.c
+           source/Commands/HelpCommand.c
+           source/Commands/DebugCommand.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
