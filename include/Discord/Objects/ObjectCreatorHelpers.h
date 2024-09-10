@@ -90,3 +90,7 @@ SBR_Snowflake_Deallocate(variable)
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(variable, required) \
 SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                   \
 SBR_DiscordUser_Deallocate(variable)
+
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(variable, required) \
+SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                   \
+SBR_Time_Deallocate(variable)

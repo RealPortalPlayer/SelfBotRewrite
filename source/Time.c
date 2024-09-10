@@ -41,3 +41,7 @@ const char* SBR_Time_GetMonthName(const struct tm* time) {
 const char* SBR_Time_GetDayName(const struct tm* time) {
     return sbrTimeDayNames[time->tm_wday * (time->tm_wday < 0 ? -1 : 1) % 7];
 }
+
+void SBR_Time_Deallocate(struct tm* time) {
+    BA_Memory_Deallocate(time, sizeof(struct tm), SBR_MEMORY_TYPE_TIME);
+}
