@@ -119,6 +119,7 @@ typedef struct SBR_DiscordMessage {
     // TODO: role_subscription_data
     // TODO: resolved
     // TODO: poll
+    // TODO: call
 } SBR_DiscordMessage;
 
 SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData);
