@@ -76,9 +76,9 @@ BA_Boolean SBR_MainLoop_Start(void) {
                 size_t temporaryReceivedBytes;
 
                 if (SBR_cURL_WebSocketReceive(&temporaryBuffer, bufferSize, &temporaryReceivedBytes, &metadata)) {
-                    temporaryBuffer[temporaryReceivedBytes] = '\0';
+                    temporaryBuffer[bufferSize + 1] = '\0';
                     
-                    BA_Memory_AddSize(temporaryReceivedBytes, SBR_MEMORY_TYPE_EVENT_BUFFER);
+                    BA_Memory_AddSize(bufferSize + 1, SBR_MEMORY_TYPE_EVENT_BUFFER);
                     BA_String_Append(&buffer, temporaryBuffer);
                     continue;
                 }
