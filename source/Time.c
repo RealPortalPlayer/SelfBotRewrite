@@ -2,9 +2,9 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <stdlib.h>
-#include <BaconAPI/Debugging/Assert.h>
 
 #include "Time.h"
+#include "Memory.h"
 
 static char* sbrTimeMonthNames[] = {
     "January", "February", "March",
@@ -23,9 +23,8 @@ struct tm* SBR_Time_Parse(const char* string) {
     if (string == NULL)
         return NULL;
 
-    struct tm* time = malloc(sizeof(struct tm));
+    struct tm* time = BA_Memory_Allocate(sizeof(struct tm), SBR_MEMORY_TYPE_TIME);
 
-    BA_ASSERT(time != NULL, "Failed to allocate memory for time\n");
     sscanf(string, "%d-%d-%dT%d:%d:%dZ", &time->tm_year, &time->tm_mon, &time->tm_mday, &time->tm_hour, &time->tm_min, &time->tm_sec);
 
     time->tm_year -= 1900;
