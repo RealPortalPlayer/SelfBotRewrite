@@ -4,6 +4,7 @@
 #include <BaconAPI/Math/Bitwise.h>
 #include <BaconAPI/String.h>
 #include <BaconAPI/Number.h>
+#include <BaconAPI/Logger.h>
 
 #include "Discord/Permissions.h"
 
@@ -115,5 +116,5 @@ char* SBR_DiscordPermissions_ConvertToString(SBR_DiscordPermissions permission) 
 }
 
 SBR_DiscordPermissions SBR_DiscordPermissions_ConvertFromString(const char* permission) {
-    return BA_Number_StringToUnsignedLong(permission, NULL, NULL, "Invalid permissions\n", 0);
+    return permission != NULL ? BA_Number_StringToUnsignedLong(permission, NULL, NULL, "Invalid permissions\n", 0) : 0;
 }
