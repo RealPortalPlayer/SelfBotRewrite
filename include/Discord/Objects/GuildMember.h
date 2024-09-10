@@ -8,6 +8,7 @@
 
 #include <BaconAPI/Storage/DynamicArray.h>
 #include <json_object.h>
+#include <time.h>
 
 #include "User.h"
 #include "../Permissions.h"
@@ -42,12 +43,12 @@ typedef struct {
     const char* nick;
     const char* avatarHash;
     BA_DynamicArray* roles;
-    // TODO: joined_at
-    // TODO: premium_since
+    struct tm* joinedAt;
+    struct tm* premiumSince;
     SBR_DiscordGuildMember_CustomFlags customFlags;
     SBR_DiscordGuildMember_OfficialFlags officialFlags;
     SBR_DiscordPermissions permissions;
-    // TODO: communication_disabled_until
+    struct tm* communicationDisabledUntil;
     // TODO: avatar_decoration_data
 } SBR_DiscordGuildMember;
 
