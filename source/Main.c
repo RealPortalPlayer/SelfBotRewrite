@@ -16,6 +16,7 @@
 #include "BotSetup.h"
 #include "Commands/Command.h"
 #include "Commands/Category.h"
+#include "Memory.h"
 
 void SignalHandler(int signal) {
     if (signal != SIGINT)
@@ -77,6 +78,14 @@ int main(int argc, char** argv) {
     SBR_RateLimitClearerThread_Destroy();
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_TRUE);
     SBR_HeartbeatThread_Destroy();
+
+    if (BA_Memory_GetAllocatedBytes() > 0) {
+        char* message = BA_Memory_GetAllocatedInformation("");
+
+        BA_LOGGER_WARN("Memory leak detected:\n"
+                       "Leaked: %zu allocations, %zu bytes\n%s\n", BA_Memory_GetAllocatedAmount(), BA_Memory_GetAllocatedBytes(), message);
+        free(message);
+    }
     return 0;
 }
 
