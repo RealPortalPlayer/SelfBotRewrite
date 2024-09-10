@@ -74,23 +74,27 @@ do {                                                                            
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
 
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_REQUIRED(variable) (void) variable;
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_OPTIONAL(variable) if (variable != NULL) 
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_REQUIRED(variable) do { {
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_OPTIONAL(variable) do { if (variable != NULL) { 
 
 #define SBR_OBJECTCREATORHELPERS_CHECK(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_ ## required(variable)
 
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(variable, size, type, required) \
 SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                                 \
-BA_Memory_Deallocate(variable, size, type)
+BA_Memory_Deallocate(variable, size, type);                                        \
+variable = NULL; } } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(variable, required) \
 SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                        \
-SBR_Snowflake_Deallocate(variable)
+SBR_Snowflake_Deallocate(variable);                                       \
+variable = NULL; } } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(variable, required) \
 SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                   \
-SBR_DiscordUser_Deallocate(variable)
+SBR_DiscordUser_Deallocate(variable);                                \
+variable = NULL; } } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(variable, required) \
 SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                   \
-SBR_Time_Deallocate(variable)
+SBR_Time_Deallocate(variable);                                       \
+variable = NULL; } } while (BA_BOOLEAN_FALSE)
