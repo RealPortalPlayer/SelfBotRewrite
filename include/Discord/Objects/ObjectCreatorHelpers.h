@@ -14,6 +14,7 @@
 #include "User.h"
 #include "../Locale.h"
 #include "../Permissions.h"
+#include "Time.h"
 
 #define SBR_OBJECTCREATORHELPERS_HEADER(type, assertMessage) \
 if (unparsedJsonData == NULL)                                \
@@ -68,5 +69,7 @@ do {                                                                            
 #define SBR_OBJECTCREATORHELPERS_GET_PERMISSIONS(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordPermissions_ConvertFromString(json_object_get_string(key)); } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_GRAB_GUILD(key, required) SBR_OBJECTCREATORHELPERS_GRAB(key, required, SBR_DiscordGuild_Get)
+
+#define SBR_OBJECTCREATORHELPERS_GET_TIME(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_Time_Parse(json_object_get_string(key)); } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
