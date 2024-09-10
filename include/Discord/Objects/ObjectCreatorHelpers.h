@@ -79,27 +79,17 @@ do {                                                                            
 
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_ ## required(variable)
 
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, name, required) \
+SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)                  \
+SBR_ ## name ## _Deallocate(variable);                                         \
+variable = NULL; } } while (BA_BOOLEAN_FALSE)
+
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(variable, size, type, required) \
 SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)                      \
 BA_Memory_Deallocate(variable, size, type);                                        \
 variable = NULL; } } while (BA_BOOLEAN_FALSE)
 
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(variable, required) \
-SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)             \
-SBR_Snowflake_Deallocate(variable);                                       \
-variable = NULL; } } while (BA_BOOLEAN_FALSE)
-
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(variable, required) \
-SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)        \
-SBR_DiscordUser_Deallocate(variable);                                \
-variable = NULL; } } while (BA_BOOLEAN_FALSE)
-
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(variable, required) \
-SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)        \
-SBR_Time_Deallocate(variable);                                       \
-variable = NULL; } } while (BA_BOOLEAN_FALSE)
-
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(variable, required) \
-SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)           \
-SBR_DiscordChannel_Deallocate(variable);                                \
-variable = NULL; } } while (BA_BOOLEAN_FALSE)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, Snowflake, required)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordUser, required)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, Time, required)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordChannel, required)
