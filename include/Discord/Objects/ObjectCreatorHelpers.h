@@ -98,3 +98,8 @@ variable = NULL; } } while (BA_BOOLEAN_FALSE)
 SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                   \
 SBR_Time_Deallocate(variable);                                       \
 variable = NULL; } } while (BA_BOOLEAN_FALSE)
+
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(variable, required) \
+SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                      \
+SBR_DiscordChannel_Deallocate(variable);                                \
+variable = NULL; } } while (BA_BOOLEAN_FALSE)
