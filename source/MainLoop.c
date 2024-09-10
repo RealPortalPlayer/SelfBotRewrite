@@ -20,6 +20,7 @@
 #include <BaconAPI/String.h>
 
 #include "MainLoop.h"
+
 #include "cURL.h"
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Gateway.h"
@@ -27,6 +28,7 @@
 #include "Threads/Heartbeat.h"
 #include "Discord/Gateway/Events.h"
 #include "Memory.h"
+#include "Bot.h"
 
 static volatile BA_Boolean sbrMainLoopDisconnected = BA_BOOLEAN_FALSE;
 static volatile BA_Boolean sbrMainLoopShuttingDown = BA_BOOLEAN_FALSE;
@@ -120,6 +122,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
     }
 
     SBR_cURL_Close(BA_BOOLEAN_TRUE);
+    SBR_Bot_Set(NULL);
     return !sbrMainLoopDisconnected;
 #else
     BA_LOGGER_WARN("You're not supposed to call this\n");
