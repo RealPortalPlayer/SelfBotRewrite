@@ -17,7 +17,7 @@ SBR_COMMANDS_CREATE_COMMAND_HEADER(help) {
         SBR_EmbedCreator_AddField(embed, name, description != NULL ? description : "(NULL)", BA_BOOLEAN_TRUE);
     }
 
-    SBR_DiscordChannel_Send(message->channel, "", embed);
+    SBR_DiscordMessage_Deallocate(SBR_DiscordChannel_Send(message->channel, "", embed));
     SBR_EmbedCreator_Free(embed);
     return NULL;
 }
