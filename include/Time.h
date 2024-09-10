@@ -16,3 +16,4 @@ typedef struct {
 } SBR_Time;
 
 SBR_Time* SBR_Time_Parse(const char* string);
+const char* SBR_Time_GetMonthName(const SBR_Time* time);
