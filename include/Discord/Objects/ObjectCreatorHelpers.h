@@ -73,3 +73,20 @@ do {                                                                            
 #define SBR_OBJECTCREATORHELPERS_GET_TIME(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_Time_Parse(json_object_get_string(key)); } while (BA_BOOLEAN_FALSE)
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
+
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_REQUIRED(variable) if (variable != NULL)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_OPTIONAL(variable) (void) variable;
+
+#define SBR_OBJECTCREATORHELPERS_CHECK(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_ ## required(variable)
+
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(variable, size, type, required) \
+SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                                 \
+BA_Memory_Deallocate(variable, size, type)
+
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(variable, required) \
+SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                        \
+SBR_Snowflake_Deallocate(variable)
+
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(variable, required) \
+SBR_OBJECTCREATORHELPERS_CHECK(variable, required)                   \
+SBR_DiscordUser_Deallocate(variable)
