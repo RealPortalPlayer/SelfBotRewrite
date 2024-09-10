@@ -36,6 +36,9 @@ SBR_DiscordApplication* SBR_DiscordApplication_Create(json_object* unparsedJsonD
 }
 
 void SBR_DiscordApplication_Deallocate(SBR_DiscordApplication* application) {
+    if (application == NULL)
+        return;
+    
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->id, REQUIRED);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->bot, OPTIONAL);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->owner, OPTIONAL);

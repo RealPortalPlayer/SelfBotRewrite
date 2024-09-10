@@ -23,6 +23,9 @@ SBR_DiscordGuildMember* SBR_DiscordGuildMember_Create(json_object* unparsedJsonD
 }
 
 void SBR_DiscordGuildMember_Deallocate(SBR_DiscordGuildMember* guildMember) {
+    if (guildMember == NULL)
+        return;
+    
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(guildMember->user, OPTIONAL);
     // TODO: roles
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->joinedAt, REQUIRED);

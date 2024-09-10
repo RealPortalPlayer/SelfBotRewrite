@@ -32,5 +32,8 @@ uint64_t SBR_Snowflake_Create(uint64_t timestamp, uint8_t workerId, uint8_t proc
 }
 
 void SBR_Snowflake_Deallocate(SBR_Snowflake* snowflake) {
+    if (snowflake == NULL)
+        return;
+    
     BA_Memory_Deallocate(snowflake, sizeof(SBR_Snowflake), SBR_MEMORY_TYPE_SNOWFLAKE);
 }

@@ -45,6 +45,9 @@ SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
 }
 
 void SBR_DiscordMessage_Deallocate(SBR_DiscordMessage* message) {
+    if (message == NULL)
+        return;
+    
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->id, REQUIRED);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->channelId, REQUIRED);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(message->channel, OPTIONAL);

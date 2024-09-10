@@ -93,6 +93,9 @@ SBR_DiscordGuild* SBR_DiscordGuild_Get(const SBR_Snowflake* id) {
 }
 
 void SBR_DiscordGuild_Deallocate(SBR_DiscordGuild* guild) {
+    if (guild == NULL)
+        return;
+    
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->id, REQUIRED);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(guild->owner, REQUIRED);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(guild->ownerId, REQUIRED);

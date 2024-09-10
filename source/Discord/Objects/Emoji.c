@@ -18,6 +18,9 @@ SBR_DiscordEmoji* SBR_DiscordEmoji_Create(json_object* unparsedJsonData) {
 }
 
 void SBR_DiscordEmoji_Deallocate(SBR_DiscordEmoji* emoji) {
+    if (emoji == NULL)
+        return;
+    
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(emoji->id, OPTIONAL);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(emoji->user, OPTIONAL);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(emoji, sizeof(SBR_DiscordEmoji), SBR_MEMORY_TYPE_EMOJI, REQUIRED);

@@ -68,6 +68,9 @@ SBR_DiscordChannel* SBR_DiscordChannel_Get(const SBR_Snowflake* id) {
 }
 
 void SBR_DiscordChannel_Deallocate(SBR_DiscordChannel* channel) {
+    if (channel == NULL)
+        return;
+    
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->id, REQUIRED);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->guildId, OPTIONAL);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->lastMessageId, OPTIONAL);
