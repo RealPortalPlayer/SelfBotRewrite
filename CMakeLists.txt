@@ -14,6 +14,7 @@ if(DISCORD_API_VERSION LESS_EQUAL DISCORD_DEPRECATED_API_VERSION)
 endif()
 
 include(cURLOptions.cmake)
+set(BA_DISABLE_TEST_PROJECTS ON)
 add_subdirectory(dependencies/BaconAPI)
 add_subdirectory(dependencies/curl)
 add_subdirectory(dependencies/json-c)
