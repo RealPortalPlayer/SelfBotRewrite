@@ -78,4 +78,5 @@ SBR_GATEWAYDISPATCH_CREATE_EVENT_FUNCTION_HEADER(MESSAGE_CREATE) {
     }
 
     SBR_Events_MessageSent(message);
+    SBR_DiscordMessage_Deallocate(message);
 }
