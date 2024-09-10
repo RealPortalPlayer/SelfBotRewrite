@@ -13,7 +13,7 @@ const SBR_DiscordUser* SBR_Bot_Get(void) {
 
 void SBR_Bot_Set(SBR_DiscordUser* user) {
     if (sbrBotUser != NULL)
-        free(sbrBotUser);
+        SBR_DiscordUser_Deallocate(sbrBotUser);
 
     sbrBotUser = user;
 }
