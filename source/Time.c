@@ -13,14 +13,19 @@ static char* sbrTimeMonthNames[] = {
     "October", "November", "December"
 };
 
-SBR_Time* SBR_Time_Parse(const char* string) {
-    SBR_Time* time = malloc(sizeof(SBR_Time));
+struct tm* SBR_Time_Parse(const char* string) {
+    struct tm* time = malloc(sizeof(struct tm));
 
     BA_ASSERT(time != NULL, "Failed to allocate memory for time\n");
-    sscanf(string, "%d-%d-%dT%d:%d:%d.%dZ", &time->year, &time->month, &time->day, &time->hour, &time->minute, &time->second, &time->millisecond);
+    sscanf(string, "%d-%d-%dT%d:%d:%dZ", &time->tm_year, &time->tm_mon, &time->tm_mday, &time->tm_hour, &time->tm_min, &time->tm_sec);
+
+    time->tm_year -= 1900;
+    time->tm_mon -= 1;
+
+    mktime(time);
     return time;
 }
 
-const char* SBR_Time_GetMonthName(const SBR_Time* time) {
-    return time->month > 0 ? sbrTimeMonthNames[(time->month - 1) % 12] : sbrTimeMonthNames[0];
+const char* SBR_Time_GetMonthName(const struct tm* time) {
+    return sbrTimeMonthNames[time->tm_mon * (time->tm_mon < 0 ? -1 : 1) % 12];
 }

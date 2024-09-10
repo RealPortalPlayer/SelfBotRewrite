@@ -6,15 +6,7 @@
 
 #pragma once
 
-typedef struct {
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minute;
-    int second;
-    int millisecond;
-} SBR_Time;
+#include <time.h>
 
-SBR_Time* SBR_Time_Parse(const char* string);
-const char* SBR_Time_GetMonthName(const SBR_Time* time);
+struct tm* SBR_Time_Parse(const char* string);
+const char* SBR_Time_GetMonthName(const struct tm* time);
