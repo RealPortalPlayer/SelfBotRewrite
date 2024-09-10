@@ -1,7 +1,6 @@
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
-#include <BaconAPI/Storage/DynamicArray.h>
 #include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/String.h>
 #include <BaconAPI/Math/Bitwise.h>
@@ -9,8 +8,10 @@
 
 #include "Commands/Command.h"
 #include "BuiltInArguments.h"
+#include "Storage/DynamicArray.h"
+#include "Memory.h"
 
-static BA_DynamicArray* sbrCommandRegistered;
+static BA_DynamicArray sbrCommandRegistered;
 static BA_Boolean sbrCommandInitialized = BA_BOOLEAN_FALSE;
 
 void SBR_Command_Initialize(void) {
@@ -18,10 +19,8 @@ void SBR_Command_Initialize(void) {
     BA_LOGGER_INFO("Initializing commands\n");
     
     sbrCommandInitialized = BA_BOOLEAN_TRUE;
-    sbrCommandRegistered = malloc(sizeof(BA_DynamicArray));
 
-    BA_ASSERT(sbrCommandRegistered != NULL, "Failed to allocate memory for registered commands\n");
-    BA_ASSERT(BA_DynamicArray_Create(sbrCommandRegistered, 10), "Failed to initialize registered commands array\n");
+    BA_ASSERT(SBR_DynamicArray_Create(&sbrCommandRegistered, 10), "Failed to initialize registered commands array\n");
 }
 
 void SBR_Command_Register(const char* name, const char* description, const char* categoryName, SBR_Command_Type type, SBR_Command_Action Action) {
@@ -37,10 +36,8 @@ void SBR_Command_Register(const char* name, const char* description, const char*
         classicCommandsDisabled = BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_DISABLE_CLASSIC_COMMANDS, SBR_BUILTINARGUMENTS_DISABLE_CLASSIC_COMMANDS_SHORT, BA_BOOLEAN_FALSE);
     }
     
-    SBR_Command* command = malloc(sizeof(SBR_Command));
-
-    BA_ASSERT(command != NULL, "Failed to allocate memory for command: %s\n", name);
-
+    SBR_Command* command = BA_Memory_Allocate(sizeof(SBR_Command), SBR_MEMORY_TYPE_COMMAND);
+    
     command->name = name;
     command->description = description;
     command->categoryName = categoryName;
@@ -61,12 +58,13 @@ do {                                                        \
     SBR_COMMAND_CHECK_FOR_DISABLED_TYPE(terminalCommandsDisabled, SBR_COMMAND_TYPE_TERMINAL);
     SBR_COMMAND_CHECK_FOR_DISABLED_TYPE(slashCommandsDisabled, SBR_COMMAND_TYPE_SLASH);
     SBR_COMMAND_CHECK_FOR_DISABLED_TYPE(classicCommandsDisabled, SBR_COMMAND_TYPE_CLASSIC);
-    BA_ASSERT(BA_DynamicArray_AddElementToLast(sbrCommandRegistered, command), "Failed to add registered command\n");
+    SBR_DynamicArray_CheckResize(&sbrCommandRegistered);
+    BA_ASSERT(BA_DynamicArray_AddElementToLast(&sbrCommandRegistered, command), "Failed to add registered command\n");
 }
 
 const SBR_Command* SBR_Command_Get(const char* name, SBR_Command_Type filter) {
-    for (int i = 0; i < sbrCommandRegistered->used; i++) {
-        const SBR_Command* command = BA_DYNAMICARRAY_GET_ELEMENT_POINTER(SBR_Command, sbrCommandRegistered, i);
+    for (int i = 0; i < sbrCommandRegistered.used; i++) {
+        const SBR_Command* command = BA_DYNAMICARRAY_GET_ELEMENT(SBR_Command, sbrCommandRegistered, i);
         
         if (!BA_String_Equals(command->name, name, BA_BOOLEAN_TRUE) || !BA_BITWISE_IS_BIT_SET(command->type, filter))
             continue;
@@ -83,13 +81,12 @@ void SBR_Command_Destroy(void) {
 
     sbrCommandInitialized = BA_BOOLEAN_FALSE;
 
-    for (int i = 0; i < sbrCommandRegistered->used; i++)
-        free(sbrCommandRegistered->internalArray[i]);
+    for (int i = 0; i < sbrCommandRegistered.used; i++)
+        BA_Memory_Deallocate(sbrCommandRegistered.internalArray[i], sizeof(SBR_Command), SBR_MEMORY_TYPE_COMMAND);
 
-    free(sbrCommandRegistered->internalArray);
-    free(sbrCommandRegistered);
+    BA_Memory_Deallocate(sbrCommandRegistered.internalArray, sizeof(void*) * sbrCommandRegistered.size, SBR_MEMORY_TYPE_DYNAMIC_ARRAY);
 }
 
 const BA_DynamicArray* SBR_Command_GetAll(void) {
-    return sbrCommandRegistered;
+    return &sbrCommandRegistered;
 }
