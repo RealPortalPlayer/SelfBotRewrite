@@ -66,3 +66,15 @@ SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, c
 SBR_DiscordChannel* SBR_DiscordChannel_Get(const SBR_Snowflake* id) {
     return SBR_DiscordAPIEvents_GetChannel(id);
 }
+
+void SBR_DiscordChannel_Deallocate(SBR_DiscordChannel* channel) {
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->id, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->guildId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->lastMessageId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->ownerId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->applicationId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(channel->parentId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(channel->lastPinTimestamp, OPTIONAL);
+    // TODO: guild
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(channel, sizeof(SBR_DiscordChannel), SBR_MEMORY_TYPE_CHANNEL, REQUIRED);
+}

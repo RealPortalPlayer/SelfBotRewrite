@@ -98,3 +98,4 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData);
 
 SBR_DiscordMessage* SBR_DiscordChannel_Send(const SBR_DiscordChannel* channel, const char* content, SBR_EmbedCreator_Embed* embed);
 SBR_DiscordChannel* SBR_DiscordChannel_Get(const SBR_Snowflake* id);
+void SBR_DiscordChannel_Deallocate(SBR_DiscordChannel* channel);
