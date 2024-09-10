@@ -124,3 +124,5 @@ typedef struct SBR_DiscordMessage {
 } SBR_DiscordMessage;
 
 SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData);
+
+void SBR_DiscordMessage_Deallocate(SBR_DiscordMessage* message);

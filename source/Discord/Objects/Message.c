@@ -43,3 +43,32 @@ SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
     // TODO: poll
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
+
+void SBR_DiscordMessage_Deallocate(SBR_DiscordMessage* message) {
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->id, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->channelId, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(message->channel, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(message->author, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(message->timestamp, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(message->editedTimestamp, OPTIONAL);
+    // TODO: users
+    // TODO: mentions_roles
+    // TODO: mentions_channels
+    // TODO: attachments
+    // TODO: embeds
+    // TODO: reactions
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->webhookId, OPTIONAL);
+    // TODO: application
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->applicationId, OPTIONAL);
+    // TODO: message_reference
+    // TODO: referenced_message
+    // TODO: interaction_metadata
+    // TODO: thread
+    // TODO: components
+    // TODO: stickerItems
+    // TODO: role_subscription_data
+    // TODO: resolved
+    // TODO: poll
+    // TODO: call
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(message, sizeof(SBR_DiscordMessage), SBR_MEMORY_TYPE_MESSAGE, REQUIRED);
+}
