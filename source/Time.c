@@ -13,6 +13,12 @@ static char* sbrTimeMonthNames[] = {
     "October", "November", "December"
 };
 
+static char* sbrTimeDayNames[] = {
+    "Sunday", "Monday", "Tuesday",
+    "Wednesday", "Thursday", "Friday",
+    "Saturday"
+};
+
 struct tm* SBR_Time_Parse(const char* string) {
     struct tm* time = malloc(sizeof(struct tm));
 
@@ -28,4 +34,8 @@ struct tm* SBR_Time_Parse(const char* string) {
 
 const char* SBR_Time_GetMonthName(const struct tm* time) {
     return sbrTimeMonthNames[time->tm_mon * (time->tm_mon < 0 ? -1 : 1) % 12];
+}
+
+const char* SBR_Time_GetDayName(const struct tm* time) {
+    return sbrTimeDayNames[time->tm_wday * (time->tm_wday < 0 ? -1 : 1) % 7];
 }
