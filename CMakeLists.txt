@@ -13,7 +13,7 @@ if(DISCORD_API_VERSION LESS_EQUAL DISCORD_DEPRECATED_API_VERSION)
     message(DEPRECATION "Discord API versions ${DISCORD_DEPRECATED_API_VERSION} and below are deprecated")
 endif()
 
-include(cURLOptions.cmake)
+include(cmake/cURLOptions.cmake)
 set(BA_DISABLE_TEST_PROJECTS ON)
 add_subdirectory(dependencies/BaconAPI)
 add_subdirectory(dependencies/curl)
@@ -89,5 +89,5 @@ target_compile_definitions(SelfBotRewrite PUBLIC SBR_DISCORD_API_VERSION=${DISCO
 
 ba_strip(SelfBotRewrite)
 
-include(Library.cmake)
+include(cmake/Library.cmake)
 add_subdirectory(test)
