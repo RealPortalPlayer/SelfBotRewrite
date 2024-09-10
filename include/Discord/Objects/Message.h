@@ -7,6 +7,7 @@
 #pragma once
 
 #include <BaconAPI/Storage/DynamicArray.h>
+#include <time.h>
 
 #include "Snowflake.h"
 #include "User.h"
@@ -79,8 +80,8 @@ typedef struct SBR_DiscordMessage {
      * @deprecated Rumors of it potentially getting removed in the future
      */
     const char* content;
-    // TODO: timestamp
-    // TODO: edited_timestamp
+    struct tm* timestamp;
+    struct tm* editedTimestamp;
     SBR_DiscordMessage_CustomFlags customFlags;
     struct {
         BA_DynamicArray* users;

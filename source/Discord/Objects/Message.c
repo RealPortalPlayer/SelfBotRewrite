@@ -13,8 +13,8 @@ SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
     
     SBR_OBJECTCREATORHELPERS_GET_USER(author, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(content, "", REQUIRED, SAME);
-    // TODO: timestamp
-    // TODO: edited_timestamp
+    SBR_OBJECTCREATORHELPERS_GET_TIME(timestamp, "", REQUIRED, SAME);
+    SBR_OBJECTCREATORHELPERS_GET_TIME(editedTimestamp, "edited_timestamp", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(textToSpeech, "tts", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDMESSAGE_CUSTOM_FLAG_TEXT_TO_SPEECH);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(mentionEveryone, "mention_everyone", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDMESSAGE_CUSTOM_FLAG_MENTIONS_EVERYONE);
     // TODO: mentions
