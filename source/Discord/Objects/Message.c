@@ -48,21 +48,21 @@ void SBR_DiscordMessage_Deallocate(SBR_DiscordMessage* message) {
     if (message == NULL)
         return;
     
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->id, REQUIRED);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->channelId, REQUIRED);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(message->channel, OPTIONAL);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(message->author, REQUIRED);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(message->timestamp, REQUIRED);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(message->editedTimestamp, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->id);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->channelId);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(message->channel);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(message->author);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(message->timestamp);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(message->editedTimestamp);
     // TODO: users
     // TODO: mentions_roles
     // TODO: mentions_channels
     // TODO: attachments
     // TODO: embeds
     // TODO: reactions
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->webhookId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->webhookId);
     // TODO: application
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->applicationId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->applicationId);
     // TODO: message_reference
     // TODO: referenced_message
     // TODO: interaction_metadata
@@ -73,5 +73,5 @@ void SBR_DiscordMessage_Deallocate(SBR_DiscordMessage* message) {
     // TODO: resolved
     // TODO: poll
     // TODO: call
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(message, sizeof(SBR_DiscordMessage), SBR_MEMORY_TYPE_MESSAGE, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(message, sizeof(SBR_DiscordMessage), SBR_MEMORY_TYPE_MESSAGE);
 }

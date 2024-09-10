@@ -26,11 +26,11 @@ void SBR_DiscordGuildMember_Deallocate(SBR_DiscordGuildMember* guildMember) {
     if (guildMember == NULL)
         return;
     
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(guildMember->user, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(guildMember->user);
     // TODO: roles
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->joinedAt, REQUIRED);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->premiumSince, OPTIONAL);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->communicationDisabledUntil, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->joinedAt);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->premiumSince);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(guildMember->communicationDisabledUntil);
     // TODO: avatar_decoration_data
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(guildMember, sizeof(SBR_DiscordGuildMember), SBR_MEMORY_TYPE_GUILD_MEMBER, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(guildMember, sizeof(SBR_DiscordGuildMember), SBR_MEMORY_TYPE_GUILD_MEMBER);
 }

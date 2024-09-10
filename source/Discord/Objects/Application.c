@@ -39,16 +39,16 @@ void SBR_DiscordApplication_Deallocate(SBR_DiscordApplication* application) {
     if (application == NULL)
         return;
     
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->id, REQUIRED);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->bot, OPTIONAL);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->owner, OPTIONAL);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->guildId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->id);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->bot);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->owner);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->guildId);
     // TODO: guild
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->primarySkuId, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->primarySkuId);
     // TODO: team
     // TODO: redirectUris
     // TODO: tags
     // TODO: install_params
     // TODO: integrationTypesConfiguration
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(application, sizeof(SBR_DiscordApplication), SBR_MEMORY_TYPE_APPLICATION, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(application, sizeof(SBR_DiscordApplication), SBR_MEMORY_TYPE_APPLICATION);
 }

@@ -74,27 +74,24 @@ do {                                                                            
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
 
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_REQUIRED(variable) do { {
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_OPTIONAL(variable) do { if (variable != NULL) { 
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, name) \
+do {                                                                 \
+    SBR_ ## name ## _Deallocate(variable);                           \
+    variable = NULL;                                                 \
+} while (BA_BOOLEAN_FALSE)
 
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_ ## required(variable)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(variable, size, type) \
+do {                                                                     \
+    BA_Memory_Deallocate(variable, size, type);                          \
+    variable = NULL;                                                     \
+} while (BA_BOOLEAN_FALSE)
 
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, name, required) \
-SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)                  \
-SBR_ ## name ## _Deallocate(variable);                                         \
-variable = NULL; } } while (BA_BOOLEAN_FALSE)
-
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(variable, size, type, required) \
-SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK(variable, required)                      \
-BA_Memory_Deallocate(variable, size, type);                                        \
-variable = NULL; } } while (BA_BOOLEAN_FALSE)
-
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, Snowflake, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordUser, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, Time, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordChannel, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_GUILD(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordGuild, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_APPLICATION(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordApplication, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_EMOJI(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordEmoji, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_GUILD_MEMBER(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordGuildMember, required)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_MESSAGE(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordMessage, required)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, Snowflake)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordUser)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_TIME(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, Time)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordChannel)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_GUILD(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordGuild)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_APPLICATION(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordApplication)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_EMOJI(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordEmoji)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_GUILD_MEMBER(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordGuildMember)
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_MESSAGE(variable) SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, DiscordMessage)
