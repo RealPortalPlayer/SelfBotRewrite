@@ -43,5 +43,8 @@ const char* SBR_Time_GetDayName(const struct tm* time) {
 }
 
 void SBR_Time_Deallocate(struct tm* time) {
+    if (time == NULL)
+        return;
+    
     BA_Memory_Deallocate(time, sizeof(struct tm), SBR_MEMORY_TYPE_TIME);
 }

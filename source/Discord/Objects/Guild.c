@@ -113,8 +113,10 @@ void SBR_DiscordGuild_Deallocate(SBR_DiscordGuild* guild) {
 
 #define SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(variable) \
 do {                                                  \
-    variable->guild = NULL;                           \
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(variable); \
+    if (variable != NULL) {                           \
+        variable->guild = NULL;                       \
+        SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHANNEL(variable); \
+    }                                                 \
 } while (BA_BOOLEAN_FALSE)
 
     SBR_DISCORDGUILD_DEALLOCATE_CHANNEL(guild->afkChannel);
