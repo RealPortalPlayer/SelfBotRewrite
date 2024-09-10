@@ -6,6 +6,7 @@
 
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Events.h"
+#include "Memory.h"
 
 // TODO: Packet queue
 
@@ -22,10 +23,8 @@ BA_Boolean SBR_GatewayEvent_IsCodeValid(SBR_GatewayEvent_Codes code) {
 }
 
 SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int sequence, const char* eventName) {
-    SBR_GatewayEvent* event = malloc(sizeof(SBR_GatewayEvent));
-
-    BA_ASSERT(event != NULL, "Failed to allocate memory for Gateway event\n");
-
+    SBR_GatewayEvent* event = BA_Memory_Allocate(sizeof(SBR_GatewayEvent), SBR_MEMORY_TYPE_GATEWAY_EVENT);
+    
     event->operationCode = code;
     event->data = json_object_new_object();
     event->sequence = sequence;
@@ -41,5 +40,5 @@ void SBR_GatewayEvent_Free(SBR_GatewayEvent* event) {
     if (!json_object_put(event->data))
         BA_LOGGER_WARN("Reference count leak\n");
 
-    free(event);
+    BA_Memory_Deallocate(event, sizeof(SBR_GatewayEvent), SBR_MEMORY_TYPE_GATEWAY_EVENT);
 }
