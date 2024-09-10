@@ -67,7 +67,7 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
         if (results != NULL)
             SBR_EmbedCreator_AddField(embed, "Reason", results, BA_BOOLEAN_TRUE);
 
-        SBR_SupportChannels_SendLogsMessage("", embed);
+        SBR_DiscordMessage_Deallocate(SBR_SupportChannels_SendLogsMessage("", embed));
         free(parsedId);
         SBR_EmbedCreator_Free(embed);
     }
