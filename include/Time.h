@@ -12,7 +12,8 @@ typedef struct {
     int day;
     int hour;
     int minute;
-    float second;
+    int second;
+    int millisecond;
 } SBR_Time;
 
 SBR_Time* SBR_Time_Parse(const char* string);

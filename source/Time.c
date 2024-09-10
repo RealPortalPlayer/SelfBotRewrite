@@ -17,7 +17,7 @@ SBR_Time* SBR_Time_Parse(const char* string) {
     SBR_Time* time = malloc(sizeof(SBR_Time));
 
     BA_ASSERT(time != NULL, "Failed to allocate memory for time\n");
-    sscanf(string, "%d-%d-%dT%d:%d:%fZ", &time->year, &time->month, &time->day, &time->hour, &time->minute, &time->second);
+    sscanf(string, "%d-%d-%dT%d:%d:%d.%dZ", &time->year, &time->month, &time->day, &time->hour, &time->minute, &time->second, &time->millisecond);
     return time;
 }
 
