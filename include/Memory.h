@@ -6,9 +6,6 @@
 
 #pragma once
 
-// #define BA_MEMORY_INFORMATION_ENUM_NAME SBR_Memory_Type
-// #define BA_MEMORY_INFORMATION_ENUM_SIZE SBR_MEMORY_TYPE_SIZE
-
 #include <BaconAPI/Memory.h>
 
 typedef enum SBR_Memory_Type {
