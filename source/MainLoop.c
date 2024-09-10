@@ -57,7 +57,8 @@ BA_Boolean SBR_MainLoop_Start(void) {
         const struct curl_ws_frame* metadata;
         size_t currentBufferSize = sizeof(char) * (bufferSize + 1);
         char* buffer = BA_Memory_Allocate(currentBufferSize, SBR_MEMORY_TYPE_EVENT_BUFFER);
-            
+        // FIXME: On release builds, Discord would randomly disconnect us. Figure out why
+        
         if (!SBR_cURL_WebSocketReceive(buffer, bufferSize, &receivedBytes, &metadata)) {
             BA_Memory_Deallocate(buffer, currentBufferSize, SBR_MEMORY_TYPE_EVENT_BUFFER);
             

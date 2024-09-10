@@ -87,10 +87,16 @@ void SBR_BotSetup_Ready(void) {
     SBR_Commands_Register();
     SBR_Categories_Register();
 
-    char* message = BA_String_Copy("Bot successfully started\n%s");
+    char* message = BA_String_Copy("Bot successfully started%s\n%s");
     char* debugInformation = SBR_DebugInformation_Get();
+
+#if DEBUG
+#   define SBR_BOTSETUP_ADDITIONAL_MESSAGE " (DEBUG BUILD)"
+#else
+#   define SBR_BOTSETUP_ADDITIONAL_MESSAGE ""
+#endif
     
-    SBR_DiscordMessage_Deallocate(SBR_SupportChannels_SendLogsMessage(BA_String_Format(&message, debugInformation), NULL));
+    SBR_DiscordMessage_Deallocate(SBR_SupportChannels_SendLogsMessage(BA_String_Format(&message, SBR_BOTSETUP_ADDITIONAL_MESSAGE, debugInformation), NULL));
     free(debugInformation);
     free(message);
 }
