@@ -6,7 +6,7 @@
 #include "Discord/Objects/ObjectCreatorHelpers.h"
 
 SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData) {
-    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordChannel, "Discord channel");
+    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordChannel, SBR_MEMORY_TYPE_CHANNEL, "Discord channel");
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(type, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(guildId, "guild_id", OPTIONAL, NOT_SAME);

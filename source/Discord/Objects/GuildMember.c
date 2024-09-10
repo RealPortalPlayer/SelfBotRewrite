@@ -5,7 +5,7 @@
 #include "Discord/Objects/ObjectCreatorHelpers.h"
 
 SBR_DiscordGuildMember* SBR_DiscordGuildMember_Create(json_object* unparsedJsonData) {
-    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordGuildMember, "Discord guild member");
+    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordGuildMember, SBR_MEMORY_TYPE_GUILD_MEMBER, "Discord guild member");
     SBR_OBJECTCREATORHELPERS_GET_USER(user, "", OPTIONAL, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(nick, "", OPTIONAL, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(avatarHash, "avatar_hash", OPTIONAL, NOT_SAME);

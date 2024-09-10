@@ -8,7 +8,7 @@
 #include "Discord/Objects/ObjectCreatorHelpers.h"
 
 SBR_DiscordApplication* SBR_DiscordApplication_Create(json_object* unparsedJsonData) {
-    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordApplication, "Discord application");
+    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordApplication, SBR_MEMORY_TYPE_APPLICATION, "Discord application");
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(name, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(iconHash, "icon", OPTIONAL, NOT_SAME);

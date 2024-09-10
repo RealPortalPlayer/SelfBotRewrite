@@ -8,7 +8,7 @@
 #include "Discord/API/Events.h"
 
 SBR_DiscordUser* SBR_DiscordUser_Create(json_object* unparsedJsonData) {
-    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordUser, "Discord user");
+    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordUser, SBR_MEMORY_TYPE_USER, "Discord user");
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(username, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(discriminator, "", REQUIRED, SAME);

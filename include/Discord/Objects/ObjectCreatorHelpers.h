@@ -15,13 +15,13 @@
 #include "../Locale.h"
 #include "../Permissions.h"
 #include "Time.h"
+#include "Memory.h"
 
-#define SBR_OBJECTCREATORHELPERS_HEADER(type, assertMessage) \
+#define SBR_OBJECTCREATORHELPERS_HEADER(type, memoryType, assertMessage) \
 if (unparsedJsonData == NULL)                                \
     return NULL;                                             \
 BA_LOGGER_TRACE("Creating object: %s\n", json_object_to_json_string(unparsedJsonData)); \
-type* object = malloc(sizeof(type));                         \
-BA_ASSERT(object != NULL, "Failed to allocate memory for " assertMessage "\n"); \
+type* object = BA_Memory_Allocate(sizeof(type), memoryType); \
 memset(object, 0, sizeof(type))
 
 #define SBR_OBJECTCREATORHELPERS_CHECK_REQUIRED(name) \

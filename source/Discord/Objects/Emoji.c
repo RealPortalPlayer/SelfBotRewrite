@@ -5,7 +5,7 @@
 #include "Discord/Objects/ObjectCreatorHelpers.h"
 
 SBR_DiscordEmoji* SBR_DiscordEmoji_Create(json_object* unparsedJsonData) {
-    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordEmoji, "Discord emoji");
+    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordEmoji, SBR_MEMORY_TYPE_EMOJI, "Discord emoji");
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", OPTIONAL, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(name, "", OPTIONAL, SAME);
     // TODO: roles

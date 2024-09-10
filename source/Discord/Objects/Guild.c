@@ -13,7 +13,7 @@ SBR_DiscordGuild* SBR_DiscordGuild_Create(json_object* unparsedJsonData) {
 
     creatingGuild = BA_BOOLEAN_TRUE;
     
-    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordGuild, "Discord guild");
+    SBR_OBJECTCREATORHELPERS_HEADER(SBR_DiscordGuild, SBR_MEMORY_TYPE_GUILD, "Discord guild");
     SBR_OBJECTCREATORHELPERS_GET_BOOLEAN(unavailable, "", OPTIONAL, SAME);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(id, "", REQUIRED, SAME);
 
