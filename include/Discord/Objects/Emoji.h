@@ -27,3 +27,5 @@ typedef struct {
 } SBR_DiscordEmoji;
 
 SBR_DiscordEmoji* SBR_DiscordEmoji_Create(json_object* unparsedJsonData);
+
+void SBR_DiscordEmoji_Deallocate(SBR_DiscordEmoji* emoji);
