@@ -80,9 +80,6 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
 
     free(arguments->internalArray);
     free(arguments);
-    free(message->author);
-    free(message->channel);
-    free(message);
 }
 
 void SBR_BotSetup_Ready(void) {
