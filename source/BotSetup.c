@@ -90,7 +90,7 @@ void SBR_BotSetup_Ready(void) {
     char* message = BA_String_Copy("Bot successfully started\n%s");
     char* debugInformation = SBR_DebugInformation_Get();
     
-    SBR_SupportChannels_SendLogsMessage(BA_String_Format(&message, debugInformation), NULL);
+    SBR_DiscordMessage_Deallocate(SBR_SupportChannels_SendLogsMessage(BA_String_Format(&message, debugInformation), NULL));
     free(debugInformation);
     free(message);
 }
