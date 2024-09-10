@@ -4,6 +4,7 @@
 #include <BaconAPI/Debugging/StaticAssert.h>
 #include <BaconAPI/String.h>
 #include <BaconAPI/Debugging/Assert.h>
+#include <BaconAPI/Memory.h>
 
 #include "Memory.h"
 
@@ -25,12 +26,17 @@ BA_Memory_TypeData baMemoryLookupTable[] = {
 
 BA_STATIC_ASSERT_LOOKUP_TABLE_CHECK(baMemoryLookupTable, SBR_MEMORY_TYPE_SIZE);
 
+size_t BA_Memory_GetEnumeratorSize(void) {
+    return SBR_MEMORY_TYPE_SIZE;
+}
+
 char* BA_Memory_GetAllocatedInformation(const char* prefix) {
     char* finalString;
     
     BA_MEMORY_CREATE_INFORMATION_STRING(finalString, BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("DynamicArray") "\n"
                                                      BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("Command") "\n"
                                                      BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("Time") "\n"
+                                                     BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("Gateway event") "\n"
                                                      BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("Event buffer") "\n"
                                                      BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("Discord objects") "\n"
                                                      BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("    Snowflake") "\n"
