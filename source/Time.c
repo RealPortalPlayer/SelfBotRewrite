@@ -20,6 +20,9 @@ static char* sbrTimeDayNames[] = {
 };
 
 struct tm* SBR_Time_Parse(const char* string) {
+    if (string == NULL)
+        return NULL;
+
     struct tm* time = malloc(sizeof(struct tm));
 
     BA_ASSERT(time != NULL, "Failed to allocate memory for time\n");
