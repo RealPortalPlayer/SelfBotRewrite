@@ -5,9 +5,10 @@
 #include <BaconAPI/Debugging/Assert.h>
 
 #include "Discord/Objects/Snowflake.h"
+#include "Memory.h"
 
 SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
-    SBR_Snowflake* snowflake = malloc(sizeof(SBR_Snowflake));
+    SBR_Snowflake* snowflake = BA_Memory_Allocate(sizeof(SBR_Snowflake), SBR_MEMORY_TYPE_SNOWFLAKE);
 
     BA_ASSERT(snowflake != NULL, "Failed to allocate memory for snowflake\n");
 
