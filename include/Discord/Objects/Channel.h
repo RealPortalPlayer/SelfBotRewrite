@@ -7,6 +7,7 @@
 #pragma once
 
 #include <json_object.h>
+#include <time.h>
 
 #include "Snowflake.h"
 #include "../EmbedCreator.h"
@@ -72,7 +73,7 @@ typedef struct SBR_DiscordChannel {
     SBR_Snowflake* ownerId;
     SBR_Snowflake* applicationId;
     SBR_Snowflake* parentId;
-    // TODO: last_pin_timestamp
+    struct tm* lastPinTimestamp;
     // TODO: rtc_region
     SBR_DiscordChannel_VideoQualityModes videoQualityMode;
     int messageCount;

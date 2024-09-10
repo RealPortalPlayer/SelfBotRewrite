@@ -25,7 +25,7 @@ SBR_DiscordChannel* SBR_DiscordChannel_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(applicationId, "application_id", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(managed, "", OPTIONAL, SAME, customFlags, SBR_DISCORDCHANNEL_CUSTOM_FLAG_MANAGED);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(parentId, "parent_id", OPTIONAL, NOT_SAME);
-    // TODO: last_pin_timestamp
+    SBR_OBJECTCREATORHELPERS_GET_TIME(lastPinTimestamp, "last_pin_timestamp", OPTIONAL, NOT_SAME);
     // TODO: rtc_region
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(videoQualityMode, "video_qulity_mode", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(messageCount, "message_count", OPTIONAL, NOT_SAME);
