@@ -47,5 +47,5 @@ SBR_DiscordUser* SBR_DiscordUser_Get(const SBR_Snowflake* id) {
 
 void SBR_DiscordUser_Deallocate(SBR_DiscordUser* user) {
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(user->id, REQUIRED);
-    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(user, sizeof(SBR_DiscordUser), SBR_MEMORY_TYPE_USER, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(user, sizeof(SBR_DiscordUser), SBR_MEMORY_TYPE_USER, REQUIRED);
 }

@@ -74,8 +74,8 @@ do {                                                                            
 
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
 
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_REQUIRED(variable) if (variable != NULL)
-#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_OPTIONAL(variable) (void) variable;
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_REQUIRED(variable) (void) variable;
+#define SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_OPTIONAL(variable) if (variable != NULL) 
 
 #define SBR_OBJECTCREATORHELPERS_CHECK(variable, required) SBR_OBJECTCREATORHELPERS_DEALLOCATE_CHECK_ ## required(variable)
 
