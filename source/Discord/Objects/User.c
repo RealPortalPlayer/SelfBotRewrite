@@ -44,3 +44,8 @@ const char* SBR_DiscordUser_NitroTypeToString(SBR_DiscordUser_NitroTypes nitroTy
 SBR_DiscordUser* SBR_DiscordUser_Get(const SBR_Snowflake* id) {
     return SBR_DiscordAPIEvents_GetUser(id);
 }
+
+void SBR_DiscordUser_Deallocate(SBR_DiscordUser* user) {
+    SBR_Snowflake_Deallocate(user->id);
+    BA_Memory_Deallocate(user, sizeof(SBR_DiscordUser), SBR_MEMORY_TYPE_USER);
+}
