@@ -18,7 +18,7 @@ BA_Memory_TypeData baMemoryLookupTable[] = {
 
 BA_STATIC_ASSERT_LOOKUP_TABLE_CHECK(baMemoryLookupTable, SBR_MEMORY_TYPE_SIZE);
 
-char* SBR_Memory_GetAllocationInformation(const char* prefix) {
+char* BA_Memory_GetAllocatedInformation(const char* prefix) {
     char* finalString;
 
     BA_MEMORY_CREATE_INFORMATION_STRING(finalString, BA_MEMORY_DEFINE_INFORMATION_STRING_TEMPLATE("DynamicArray") "\n"
