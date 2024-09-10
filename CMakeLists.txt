@@ -71,7 +71,8 @@ set(SOURCE source/Token.c
            source/Commands/TestCommand.c
            source/Commands/HelpCommand.c
            source/Commands/DebugCommand.c
-           source/Memory.c)
+           source/Memory.c
+           source/Storage/DynamicArray.c)
 
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
