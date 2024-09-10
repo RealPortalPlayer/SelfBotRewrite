@@ -106,3 +106,4 @@ typedef struct {
 } SBR_DiscordApplication;
 
 SBR_DiscordApplication* SBR_DiscordApplication_Create(json_object* applicationData);
+void SBR_DiscordApplication_Deallocate(SBR_DiscordApplication* application);

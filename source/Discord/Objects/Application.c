@@ -34,3 +34,18 @@ SBR_DiscordApplication* SBR_DiscordApplication_Create(json_object* unparsedJsonD
     SBR_OBJECTCREATORHELPERS_GET_STRING(customInstallationUrl, "custom_install_url", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_FOOTER();
 }
+
+void SBR_DiscordApplication_Deallocate(SBR_DiscordApplication* application) {
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->id, REQUIRED);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->bot, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_USER(application->owner, OPTIONAL);
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->guildId, OPTIONAL);
+    // TODO: guild
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(application->primarySkuId, OPTIONAL);
+    // TODO: team
+    // TODO: redirectUris
+    // TODO: tags
+    // TODO: install_params
+    // TODO: integrationTypesConfiguration
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_MANUAL(application, sizeof(SBR_DiscordApplication), SBR_MEMORY_TYPE_APPLICATION, REQUIRED);
+}
