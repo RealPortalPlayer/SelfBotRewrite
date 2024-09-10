@@ -22,7 +22,7 @@ const BA_DynamicDictionary* SBR_Category_GetAll(void) {
 }
 
 void SBR_Category_Initialize(void) {
-    BA_ASSERT(!sbrCategoryRegistered, "Category system are already initialized\n");
+    BA_ASSERT(!sbrCategoryInitialized, "Category system are already initialized\n");
     BA_LOGGER_INFO("Initializing categories\n");
 
     sbrCategoryInitialized = BA_BOOLEAN_TRUE;
