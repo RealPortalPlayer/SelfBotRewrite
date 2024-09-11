@@ -46,6 +46,8 @@ void FatalSignalHandler(int theSignal) {
                 SBR_SupportChannels_SendLogsMessage("SIGABRT detected\n", NULL);
         } else if (theSignal == SIGSEGV)
             SBR_SupportChannels_SendLogsMessage("SIGSEGV detected", NULL);
+
+        SBR_cURL_Close(BA_BOOLEAN_TRUE);
     }
 
     signal(theSignal, SIG_DFL);
