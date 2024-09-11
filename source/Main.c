@@ -17,6 +17,7 @@
 #include "Commands/Command.h"
 #include "Commands/Category.h"
 #include "Memory.h"
+#include "SupportChannels.h"
 
 void SignalHandler(int signal) {
     if (signal != SIGINT)
@@ -25,10 +26,32 @@ void SignalHandler(int signal) {
     SBR_MainLoop_Shutdown();
 }
 
+// TODO: This isn't very safe
+void FatalSignalHandler(int theSignal) {
+    static BA_Boolean alreadyTriggered = BA_BOOLEAN_FALSE;
+
+    if (!alreadyTriggered) {
+        alreadyTriggered = BA_BOOLEAN_TRUE;
+
+        if (theSignal == SIGABRT)
+            SBR_SupportChannels_SendLogsMessage("SIGABRT detected", NULL);
+        else if (theSignal == SIGSEGV)
+            SBR_SupportChannels_SendLogsMessage("SIGSEGV detected", NULL);
+    }
+
+    signal(theSignal, SIG_DFL);
+    raise(theSignal);
+    abort();
+
+    while (BA_BOOLEAN_TRUE);
+}
+
 int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
     BA_LOGGER_DEBUG("Registering signals\n");
     signal(SIGINT, &SignalHandler);
+    signal(SIGABRT, &FatalSignalHandler);
+    signal(SIGSEGV, &FatalSignalHandler);
 
     if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_HELP, SBR_BUILTINARGUMENTS_HELP_SHORT, BA_BOOLEAN_FALSE)) {
         BA_LOGGER_INFO("Arguments:\n%s\n"
