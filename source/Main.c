@@ -60,8 +60,14 @@ void FatalSignalHandler(int theSignal) {
         } else if (theSignal == SIGSEGV)
             BA_String_Append(&finalMessage, "SIGSEGV detected");
 
-        BA_String_Append(&finalMessage, "\nStack: ```%s```");
-        SBR_SupportChannels_SendLogsMessage(BA_String_Format(&finalMessage, callStack), NULL);
+#ifndef DEBUG
+#   define SBR_MAIN_ADDITIONAL_MESSAGE " (dynamic symbol table not included, use addr2line)\n"
+#else
+#   define SBR_MAIN_ADDITIONAL_MESSAGE ""
+#endif
+        
+        BA_String_Append(&finalMessage, "\nStack: %s```%s```");
+        SBR_SupportChannels_SendLogsMessage(BA_String_Format(&finalMessage, SBR_MAIN_ADDITIONAL_MESSAGE, callStack), NULL);
         free(finalMessage);
         free(callStack);
         SBR_cURL_Close(BA_BOOLEAN_TRUE);
