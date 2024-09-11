@@ -2,15 +2,15 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <stdlib.h>
-#include <BaconAPI/Debugging/Assert.h>
 
 #include "Discord/Objects/Snowflake.h"
 #include "Memory.h"
+#include "Debugging/Assert.h"
 
 SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
     SBR_Snowflake* snowflake = BA_Memory_Allocate(sizeof(SBR_Snowflake), SBR_MEMORY_TYPE_SNOWFLAKE);
 
-    BA_ASSERT(snowflake != NULL, "Failed to allocate memory for snowflake\n");
+    SBR_ASSERT(snowflake != NULL, "Failed to allocate memory for snowflake\n");
 
     // TODO: Discord sure loves their magic numbers
     snowflake->timestamp = (number >> 22) + SBR_SNOWFLAKE_EPOCH;

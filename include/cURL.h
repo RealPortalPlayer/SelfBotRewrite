@@ -8,7 +8,8 @@
 #pragma once
 
 #include <curl/curl.h>
-#include <BaconAPI/Debugging/Assert.h>
+
+#include "Debugging/Assert.h"
 
 CURL* SBR_cURL_Get(void);
 
@@ -22,5 +23,5 @@ void SBR_cURL_LoopInitialize(const char* webSocketUrl);
 #define SBR_CURL_ASSERT(call, message) \
 do {                               \
     CURLcode sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease = call; \
-    BA_ASSERT(sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease == CURLE_OK, message, curl_easy_strerror(sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease)); \
+    SBR_ASSERT(sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease == CURLE_OK, message, curl_easy_strerror(sbrcURLCodePaddingToPreventNameCollisionsPleaseDontCollidePlease)); \
 } while (BA_BOOLEAN_FALSE)

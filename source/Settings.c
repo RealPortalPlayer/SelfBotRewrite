@@ -2,16 +2,15 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Configuration.h>
-#include <BaconAPI/Debugging/Assert.h>
 #include <errno.h>
 #include <string.h>
 #include <BaconAPI/String.h>
 
 #include "Settings.h"
+#include "Debugging/Assert.h"
 
 static BA_DynamicDictionary* sbrSensitiveSettingsParsed;
 static BA_DynamicDictionary* sbrBotSettingsParsed;
-
 
 BA_Boolean SBR_Settings_Get(const char* key, char** output, BA_Boolean sensitive) {
     *output = BA_DYNAMICDICTIONARY_GET_VALUE(char, sensitive ? sbrSensitiveSettingsParsed : sbrBotSettingsParsed, key, sizeof(char) * (strlen(key) + 1));
@@ -23,27 +22,28 @@ BA_Boolean SBR_Settings_Get(const char* key, char** output, BA_Boolean sensitive
 void SBR_Settings_Load(void) {
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
-    BA_ASSERT(!initialized, "Settings are already initialized\n");
+    SBR_ASSERT(!initialized, "Settings are already initialized\n");
     BA_LOGGER_INFO("Loading sensitive settings\n");
 
     initialized = BA_BOOLEAN_TRUE;
     
     FILE* sensitive = fopen("sensitive.settings", "r");
 
-    BA_ASSERT(sensitive != NULL, "Failed to open sensitive settings file: %s\n", strerror(errno));
+    SBR_ASSERT(sensitive != NULL, "Failed to open sensitive settings file: %s\n", strerror(errno));
 
     sbrSensitiveSettingsParsed = BA_Configuration_ParseFromFile(sensitive);
 
-    BA_ASSERT(sbrSensitiveSettingsParsed != NULL, "Failed to parse sensitive settings file\n");
+    SBR_ASSERT(sbrSensitiveSettingsParsed != NULL, "Failed to parse sensitive settings file\n");
     fclose(sensitive);
     BA_LOGGER_INFO("Loading bot settings\n");
 
     FILE* bot = fopen("bot.settings", "r");
 
-    BA_ASSERT(bot != NULL, "Failed to open bot settings file: %s\n", strerror(errno));
+    SBR_ASSERT(bot != NULL, "Failed to open bot settings file: %s\n", strerror(errno));
 
     sbrBotSettingsParsed = BA_Configuration_ParseFromFile(bot);
-    BA_ASSERT(sbrBotSettingsParsed != NULL, "Failed to parse bot settings file\n");
+    
+    SBR_ASSERT(sbrBotSettingsParsed != NULL, "Failed to parse bot settings file\n");
 }
 
 BA_Boolean SBR_Settings_IsDevelopmentMode(void) {

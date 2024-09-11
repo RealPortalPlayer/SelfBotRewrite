@@ -3,12 +3,12 @@
 
 #include <stdlib.h>
 #include <BaconAPI/Logger.h>
-#include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/String.h>
 #include <BaconAPI/Internal/Boolean.h>
 #include <string.h>
 
 #include "Discord/EmbedCreator.h"
+#include "Debugging/Assert.h"
 
 #define SBR_EMBEDCREATOR_SET_STRING(root, variable, value) \
 if (root->variable != NULL) {                              \
@@ -36,7 +36,7 @@ SBR_EMBEDCREATOR_CREATE_MEDIA_SETTER(name) {                \
 SBR_EmbedCreator_Embed* SBR_EmbedCreator_Create(void) {
     SBR_EmbedCreator_Embed* embed = calloc(1, sizeof(SBR_EmbedCreator_Embed));
 
-    BA_ASSERT(embed != NULL, "Failed to allocate memory for embed creator\n");
+    SBR_ASSERT(embed != NULL, "Failed to allocate memory for embed creator\n");
     BA_DynamicArray_Create(&embed->fields, 5);
     return embed;
 }
@@ -78,7 +78,7 @@ SBR_EmbedCreator_Embed* SBR_EmbedCreator_AddField(SBR_EmbedCreator_Embed* embed,
     
     SBR_EmbedCreator_Field* field = calloc(1, sizeof(SBR_EmbedCreator_Field));
     
-    BA_ASSERT(field != NULL, "Failed to allocate memory for embed field\n");
+    SBR_ASSERT(field != NULL, "Failed to allocate memory for embed field\n");
     SBR_EMBEDCREATOR_SET_STRING(field, name, name);
     SBR_EMBEDCREATOR_SET_STRING(field, value, value);
 

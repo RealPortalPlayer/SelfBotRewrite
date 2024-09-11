@@ -2,20 +2,20 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Logger.h>
-#include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/String.h>
 #include <json_tokener.h>
 #include <BaconAPI/Thread.h>
 
 #include "Discord/API/API.h"
 #include "Discord/API/Events.h"
+#include "Debugging/Assert.h"
 
 BA_Boolean SBR_DiscordAPI_Send(SBR_DiscordAPIEvent_Codes code, json_object* data, json_object** output, const SBR_DiscordAPIEvents_Variables* variables) {
     static BA_Thread_Lock threadLock;
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        BA_ASSERT(BA_Thread_CreateLock(&threadLock), "Failed to create API message lock\n");
+        SBR_ASSERT(BA_Thread_CreateLock(&threadLock), "Failed to create API message lock\n");
 
         initialized = BA_BOOLEAN_TRUE;
     }

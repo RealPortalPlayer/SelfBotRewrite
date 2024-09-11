@@ -2,7 +2,6 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <stdlib.h>
-#include <BaconAPI/Debugging/Assert.h>
 
 #include "Discord/Objects/Application.h"
 #include "Discord/Objects/ObjectCreatorHelpers.h"

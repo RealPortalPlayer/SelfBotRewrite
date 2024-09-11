@@ -1,12 +1,12 @@
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
-#include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/Number.h>
 
 #include "SupportChannels.h"
 #include "Settings.h"
 #include "Discord/API/Events.h"
+#include "Debugging/Assert.h"
 
 static SBR_Snowflake* sbrSupportChannelsLogs = NULL;
 static SBR_Snowflake* sbrSupportChannelsBugs = NULL;
@@ -17,9 +17,9 @@ SBR_SUPPORTCHANNELS_CREATE_FUNCTION_HEADER(type) {                        \
     if (sbrSupportChannels ## type == NULL) {                             \
         char* id;                                                         \
         BA_Boolean isError;                                               \
-        BA_ASSERT(SBR_Settings_Get(settingName "_CHANNEL", &id, BA_BOOLEAN_FALSE), "Cannot find " errorType " channel ID\n"); \
+        SBR_ASSERT(SBR_Settings_Get(settingName "_CHANNEL", &id, BA_BOOLEAN_FALSE), "Cannot find " errorType " channel ID\n"); \
         uint64_t parsedNumber = BA_Number_StringToUnsignedLong(id, NULL, &isError, NULL, 0); \
-        BA_ASSERT(!isError, "Failed to parse " errorType " channel ID\n"); \
+        SBR_ASSERT(!isError, "Failed to parse " errorType " channel ID\n"); \
         sbrSupportChannels ## type = SBR_Snowflake_ConvertFromNumber(parsedNumber); \
     }                                                                     \
     return SBR_DiscordAPIEvents_SendMessage(sbrSupportChannels ## type, content, embed); \

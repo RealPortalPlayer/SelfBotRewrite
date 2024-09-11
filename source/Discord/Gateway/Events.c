@@ -3,7 +3,6 @@
 
 #include <BaconAPI/Debugging/StaticAssert.h>
 #include <BaconAPI/Logger.h>
-#include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/String.h>
 
 #include "Discord/Gateway/Events.h"
@@ -15,6 +14,7 @@
 #include "cURL.h"
 #include "Discord/Gateway/Dispatch.h"
 #include "Discord/Intents.h"
+#include "Debugging/Assert.h"
 
 #define SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(name) static void SBR_GatewayEvents_Action ## name(json_object* data, int sequence, const char* eventName)
 #define SBR_GATEWAYEVENTS_CREATE_ENTRY_BA_BOOLEAN_TRUE(code, allowSending) \
@@ -126,7 +126,7 @@ SBR_GATEWAYEVENTS_CREATE_EVENT_FUNCTION_HEADER(SBR_GATEWAYEVENT_CODE_HELLO) {
     json_object* interval = json_object_object_get(data, "heartbeat_interval");
     static BA_Boolean alreadySentIdentity = BA_BOOLEAN_FALSE;
 
-    BA_ASSERT(interval != NULL, "Malformed packet: missing JSON field\n");
+    SBR_ASSERT(interval != NULL, "Malformed packet: missing JSON field\n");
     SBR_Gateway_SetInterval(json_object_get_int(interval));
     SBR_HeartbeatThread_Pause(BA_BOOLEAN_FALSE);
 
@@ -151,13 +151,13 @@ BA_Boolean errors = BA_BOOLEAN_FALSE
 #define SBR_GATEWAYEVENTS_CREATOR_START(code, sequence, eventName) \
 SBR_GATEWAYEVENTS_CREATOR_START_NO_PROPERTIES(code, sequence, eventName); \
 json_object* properties = json_object_new_object();                \
-BA_ASSERT(properties != NULL, "Failed to create JSON properties\n") \
+SBR_ASSERT(properties != NULL, "Failed to create JSON properties\n") \
 
 
 #define SBR_GATEWAYEVENTS_JSON_ADD(json, key, value) errors = !errors && json_object_object_add(json, key, value)
 
 #define SBR_GATEWAYEVENTS_CREATOR_END() \
-BA_ASSERT(!errors, "Failed to initialize JSON\n"); \
+SBR_ASSERT(!errors, "Failed to initialize JSON\n"); \
 return event
 
 SBR_GatewayEvent* SBR_GatewayEvents_CreateHeartbeat(void) {

@@ -1,10 +1,9 @@
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
-#include <BaconAPI/Debugging/Assert.h>
-
 #include "Storage/DynamicArray.h"
 #include "Memory.h"
+#include "Debugging/Assert.h"
 
 BA_Boolean SBR_DynamicArray_Create(BA_DynamicArray* array, size_t size) {
     if (size <= 0)
@@ -22,7 +21,7 @@ BA_Boolean SBR_DynamicArray_CheckResize(BA_DynamicArray* array) {
         return BA_BOOLEAN_TRUE;
 
     BA_LOGGER_TRACE("Ran out of free space, expanding array\nThis is expensive, so you should try avoiding it\n");
-    BA_ASSERT((int) array->size >= array->used, "Invalid array state\n");
+    SBR_ASSERT((int) array->size >= array->used, "Invalid array state\n");
 
     array->size *= 2;
     array->calledReallocate++;

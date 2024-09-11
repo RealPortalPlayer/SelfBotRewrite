@@ -1,20 +1,20 @@
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
-#include <BaconAPI/Debugging/Assert.h>
 #include <string.h>
 #include <json_tokener.h>
 #include <BaconAPI/Thread.h>
+#include <BaconAPI/String.h>
 
 #include "Discord/Gateway/Gateway.h"
 #include "cURL.h"
 #include "Discord/Gateway/Events.h"
 #include "Threads/RateLimit.h"
 #include "MainLoop.h"
-#include "BaconAPI/String.h"
 #include "Discord/Configuration.h"
 #include "Discord/Gateway/Errors.h"
 #include "Threads/Heartbeat.h"
+#include "Debugging/Assert.h"
 
 static int sbrGatewayInterval = 0;
 static int sbrGatewayRequestCount = 0;
@@ -27,7 +27,7 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
 
     if (!initialized) {
-        BA_ASSERT(BA_Thread_CreateLock(&threadLock), "Failed to create Gateway send thread lock\n");
+        SBR_ASSERT(BA_Thread_CreateLock(&threadLock), "Failed to create Gateway send thread lock\n");
 
         initialized = BA_BOOLEAN_TRUE;
     }
@@ -36,7 +36,7 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
 
     sbrGatewayRequestCount++;
     
-    BA_ASSERT(SBR_GatewayEvent_CanSendCode(event->operationCode), "Code is receive only: %i\n", event->operationCode);
+    SBR_ASSERT(SBR_GatewayEvent_CanSendCode(event->operationCode), "Code is receive only: %i\n", event->operationCode);
     BA_LOGGER_TRACE("Sending (%i): %i\n", sbrGatewayRequestCount, event->operationCode);
 
     while (SBR_RateLimit_Sleeping())
@@ -44,7 +44,7 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
 
     json_object* json = json_object_new_object();
     
-    BA_ASSERT(json != NULL, "Failed to create JSON object\n");
+    SBR_ASSERT(json != NULL, "Failed to create JSON object\n");
 
     int errors = json_object_object_add(json, "op", json_object_new_int(event->operationCode));
 
@@ -52,7 +52,7 @@ void SBR_Gateway_Send(const SBR_GatewayEvent* event) {
     errors = !errors && json_object_object_add(json, "s", json_object_new_int(event->sequence));
     errors = !errors && json_object_object_add(json, "t", json_object_new_string(event->eventName));
 
-    BA_ASSERT(!errors, "Failed to initialize JSON\n");
+    SBR_ASSERT(!errors, "Failed to initialize JSON\n");
 
     const char* results = json_object_to_json_string(json);
     
@@ -127,7 +127,7 @@ void SBR_Gateway_ParseError(uint16_t code, const char* message) {
 
     const SBR_GatewayErrors_Information* information = SBR_GatewayErrors_Get(code);
 
-    BA_ASSERT(information != NULL, "Unknown Discord error code (%u): %s\n", code, message);
+    SBR_ASSERT(information != NULL, "Unknown Discord error code (%u): %s\n", code, message);
     information->action(message);
 }
 

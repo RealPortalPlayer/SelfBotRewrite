@@ -9,7 +9,6 @@
 #include "cURL.h"
 #include "BuiltInArguments.h"
 #include "Discord/Configuration.h"
-#include "Discord/Gateway/Event.h"
 #include "MainLoop.h"
 #include "Threads/Heartbeat.h"
 #include "Threads/RateLimit.h"
@@ -18,6 +17,7 @@
 #include "Commands/Category.h"
 #include "Memory.h"
 #include "SupportChannels.h"
+#include "Debugging/Assert.h"
 
 void SignalHandler(int signal) {
     if (signal != SIGINT)
@@ -33,9 +33,18 @@ void FatalSignalHandler(int theSignal) {
     if (!alreadyTriggered) {
         alreadyTriggered = BA_BOOLEAN_TRUE;
 
-        if (theSignal == SIGABRT)
-            SBR_SupportChannels_SendLogsMessage("SIGABRT detected", NULL);
-        else if (theSignal == SIGSEGV)
+        if (theSignal == SIGABRT) {
+            const char* code = SBR_Assert_GetCode();
+            const char* message = SBR_Assert_GetMessage();
+
+            if (code != NULL) {
+                char* formattedMessage = BA_String_Copy("Assertion Failed\nCode: `%s`\nMessage: `%s`");
+
+                SBR_SupportChannels_SendLogsMessage(BA_String_Format(&formattedMessage, code, message), NULL);
+                free(formattedMessage);
+            } else
+                SBR_SupportChannels_SendLogsMessage("SIGABRT detected\n", NULL);
+        } else if (theSignal == SIGSEGV)
             SBR_SupportChannels_SendLogsMessage("SIGSEGV detected", NULL);
     }
 

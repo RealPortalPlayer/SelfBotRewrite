@@ -1,7 +1,6 @@
 // Copyright (c) 2024, PortalPlayer <email@portalplayer.xyz>
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
-#include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/String.h>
 #include <BaconAPI/Math/Bitwise.h>
 #include <BaconAPI/ArgumentHandler.h>
@@ -10,17 +9,18 @@
 #include "BuiltInArguments.h"
 #include "Storage/DynamicArray.h"
 #include "Memory.h"
+#include "Debugging/Assert.h"
 
 static BA_DynamicArray sbrCommandRegistered;
 static BA_Boolean sbrCommandInitialized = BA_BOOLEAN_FALSE;
 
 void SBR_Command_Initialize(void) {
-    BA_ASSERT(!sbrCommandInitialized, "Command system are already initalized\n");
+    SBR_ASSERT(!sbrCommandInitialized, "Command system are already initialized\n");
     BA_LOGGER_INFO("Initializing commands\n");
     
     sbrCommandInitialized = BA_BOOLEAN_TRUE;
 
-    BA_ASSERT(SBR_DynamicArray_Create(&sbrCommandRegistered, 10), "Failed to initialize registered commands array\n");
+    SBR_ASSERT(SBR_DynamicArray_Create(&sbrCommandRegistered, 10), "Failed to initialize registered commands array\n");
 }
 
 void SBR_Command_Register(const char* name, const char* description, const char* categoryName, SBR_Command_Type type, SBR_Command_Action Action) {
@@ -59,7 +59,7 @@ do {                                                        \
     SBR_COMMAND_CHECK_FOR_DISABLED_TYPE(slashCommandsDisabled, SBR_COMMAND_TYPE_SLASH);
     SBR_COMMAND_CHECK_FOR_DISABLED_TYPE(classicCommandsDisabled, SBR_COMMAND_TYPE_CLASSIC);
     SBR_DynamicArray_CheckResize(&sbrCommandRegistered);
-    BA_ASSERT(BA_DynamicArray_AddElementToLast(&sbrCommandRegistered, command), "Failed to add registered command\n");
+    SBR_ASSERT(BA_DynamicArray_AddElementToLast(&sbrCommandRegistered, command), "Failed to add registered command\n");
 }
 
 const SBR_Command* SBR_Command_Get(const char* name, SBR_Command_Type filter) {
@@ -76,7 +76,7 @@ const SBR_Command* SBR_Command_Get(const char* name, SBR_Command_Type filter) {
 }
 
 void SBR_Command_Destroy(void) {
-    BA_ASSERT(sbrCommandInitialized, "Command system is not initialized\n");
+    SBR_ASSERT(sbrCommandInitialized, "Command system is not initialized\n");
     BA_LOGGER_INFO("Destroying commands\n");
 
     sbrCommandInitialized = BA_BOOLEAN_FALSE;

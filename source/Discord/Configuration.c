@@ -12,6 +12,7 @@
 #include "BuiltInArguments.h"
 #include "cURL.h"
 #include "Discord/Gateway/Gateway.h"
+#include "Debugging/Assert.h"
 
 #define SBR_DISCORDCONFIGURATION_HACK_STRING2(string) #string
 #define SBR_DISCORDCONFIGURATION_HACK_STRING1(string) SBR_DISCORDCONFIGURATION_HACK_STRING2(string)
@@ -104,11 +105,11 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
 
         json_object* object = json_tokener_parse(buffer);
 
-        BA_ASSERT(object != NULL, "Failed to parse Gateway URL\n");
+        SBR_ASSERT(object != NULL, "Failed to parse Gateway URL\n");
         
         json_object* url = json_object_object_get(object, "url");
 
-        BA_ASSERT(url != NULL, "Failed to get Gateway URL\n");
+        SBR_ASSERT(url != NULL, "Failed to get Gateway URL\n");
 
         cached = BA_String_Copy(json_object_get_string(url));
 

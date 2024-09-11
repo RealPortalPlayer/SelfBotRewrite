@@ -24,6 +24,7 @@
 #include "Token.h"
 #include "UserAgent.h"
 #include "Sleep.h"
+#include "Debugging/Assert.h"
 
 static CURL* sbrcURLWebSocket;
 static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;
@@ -43,12 +44,12 @@ CURL* SBR_cURL_Get(void) {
 }
 
 #define SBR_CURL_INITIALIZE(variable, type) \
-BA_ASSERT((variable = curl_easy_init()), "Failed to initialize " type " cURL\n"); \
+SBR_ASSERT((variable = curl_easy_init()), "Failed to initialize " type " cURL\n"); \
 if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_CURL_VERBOSE, SBR_BUILTINARGUMENTS_CURL_VERBOSE_SHORT, BA_BOOLEAN_FALSE)) \
     curl_easy_setopt(variable, CURLOPT_VERBOSE, 1L);
 
 BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
-    BA_ASSERT(!sbrcURLInitialized, "Already initialized cURL\n");
+    SBR_ASSERT(!sbrcURLInitialized, "Already initialized cURL\n");
     BA_LOGGER_INFO("Starting cURL\n");
     
     sbrcURLInitialized = BA_BOOLEAN_TRUE;
@@ -56,7 +57,7 @@ BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
     if (sbrcURLAuthorizationHeader == NULL) {
         sbrcURLAuthorizationHeader = BA_String_Copy("Authorization: Bot ");
 
-        BA_ASSERT(sbrcURLAuthorizationHeader, "Failed to create authorization header\n");
+        SBR_ASSERT(sbrcURLAuthorizationHeader, "Failed to create authorization header\n");
         BA_String_Append(&sbrcURLAuthorizationHeader, SBR_Token_Get());
     }
 
@@ -64,7 +65,7 @@ BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_USERAGENT, SBR_UserAgent_Get());
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_WRITEFUNCTION, &SBR_cURL_Write);
     SBR_CURL_INITIALIZE(sbrcURLWebSocket, "WebSocket");
-    BA_ASSERT(BA_Thread_CreateLock(&sbrcURLLock), "Failed to create cURL thread lock\n");
+    SBR_ASSERT(BA_Thread_CreateLock(&sbrcURLLock), "Failed to create cURL thread lock\n");
     curl_easy_setopt(sbrcURLWebSocket, CURLOPT_URL, webSocketUrl != NULL ? webSocketUrl : SBR_DiscordConfiguration_GetWebSocketURL());
     curl_easy_setopt(sbrcURLWebSocket, CURLOPT_CONNECT_ONLY, 2L);
 
@@ -113,7 +114,7 @@ BA_Boolean SBR_cURL_WebSocketSend(const void* data, const size_t size, size_t* s
 }
 
 void SBR_cURL_Close(BA_Boolean success) {
-    BA_ASSERT(sbrcURLInitialized, "cURL is not initialized\n");
+    SBR_ASSERT(sbrcURLInitialized, "cURL is not initialized\n");
     BA_LOGGER_INFO("Closing cURL\n");
 
     sbrcURLInitialized = BA_BOOLEAN_FALSE;
@@ -121,7 +122,7 @@ void SBR_cURL_Close(BA_Boolean success) {
     char* codeCharacterPointer = malloc(sizeof(uint16_t));
     uint16_t code = htons(success ? 1000 : 4000);
 
-    BA_ASSERT(codeCharacterPointer != NULL, "Failed to allocate closing code\n");
+    SBR_ASSERT(codeCharacterPointer != NULL, "Failed to allocate closing code\n");
     memcpy(codeCharacterPointer, &code, sizeof(uint16_t));
     SBR_cURL_WebSocketSend(codeCharacterPointer, sizeof(uint16_t), NULL, CURLWS_CLOSE);
     curl_easy_cleanup(sbrcURLWebSocket);

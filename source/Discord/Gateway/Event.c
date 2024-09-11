@@ -2,11 +2,11 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <stdlib.h>
-#include <BaconAPI/Debugging/Assert.h>
 
 #include "Discord/Gateway/Event.h"
 #include "Discord/Gateway/Events.h"
 #include "Memory.h"
+#include "Debugging/Assert.h"
 
 // TODO: Packet queue
 
@@ -30,7 +30,7 @@ SBR_GatewayEvent* SBR_GatewayEvent_Create(SBR_GatewayEvent_Codes code, int seque
     event->sequence = sequence;
     event->eventName = eventName;
 
-    BA_ASSERT(event->data != NULL, "Failed to create Gateway event data\n");
+    SBR_ASSERT(event->data != NULL, "Failed to create Gateway event data\n");
     return event;
 }
 

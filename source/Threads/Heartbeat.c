@@ -2,7 +2,6 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Thread.h>
-#include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/Internal/OperatingSystem.h>
 
 #include "Threads/Heartbeat.h"

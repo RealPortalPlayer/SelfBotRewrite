@@ -3,9 +3,9 @@
 
 #include <BaconAPI/Debugging/StaticAssert.h>
 #include <BaconAPI/Logger.h>
-#include <BaconAPI/Debugging/Assert.h>
 
 #include "Discord/Gateway/Errors.h"
+#include "Debugging/Assert.h"
 
 #define SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(name) static void SBR_GatewayErrors_Action ## name(const char* message)
 
@@ -81,7 +81,7 @@ SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_NOT_AUTHENT
 }
 
 SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_AUTHENTICATION_FAILED) {
-    BA_ASSERT_ALWAYS("Invalid token\n");
+    SBR_ASSERT_ALWAYS("Invalid token\n");
 }
 
 SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_ALREADY_AUTHENTICATED) {
@@ -101,20 +101,20 @@ SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_SESSION_TIM
 }
 
 SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_INVALID_SHARD) {
-    BA_ASSERT_ALWAYS("Supplied shards are invalid: %s\n", message);
+    SBR_ASSERT_ALWAYS("Supplied shards are invalid: %s\n", message);
 }
 
 SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_SHARDING_REQUIRED) {
-    BA_ASSERT_ALWAYS("Bot requires sharding\n");
+    SBR_ASSERT_ALWAYS("Bot requires sharding\n");
 }
 
 SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_INVALID_API_VERSION) {
-    BA_ASSERT_ALWAYS("API version is invalid (perhaps out-of-service?)\n");
+    SBR_ASSERT_ALWAYS("API version is invalid (perhaps out-of-service?)\n");
 }
 SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_INVALID_INTENTS) {
-    BA_ASSERT_ALWAYS("Invalid intents: %s\n", message);
+    SBR_ASSERT_ALWAYS("Invalid intents: %s\n", message);
 }
 
 SBR_GATEWAYERRORS_CREATE_ERROR_FUNCTION_HEADER(SBR_GATEWAYERROR_CODE_DISALLOWED_INTENTS) {
-    BA_ASSERT_ALWAYS("Disallowed intents (either disabled or restricted): %s\n", message);
+    SBR_ASSERT_ALWAYS("Disallowed intents (either disabled or restricted): %s\n", message);
 }

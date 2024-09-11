@@ -3,7 +3,6 @@
 
 #include <BaconAPI/Debugging/StaticAssert.h>
 #include <BaconAPI/String.h>
-#include <BaconAPI/Debugging/Assert.h>
 #include <BaconAPI/Memory.h>
 
 #include "Memory.h"
