@@ -65,13 +65,13 @@ void FatalSignalHandler(int theSignal) {
         free(finalMessage);
         free(callStack);
         SBR_cURL_Close(BA_BOOLEAN_TRUE);
+    } else {
+        abort();
+        while (BA_BOOLEAN_TRUE);
     }
 
     signal(theSignal, SIG_DFL);
     raise(theSignal);
-    abort();
-
-    while (BA_BOOLEAN_TRUE);
 }
 
 int main(int argc, char** argv) {
