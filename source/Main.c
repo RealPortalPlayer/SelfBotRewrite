@@ -34,13 +34,15 @@ void FatalSignalHandler(int theSignal) {
         alreadyTriggered = BA_BOOLEAN_TRUE;
 
         if (theSignal == SIGABRT) {
+            int lineNumber = SBR_Assert_GetLineNumber();
+            const char* functionName = SBR_Assert_GetFunctionName();
             const char* code = SBR_Assert_GetCode();
             const char* message = SBR_Assert_GetMessage();
 
             if (code != NULL) {
-                char* formattedMessage = BA_String_Copy("Assertion Failed\nCode: `%s`\nMessage: `%s`");
+                char* formattedMessage = BA_String_Copy("Assertion Failed: `%s#L%i`\nCode: `%s`\nMessage: `%s`");
 
-                SBR_SupportChannels_SendLogsMessage(BA_String_Format(&formattedMessage, code, message), NULL);
+                SBR_SupportChannels_SendLogsMessage(BA_String_Format(&formattedMessage, functionName, lineNumber, code, message), NULL);
                 free(formattedMessage);
             } else
                 SBR_SupportChannels_SendLogsMessage("SIGABRT detected\n", NULL);

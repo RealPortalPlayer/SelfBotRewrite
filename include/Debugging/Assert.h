@@ -8,15 +8,17 @@
 
 #include <BaconAPI/Debugging/Assert.h>
 
+int SBR_Assert_GetLineNumber(void);
+const char* SBR_Assert_GetFunctionName(void);
 const char* SBR_Assert_GetCode(void);
 const char* SBR_Assert_GetMessage(void);
 
-void SBR_Assert_Set(const char* code, const char* message, ...);
+void SBR_Assert_Set(int lineNumber, const char* functionName, const char* code, const char* message, ...);
 void SBR_Assert_Reset(void);
 
 #define SBR_ASSERT(check, ...) \
 do {                           \
-    SBR_Assert_Set(#check, __VA_ARGS__); \
+    SBR_Assert_Set(__LINE__, __FUNCTION__, #check, __VA_ARGS__); \
     BA_ASSERT(check, __VA_ARGS__); \
     SBR_Assert_Reset();        \
 } while (BA_BOOLEAN_FALSE)
