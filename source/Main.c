@@ -20,7 +20,7 @@
 #include "Debugging/Assert.h"
 
 void SignalHandler(int signal) {
-    if (signal != SIGINT)
+    if (signal != SIGINT && signal != SIGTERM)
         return;
     
     SBR_MainLoop_Shutdown();
@@ -61,6 +61,7 @@ int main(int argc, char** argv) {
     BA_ArgumentHandler_Initialize(argc, argv);
     BA_LOGGER_DEBUG("Registering signals\n");
     signal(SIGINT, &SignalHandler);
+    signal(SIGTERM, &SignalHandler);
     signal(SIGABRT, &FatalSignalHandler);
     signal(SIGSEGV, &FatalSignalHandler);
 
