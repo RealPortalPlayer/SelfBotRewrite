@@ -6,10 +6,15 @@
 #include <string.h>
 #include <BaconAPI/String.h>
 
+static const char* sbrAssertFileName = NULL;
 static int sbrAssertLineNumber = 0;
 static const char* sbrAssertFunctionName = NULL;
 static const char* sbrAssertCode = NULL;
 static char* sbrAssertMessage = NULL;
+
+const char* SBR_Assert_GetFileName(void) {
+    return sbrAssertFileName;
+}
 
 int SBR_Assert_GetLineNumber(void) {
     return sbrAssertLineNumber;
@@ -27,9 +32,10 @@ const char* SBR_Assert_GetMessage(void) {
     return sbrAssertMessage;
 }
 
-void SBR_Assert_Set(int lineNumber, const char* functionName, const char* code, const char* message, ...) {
+void SBR_Assert_Set(const char* fileName, int lineNumber, const char* functionName, const char* code, const char* message, ...) {
     SBR_Assert_Reset();
 
+    sbrAssertFileName = fileName;
     sbrAssertLineNumber = lineNumber;
     sbrAssertFunctionName = functionName;
     sbrAssertCode = code;
@@ -50,6 +56,7 @@ void SBR_Assert_Set(int lineNumber, const char* functionName, const char* code, 
 }
 
 void SBR_Assert_Reset(void) {
+    sbrAssertFileName = NULL;
     sbrAssertLineNumber = 0;
     sbrAssertFunctionName = NULL;
     sbrAssertCode = NULL;
