@@ -18,11 +18,9 @@ const char* SBR_Assert_GetMessage(void) {
 }
 
 void SBR_Assert_Set(const char* code, const char* message, ...) {
+    SBR_Assert_Reset();
+    
     sbrAssertCode = code;
-
-    if (sbrAssertMessage != NULL)
-        free(sbrAssertMessage);
-
     sbrAssertMessage = BA_String_Copy(message);
 
     va_list arguments;
@@ -37,4 +35,15 @@ void SBR_Assert_Set(const char* code, const char* message, ...) {
         return;
 
     sbrAssertMessage[sbrAssertMessageLength - 1] = '\0';
+}
+
+void SBR_Assert_Reset(void) {
+    sbrAssertCode = NULL;
+
+    if (sbrAssertMessage == NULL)
+        return;
+
+    free(sbrAssertMessage);
+
+    sbrAssertMessage = NULL;
 }
