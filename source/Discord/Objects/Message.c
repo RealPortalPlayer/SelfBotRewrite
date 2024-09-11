@@ -28,7 +28,7 @@ SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(webhookId, "webhook_id", OPTIONAL, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(type, "", REQUIRED, SAME);
     // TODO: activity
-    // TODO: application
+    SBR_OBJECTCREATORHELPERS_GET_APPLICATION(application, "", OPTIONAL, SAME);
     SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(applicationId, "application_id", OPTIONAL, NOT_SAME);
     // TODO: message_reference
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(officialFlags, "flags", OPTIONAL, NOT_SAME);
@@ -61,7 +61,7 @@ void SBR_DiscordMessage_Deallocate(SBR_DiscordMessage* message) {
     // TODO: embeds
     // TODO: reactions
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->webhookId);
-    // TODO: application
+    SBR_OBJECTCREATORHELPERS_DEALLOCATE_APPLICATION(message->application);
     SBR_OBJECTCREATORHELPERS_DEALLOCATE_SNOWFLAKE(message->applicationId);
     // TODO: message_reference
     // TODO: referenced_message
