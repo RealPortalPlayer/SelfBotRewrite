@@ -36,6 +36,7 @@ void FatalSignalHandler(int theSignal) {
         int bufferSize = backtrace(buffer, 1024);
         char** symbols = backtrace_symbols(buffer, bufferSize);
         char* callStack = BA_String_CreateEmpty();
+        char* finalMessage = BA_String_CreateEmpty();
 
         for (int i = 0; i < bufferSize; i++) {
             BA_String_Append(&callStack, symbols[i]);
@@ -52,15 +53,16 @@ void FatalSignalHandler(int theSignal) {
             const char* message = SBR_Assert_GetMessage();
 
             if (code != NULL) {
-                char* formattedMessage = BA_String_Copy("Assertion Failed: `%s#L%i->%s`\nCode: `%s`\nMessage: `%s`\nStack: ```%s```");
-
-                SBR_SupportChannels_SendLogsMessage(BA_String_Format(&formattedMessage, fileName, lineNumber, functionName, code, message, callStack), NULL);
-                free(formattedMessage);
+                BA_String_Append(&finalMessage, "Assertion Failed: `%s#L%i->%s`\nCode `%s`\nMessage: `%s`");
+                BA_String_Format(&finalMessage, fileName, lineNumber, functionName, code, message);
             } else
-                SBR_SupportChannels_SendLogsMessage("SIGABRT detected", NULL);
+                BA_String_Append(&finalMessage, "SIGABRT detected");
         } else if (theSignal == SIGSEGV)
-            SBR_SupportChannels_SendLogsMessage("SIGSEGV detected", NULL);
+            BA_String_Append(&finalMessage, "SIGSEGV detected");
 
+        BA_String_Append(&finalMessage, "\nStack: ```%s```");
+        SBR_SupportChannels_SendLogsMessage(BA_String_Format(&finalMessage, callStack), NULL);
+        free(finalMessage);
         free(callStack);
         SBR_cURL_Close(BA_BOOLEAN_TRUE);
     }
