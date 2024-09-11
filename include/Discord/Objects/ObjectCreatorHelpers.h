@@ -72,6 +72,8 @@ do {                                                                            
 
 #define SBR_OBJECTCREATORHELPERS_GET_TIME(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_Time_Parse(json_object_get_string(key)); } while (BA_BOOLEAN_FALSE)
 
+#define SBR_OBJECTCREATORHELPERS_GET_APPLICATION(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_DiscordApplication_Create(key); } while (BA_BOOLEAN_FALSE)
+
 #define SBR_OBJECTCREATORHELPERS_FOOTER() return object
 
 #define SBR_OBJECTCREATORHELPERS_DEALLOCATE_INTERNAL(variable, name) \
