@@ -4,6 +4,7 @@
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
 #include <signal.h>
+#include <execinfo.h>
 
 #include "Settings.h"
 #include "cURL.h"
@@ -31,6 +32,16 @@ void FatalSignalHandler(int theSignal) {
     static BA_Boolean alreadyTriggered = BA_BOOLEAN_FALSE;
 
     if (!alreadyTriggered) {
+        void* buffer[1024];
+        int bufferSize = backtrace(buffer, 1024);
+        char** symbols = backtrace_symbols(buffer, bufferSize);
+        char* callStack = BA_String_CreateEmpty();
+
+        for (int i = 0; i < bufferSize; i++) {
+            BA_String_Append(&callStack, symbols[i]);
+            BA_String_Append(&callStack, "\n");
+        }
+        
         alreadyTriggered = BA_BOOLEAN_TRUE;
 
         if (theSignal == SIGABRT) {
@@ -41,15 +52,16 @@ void FatalSignalHandler(int theSignal) {
             const char* message = SBR_Assert_GetMessage();
 
             if (code != NULL) {
-                char* formattedMessage = BA_String_Copy("Assertion Failed: `%s#L%i->%s`\nCode: `%s`\nMessage: `%s`");
+                char* formattedMessage = BA_String_Copy("Assertion Failed: `%s#L%i->%s`\nCode: `%s`\nMessage: `%s`\nStack: ```%s```");
 
-                SBR_SupportChannels_SendLogsMessage(BA_String_Format(&formattedMessage, fileName, lineNumber, functionName, code, message), NULL);
+                SBR_SupportChannels_SendLogsMessage(BA_String_Format(&formattedMessage, fileName, lineNumber, functionName, code, message, callStack), NULL);
                 free(formattedMessage);
             } else
-                SBR_SupportChannels_SendLogsMessage("SIGABRT detected\n", NULL);
+                SBR_SupportChannels_SendLogsMessage("SIGABRT detected", NULL);
         } else if (theSignal == SIGSEGV)
             SBR_SupportChannels_SendLogsMessage("SIGSEGV detected", NULL);
 
+        free(callStack);
         SBR_cURL_Close(BA_BOOLEAN_TRUE);
     }
 

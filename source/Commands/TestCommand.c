@@ -4,6 +4,8 @@
 #include <BaconAPI/String.h>
 
 #include "Commands/TestCommand.h"
+
+#include "Settings.h"
 #include "Debugging/Assert.h"
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(test) {

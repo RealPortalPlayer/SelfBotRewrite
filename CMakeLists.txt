@@ -77,6 +77,10 @@ set(SOURCE source/Token.c
            source/Storage/DynamicDictionary.c
            source/Debugging/Assert.c)
 
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR "${CMAKE_BUILD_TYPE}" STREQUAL "RelWitDebInfo")
+    set(CMAKE_EXECUTABLE_ENABLE_EXPORTS TRUE)
+endif()
+
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
 target_include_directories(SelfBotRewrite PUBLIC include)
