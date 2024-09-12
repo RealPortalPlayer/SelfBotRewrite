@@ -21,12 +21,6 @@ add_subdirectory(dependencies/json-c)
 
 set(VERSION "0.5.0")
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    add_compile_definitions(DEBUG BA_ALLOW_DEBUG_LOGS)
-elseif(BA_ALLOW_DEBUG_LOGS)
-    add_compile_definitions(BA_ALLOW_DEBUG_LOGS)
-endif()
-
 set(SOURCE source/Token.c
            source/Settings.c
            source/cURL.c
@@ -77,10 +71,6 @@ set(SOURCE source/Token.c
            source/Storage/DynamicDictionary.c
            source/Debugging/Assert.c)
 
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR "${CMAKE_BUILD_TYPE}" STREQUAL "RelWitDebInfo")
-    set(CMAKE_EXECUTABLE_ENABLE_EXPORTS TRUE)
-endif()
-
 add_executable(SelfBotRewrite source/Main.c ${SOURCE})
 
 target_include_directories(SelfBotRewrite PUBLIC include)
@@ -93,6 +83,7 @@ target_compile_definitions(SelfBotRewrite PUBLIC SBR_DISCORD_API_VERSION=${DISCO
                                                  SBR_VERSION="${VERSION}")
 
 ba_strip(SelfBotRewrite)
+ba_apply_compiler_options(SelfBotRewrite)
 
 include(cmake/Library.cmake)
 add_subdirectory(test)

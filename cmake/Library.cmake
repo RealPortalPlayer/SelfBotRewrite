@@ -15,3 +15,4 @@ target_compile_definitions(libSelfBotRemake PUBLIC SBR_DISCORD_API_VERSION=${DIS
 target_link_libraries(libSelfBotRemake PUBLIC BaconAPI libcurl json-c)
 
 ba_strip_static(libSelfBotRemake)
+ba_apply_compiler_options(libSelfBotRemake)
