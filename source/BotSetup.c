@@ -25,7 +25,7 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
 
     size_t prefixLength = strlen(SBR_Prefix_Get());
     size_t messageLength = strlen(message->content) - prefixLength + 1;
-    char prefixlessMessage[messageLength];
+    char* prefixlessMessage = malloc(sizeof(char) * messageLength);
 
     memcpy(prefixlessMessage, message->content + prefixLength, messageLength);
 
@@ -73,6 +73,7 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
     }
     
     destroy:
+    free(prefixlessMessage);
     free(name);
     
     for (int i = 0; i < arguments->used; i++)

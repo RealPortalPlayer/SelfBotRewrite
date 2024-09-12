@@ -13,6 +13,11 @@ if(DISCORD_API_VERSION LESS_EQUAL DISCORD_DEPRECATED_API_VERSION)
     message(DEPRECATION "Discord API versions ${DISCORD_DEPRECATED_API_VERSION} and below are deprecated")
 endif()
 
+# HACK: JSON-C doesn't compile without this
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
+    add_compile_definitions(SIZEOF_SSIZE_T=8)
+endif()
+
 include(cmake/cURLOptions.cmake)
 set(BA_DISABLE_TEST_PROJECTS ON)
 add_subdirectory(dependencies/BaconAPI)
@@ -62,7 +67,7 @@ set(SOURCE source/Token.c
            source/DebugInformation.c
            source/Discord/Objects/Emoji.c
            source/Discord/Objects/GuildMember.c
-           source/Time.c
+           source/ISOTime.c
            source/Commands/TestCommand.c
            source/Commands/HelpCommand.c
            source/Commands/DebugCommand.c

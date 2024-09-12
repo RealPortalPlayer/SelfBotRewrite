@@ -6,6 +6,7 @@
 #include "Discord/Objects/Snowflake.h"
 #include "Memory.h"
 #include "Debugging/Assert.h"
+#include "Memory.h"
 
 SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
     SBR_Snowflake* snowflake = BA_Memory_Allocate(sizeof(SBR_Snowflake), SBR_MEMORY_TYPE_SNOWFLAKE);

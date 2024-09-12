@@ -6,6 +6,12 @@
 
 #pragma once
 
+#include <BaconAPI/Internal/OperatingSystem.h>
+
+#if BA_OPERATINGSYSTEM_WINDOWS
+#   include <Windows.h>
+#endif
+
 #include <time.h>
 
 struct tm* SBR_Time_Parse(const char* string);

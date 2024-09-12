@@ -7,8 +7,9 @@
 #pragma once
 
 #include <BaconAPI/Memory.h>
+#include <BaconAPI/Internal/Compiler.h>
 
-typedef enum SBR_Memory_Type {
+typedef enum {
     SBR_MEMORY_TYPE_DYNAMIC_ARRAY,
     SBR_MEMORY_TYPE_COMMAND,
     SBR_MEMORY_TYPE_TIME,

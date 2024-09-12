@@ -76,7 +76,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
             BA_Boolean disconnected = BA_BOOLEAN_FALSE;
             
             while (metadata->bytesleft != 0) {
-                char temporaryBuffer[bufferSize + 1];
+                char* temporaryBuffer = malloc(sizeof(char) * (bufferSize + 1));
                 size_t temporaryReceivedBytes;
 
                 if (SBR_cURL_WebSocketReceive(&temporaryBuffer, bufferSize, &temporaryReceivedBytes, &metadata)) {
@@ -85,12 +85,15 @@ BA_Boolean SBR_MainLoop_Start(void) {
                     currentBufferSize += bufferSize + 1;
                     BA_Memory_AddSize(bufferSize + 1, SBR_MEMORY_TYPE_EVENT_BUFFER);
                     BA_String_Append(&buffer, temporaryBuffer);
+                    free(temporaryBuffer);
                     continue;
                 }
 
                 BA_Memory_Deallocate(buffer, currentBufferSize, SBR_MEMORY_TYPE_EVENT_BUFFER);
+                free(temporaryBuffer);
                 
                 disconnected = BA_BOOLEAN_TRUE;
+                
                 break;
             }
 
@@ -100,7 +103,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
 
         if (BA_BITWISE_IS_BIT_SET(metadata->flags, CURLWS_CLOSE)) {
             uint16_t code = 0;
-            char message[receivedBytes - sizeof(uint16_t)];
+            char* message = malloc(sizeof(char*) * (receivedBytes - sizeof(uint16_t)));
 
             memcpy(&code, buffer, sizeof(uint16_t));
             memcpy(&message, buffer + sizeof(uint16_t), sizeof(char) * receivedBytes);
@@ -109,6 +112,7 @@ BA_Boolean SBR_MainLoop_Start(void) {
 
             SBR_Gateway_ParseError(code, message);
             BA_Memory_Deallocate(buffer, currentBufferSize, SBR_MEMORY_TYPE_EVENT_BUFFER);
+            free(message);
 
             if (!SBR_GatewayError_CanReconnect(code) || sbrMainLoopDisconnected) { // HACK: For invalidated session
                 BA_LOGGER_INFO("Cannot reconnect, restarting bot\n");

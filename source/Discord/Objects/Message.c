@@ -14,7 +14,7 @@ SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
     SBR_OBJECTCREATORHELPERS_GET_USER(author, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_STRING(content, "", REQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_GET_TIME(timestamp, "", REQUIRED, SAME);
-    SBR_OBJECTCREATORHELPERS_GET_TIME(editedTimestamp, "edited_timestamp", OPTIONAL, NOT_SAME);
+    SBR_OBJECTCREATORHELPERS_GET_TIME(editedTimestamp, "edited_timestamp", UNREQUIRED, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(textToSpeech, "tts", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDMESSAGE_CUSTOM_FLAG_TEXT_TO_SPEECH);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(mentionEveryone, "mention_everyone", REQUIRED, NOT_SAME, customFlags, SBR_DISCORDMESSAGE_CUSTOM_FLAG_MENTIONS_EVERYONE);
     // TODO: mentions
@@ -23,21 +23,21 @@ SBR_DiscordMessage* SBR_DiscordMessage_Create(json_object* unparsedJsonData) {
     // TODO: attachments
     // TODO: embeds
     // TODO: reactions
-    SBR_OBJECTCREATORHELPERS_GET_STRING(nonce, "", OPTIONAL, SAME);
+    SBR_OBJECTCREATORHELPERS_GET_STRING(nonce, "", UNREQUIRED, SAME);
     SBR_OBJECTCREATORHELPERS_SET_BIT_ON_BOOLEAN(pinned, "", REQUIRED, SAME, customFlags, SBR_DISCORDMESSAGE_CUSTOM_FLAG_PINNED);
-    SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(webhookId, "webhook_id", OPTIONAL, NOT_SAME);
+    SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(webhookId, "webhook_id", UNREQUIRED, NOT_SAME);
     SBR_OBJECTCREATORHELPERS_GET_INTEGER(type, "", REQUIRED, SAME);
     // TODO: activity
-    SBR_OBJECTCREATORHELPERS_GET_APPLICATION(application, "", OPTIONAL, SAME);
-    SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(applicationId, "application_id", OPTIONAL, NOT_SAME);
+    SBR_OBJECTCREATORHELPERS_GET_APPLICATION(application, "", UNREQUIRED, SAME);
+    SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(applicationId, "application_id", UNREQUIRED, NOT_SAME);
     // TODO: message_reference
-    SBR_OBJECTCREATORHELPERS_GET_INTEGER(officialFlags, "flags", OPTIONAL, NOT_SAME);
+    SBR_OBJECTCREATORHELPERS_GET_INTEGER(officialFlags, "flags", UNREQUIRED, NOT_SAME);
     // TODO: referenced_message
     // TODO: interaction_metadata
     // TODO: thread
     // TODO: components
     // TODO: sticker_items
-    SBR_OBJECTCREATORHELPERS_GET_INTEGER(position, "", OPTIONAL, SAME);
+    SBR_OBJECTCREATORHELPERS_GET_INTEGER(position, "", UNREQUIRED, SAME);
     // TODO: role_subscription_date
     // TODO: resolved
     // TODO: poll

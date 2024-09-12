@@ -14,7 +14,7 @@
 #include "User.h"
 #include "../Locale.h"
 #include "../Permissions.h"
-#include "Time.h"
+#include "ISOTime.h"
 #include "Memory.h"
 
 #define SBR_OBJECTCREATORHELPERS_HEADER(type, memoryType, assertMessage) \
@@ -33,7 +33,7 @@ if (name == NULL) {                                   \
 #define SBR_OBJECTCREATORHELPERS_GET_KEY_STRING_NOT_SAME(key, keyString) keyString
 #define SBR_OBJECTCREATORHELPERS_GET_KEY_STRING_SAME(key, keyString) #key
 
-#define SBR_OBJECTCREATORHELPERS_CHECK_OPTIONAL(name) (void) NULL
+#define SBR_OBJECTCREATORHELPERS_CHECK_UNREQUIRED(name) (void) NULL
 
 #define SBR_OBJECTCREATORHELPERS_GET(key, keyString, required, sameKey) \
 json_object* key = json_object_object_get(unparsedJsonData, SBR_OBJECTCREATORHELPERS_GET_KEY_STRING_ ## sameKey(key, keyString)); \
@@ -49,7 +49,6 @@ do {                                                         \
     object->key = caller(object->key ## Id);                 \
     SBR_OBJECTCREATORHELPERS_CHECK_ ## required(object->key); \
 } while (BA_BOOLEAN_FALSE)
-
 
 #define SBR_OBJECTCREATORHELPERS_GET_SNOWFLAKE(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = SBR_Snowflake_ConvertFromNumber(json_object_get_uint64(key)); } while (BA_BOOLEAN_FALSE)
 #define SBR_OBJECTCREATORHELPERS_GET_STRING(key, keyString, required, sameKey) SBR_OBJECTCREATORHELPERS_SET(key, keyString, required, sameKey) = json_object_get_string(key); } while (BA_BOOLEAN_FALSE)
