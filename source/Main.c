@@ -4,7 +4,7 @@
 #include <BaconAPI/ArgumentHandler.h>
 #include <BaconAPI/Logger.h>
 #include <signal.h>
-#include <execinfo.h>
+#include <BaconAPI/Debugging/Stack.h>
 
 #include "Settings.h"
 #include "cURL.h"
@@ -32,16 +32,8 @@ void FatalSignalHandler(int theSignal) {
     static BA_Boolean alreadyTriggered = BA_BOOLEAN_FALSE;
 
     if (!alreadyTriggered) {
-        void* buffer[1024];
-        int bufferSize = backtrace(buffer, 1024);
-        char** symbols = backtrace_symbols(buffer, bufferSize);
-        char* callStack = BA_String_CreateEmpty();
+        char* callStack = BA_Stack_GetCallTrace();
         char* finalMessage = BA_String_CreateEmpty();
-
-        for (int i = 0; i < bufferSize; i++) {
-            BA_String_Append(&callStack, symbols[i]);
-            BA_String_Append(&callStack, "\n");
-        }
         
         alreadyTriggered = BA_BOOLEAN_TRUE;
 
