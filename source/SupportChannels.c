@@ -18,7 +18,7 @@ SBR_SUPPORTCHANNELS_CREATE_FUNCTION_HEADER(type) {                        \
         char* id;                                                         \
         BA_Boolean isError;                                               \
         SBR_ASSERT(SBR_Settings_Get(settingName "_CHANNEL", &id, BA_BOOLEAN_FALSE), "Cannot find " errorType " channel ID\n"); \
-        uint64_t parsedNumber = BA_Number_StringToUnsignedLong(id, NULL, &isError, NULL, 0); \
+        uintmax_t parsedNumber = BA_Number_StringToUnsignedLongLong(id, NULL, &isError, NULL, 0); \
         SBR_ASSERT(!isError, "Failed to parse " errorType " channel ID\n"); \
         sbrSupportChannels ## type = SBR_Snowflake_ConvertFromNumber(parsedNumber); \
     }                                                                     \

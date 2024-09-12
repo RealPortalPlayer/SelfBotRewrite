@@ -8,7 +8,7 @@
 #include "Debugging/Assert.h"
 #include "Memory.h"
 
-SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
+SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uintmax_t number) {
     SBR_Snowflake* snowflake = BA_Memory_Allocate(sizeof(SBR_Snowflake), SBR_MEMORY_TYPE_SNOWFLAKE);
 
     SBR_ASSERT(snowflake != NULL, "Failed to allocate memory for snowflake\n");
@@ -21,11 +21,11 @@ SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number) {
     return snowflake;
 }
 
-uint64_t SBR_Snowflake_ConvertToNumber(const SBR_Snowflake* snowflake) {
+uintmax_t SBR_Snowflake_ConvertToNumber(const SBR_Snowflake* snowflake) {
     return SBR_Snowflake_Create(snowflake->timestamp, snowflake->workerId, snowflake->processId, snowflake->increment);
 }
 
-uint64_t SBR_Snowflake_Create(uint64_t timestamp, uint8_t workerId, uint8_t processId, uint32_t increment) {
+uintmax_t SBR_Snowflake_Create(uint64_t timestamp, uint8_t workerId, uint8_t processId, uint32_t increment) {
     return timestamp - SBR_SNOWFLAKE_EPOCH << 22 |
            workerId << 17 |
            processId << 12 |

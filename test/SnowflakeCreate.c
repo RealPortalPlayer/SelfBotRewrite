@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     
     uint64_t snowflake = SBR_Snowflake_Create(timestamp, workerId, processId, increment);
     
-    BA_LOGGER_INFO("Snowflake: %lu\n", snowflake);
+    BA_LOGGER_INFO("Snowflake: %llu\n", snowflake);
 
     if (argc >= 2)
         return 0;

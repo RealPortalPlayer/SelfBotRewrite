@@ -23,9 +23,9 @@ typedef struct {
     uint32_t increment;
 } SBR_Snowflake;
 
-SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uint64_t number);
-uint64_t SBR_Snowflake_ConvertToNumber(const SBR_Snowflake* snowflake);
-uint64_t SBR_Snowflake_Create(uint64_t timestamp, uint8_t workerId, uint8_t processId, uint32_t increment);
+SBR_Snowflake* SBR_Snowflake_ConvertFromNumber(uintmax_t number);
+uintmax_t SBR_Snowflake_ConvertToNumber(const SBR_Snowflake* snowflake);
+uintmax_t SBR_Snowflake_Create(uint64_t timestamp, uint8_t workerId, uint8_t processId, uint32_t increment);
 
 void SBR_Snowflake_Deallocate(SBR_Snowflake* snowflake);
 
