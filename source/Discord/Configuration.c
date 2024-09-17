@@ -21,26 +21,26 @@
 if (path != NULL) {                         \
     char* cloned = BA_String_Copy(cached);  \
     if (!BA_String_EndsWith(cloned, "/", BA_BOOLEAN_FALSE)) \
-        BA_String_Append(&cloned, "/"); \
-    return BA_String_Append(&cloned, path); \
+        cloned = BA_String_Append(cloned, "/"); \
+    return BA_String_Append(cloned, path); \
 } (void) NULL
 
 #define SBR_DISCORDCONFIGURATION_ADD_NO_PATH()
 
 #define SBR_DISCORDCONFIGURATION_SETUP_STRING(argument, short, default, path) \
-initialized = BA_BOOLEAN_TRUE;                                          \
-BA_ArgumentHandler_ShortResults results;                                \
+initialized = BA_BOOLEAN_TRUE;                                                \
+BA_ArgumentHandler_ShortResults results;                                      \
 if (BA_ArgumentHandler_GetInformationWithShort(argument, short, BA_BOOLEAN_FALSE, &results) == 0) { \
-    cached = default;                                                   \
-    SBR_DISCORDCONFIGURATION_ADD_ ## path();                                \
-    return cached;                                                      \
+    cached = default;                                                         \
+    SBR_DISCORDCONFIGURATION_ADD_ ## path();                                  \
+    return cached;                                                            \
 } (void) NULL
 
 #define SBR_DISCORDCONFIGURATION_SETUP_URL(prefix) \
 if (!BA_String_StartsWith(cached, prefix "s://", BA_BOOLEAN_TRUE) && !BA_String_StartsWith(cached, prefix "://", BA_BOOLEAN_TRUE)) \
-    BA_String_Prepend(&cached, prefix "s://");     \
+    cached = BA_String_Prepend(cached, prefix "s://"); \
 if (!BA_String_EndsWith(cached, "/", BA_BOOLEAN_FALSE)) \
-    BA_String_Append(&cached, "/")
+    cached = BA_String_Append(cached, "/")
 
 int SBR_DiscordConfiguration_GetAPIVersion(void) {
     static int cached = SBR_DISCORD_API_VERSION;
@@ -84,8 +84,8 @@ char* SBR_DiscordConfiguration_GetAPIURL(const char* path) {
         cached = BA_String_Copy(SBR_DiscordConfiguration_GetAPIRootURL());
         
         SBR_DISCORDCONFIGURATION_SETUP_URL("http");
-        BA_String_Append(&cached, "api/v%i");
-        BA_String_Format(&cached, SBR_DiscordConfiguration_GetAPIVersion());
+
+        cached = BA_String_Format(BA_String_Append(cached, "api/v%i"), SBR_DiscordConfiguration_GetAPIVersion());
     }
 
     SBR_DISCORDCONFIGURATION_ADD_PATH();
@@ -97,11 +97,9 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
     static BA_Boolean initialized = BA_BOOLEAN_FALSE;
     
     if (!initialized) {
-        char* buffer = BA_String_CreateEmpty();
-
         initialized = BA_BOOLEAN_TRUE;
 
-        SBR_cURL_HTTPSend(SBR_DiscordConfiguration_GetAPIURL("gateway"), "{}", BA_BOOLEAN_FALSE, &buffer);
+        char* buffer = SBR_cURL_HTTPSend(SBR_DiscordConfiguration_GetAPIURL("gateway"), "{}", BA_BOOLEAN_FALSE);
 
         json_object* object = json_tokener_parse(buffer);
 
@@ -114,8 +112,10 @@ const char* SBR_DiscordConfiguration_GetWebSocketURL(void) {
         cached = BA_String_Copy(json_object_get_string(url));
 
         json_object_put(object);
-        BA_String_Append(&cached, "?v=%i&encoding=json");
-        BA_String_Format(&cached, SBR_DiscordConfiguration_GetAPIVersion());
+        
+        cached = BA_String_Format(BA_String_Append(cached, "?v=%i&encoding=json"), SBR_DiscordConfiguration_GetAPIVersion());
+
+        free(buffer);
     }
 
     return cached;

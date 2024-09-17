@@ -13,9 +13,8 @@ int main(int argc, char** argv) {
     BA_LOGGER_INFO("Initializing curl\n");
     SBR_cURL_Initialize(NULL);
 
-    char* test = BA_String_CreateEmpty();
+    char* test = SBR_cURL_HTTPSend("http://example.com", "{}", BA_BOOLEAN_FALSE);
     
-    SBR_cURL_HTTPSend("http://example.com", "{}", BA_BOOLEAN_FALSE, &test);
     BA_LOGGER_INFO("%s\n", test);
     BA_LOGGER_INFO("Closing cURL\n");
     SBR_cURL_Close(BA_BOOLEAN_TRUE);

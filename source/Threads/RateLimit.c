@@ -2,7 +2,7 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Thread.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <BaconAPI/OperatingSystem.h>
 
 #if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
 #   include <unistd.h>

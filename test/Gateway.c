@@ -5,7 +5,7 @@
 #include <BaconAPI/String.h>
 #include <cURL.h>
 #include <Discord/Gateway/Event.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <BaconAPI/OperatingSystem.h>
 #include <Discord/Gateway/Gateway.h>
 
 #if BA_OPERATINGSYSTEM_POSIX_COMPLIANT

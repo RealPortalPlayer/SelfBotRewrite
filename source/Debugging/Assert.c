@@ -39,12 +39,13 @@ void SBR_Assert_Set(const char* fileName, int lineNumber, const char* functionNa
     sbrAssertLineNumber = lineNumber;
     sbrAssertFunctionName = functionName;
     sbrAssertCode = code;
-    sbrAssertMessage = BA_String_Copy(message);
 
     va_list arguments;
 
     va_start(arguments, message);
-    BA_String_FormatPremadeList(&sbrAssertMessage, arguments);
+    
+    sbrAssertMessage = BA_String_FormatPremadeList(BA_String_Copy(message), arguments);
+
     va_end(arguments);
 
     size_t sbrAssertMessageLength = strlen(sbrAssertMessage);

@@ -3,7 +3,7 @@
 
 #include <BaconAPI/Internal/Boolean.h>
 #include <BaconAPI/ArgumentHandler.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <BaconAPI/OperatingSystem.h>
 
 #if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
 #   include <unistd.h>
@@ -26,6 +26,11 @@
 #include "Sleep.h"
 #include "Debugging/Assert.h"
 
+typedef struct {
+    char* response;
+    size_t size;
+} SBR_cURL_WriteData;
+
 static CURL* sbrcURLWebSocket;
 static BA_Boolean sbrcURLInitialized = BA_BOOLEAN_FALSE;
 static BA_Thread_Lock sbrcURLLock;
@@ -33,9 +38,19 @@ static CURL* sbrcURLHTTP;
 static char* sbrcURLAuthorizationHeader = NULL;
 
 static size_t SBR_cURL_Write(char* buffer, size_t size, size_t newMemoryBytes, void* userPointer) {
-    for (int i = 0; i < newMemoryBytes; i++)
-        BA_String_AppendCharacter(userPointer, buffer[i]);
-    
+    SBR_cURL_WriteData* data = userPointer;
+    size_t fullSize = size * newMemoryBytes;
+    char* reallocatedResponse = realloc(data->response, data->size + fullSize + 1);
+
+    if (reallocatedResponse == NULL)
+        return 0;
+
+    data->response = reallocatedResponse;
+
+    memcpy(&data->response[data->size], buffer, fullSize);
+
+    data->size += fullSize;
+    data->response[data->size] = '\0';
     return size * newMemoryBytes;
 }
 
@@ -55,10 +70,9 @@ BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
     sbrcURLInitialized = BA_BOOLEAN_TRUE;
 
     if (sbrcURLAuthorizationHeader == NULL) {
-        sbrcURLAuthorizationHeader = BA_String_Copy("Authorization: Bot ");
+        sbrcURLAuthorizationHeader = BA_String_Append(BA_String_Copy("Authorization: Bot "), SBR_Token_Get());
 
         SBR_ASSERT(sbrcURLAuthorizationHeader, "Failed to create authorization header\n");
-        BA_String_Append(&sbrcURLAuthorizationHeader, SBR_Token_Get());
     }
 
     SBR_CURL_INITIALIZE(sbrcURLHTTP, "HTTP");
@@ -158,10 +172,12 @@ BA_Boolean SBR_cURL_WebSocketReceive(void* buffer, size_t bufferSize, size_t* re
     return BA_BOOLEAN_TRUE;
 }
 
-BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post, char** response) {
+char* SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post) {
+    SBR_cURL_WriteData data = {NULL, 0};
+    
     BA_Thread_UseLock(&sbrcURLLock);
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_URL, url);
-    curl_easy_setopt(sbrcURLHTTP, CURLOPT_WRITEDATA, response);
+    curl_easy_setopt(sbrcURLHTTP, CURLOPT_WRITEDATA, &data);
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_POST, post);
     curl_easy_setopt(sbrcURLHTTP, CURLOPT_HTTPGET, !post);
     
@@ -188,7 +204,7 @@ BA_Boolean SBR_cURL_HTTPSend(const char* url, const char* json, BA_Boolean post,
     
     curl_slist_free_all(list);
     BA_Thread_Unlock(&sbrcURLLock);
-    return BA_BOOLEAN_TRUE;
+    return data.response;
 }
 
 void SBR_cURL_LoopInitialize(const char* webSocketUrl) {

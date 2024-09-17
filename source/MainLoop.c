@@ -2,7 +2,7 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Logger.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <BaconAPI/OperatingSystem.h>
 
 #if BA_OPERATINGSYSTEM_POSIX_COMPLIANT
 #   include <unistd.h>
@@ -84,7 +84,9 @@ BA_Boolean SBR_MainLoop_Start(void) {
 
                     currentBufferSize += bufferSize + 1;
                     BA_Memory_AddSize(bufferSize + 1, SBR_MEMORY_TYPE_EVENT_BUFFER);
-                    BA_String_Append(&buffer, temporaryBuffer);
+
+                    buffer = BA_String_Append(buffer, temporaryBuffer);
+
                     free(temporaryBuffer);
                     continue;
                 }

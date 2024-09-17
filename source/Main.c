@@ -44,13 +44,12 @@ void FatalSignalHandler(int theSignal) {
             const char* code = SBR_Assert_GetCode();
             const char* message = SBR_Assert_GetMessage();
 
-            if (code != NULL) {
-                BA_String_Append(&finalMessage, "Assertion Failed: `%s#L%i->%s`\nCode `%s`\nMessage: `%s`");
-                BA_String_Format(&finalMessage, fileName, lineNumber, functionName, code, message);
-            } else
-                BA_String_Append(&finalMessage, "SIGABRT detected");
+            if (code != NULL)
+                finalMessage = BA_String_Format(BA_String_Append(finalMessage, "Assertion Failed: `%s#L%i->%s`\nCode `%s`\nMessage: `%s`"), fileName, lineNumber, functionName, code, message);
+            else
+                finalMessage = BA_String_Append(finalMessage, "SIGABRT detected");
         } else if (theSignal == SIGSEGV)
-            BA_String_Append(&finalMessage, "SIGSEGV detected");
+            finalMessage = BA_String_Append(finalMessage, "SIGSEGV detected");
 
 #ifndef DEBUG
 #   define SBR_MAIN_ADDITIONAL_MESSAGE " (dynamic symbol table not included, use addr2line)\n"
@@ -58,8 +57,9 @@ void FatalSignalHandler(int theSignal) {
 #   define SBR_MAIN_ADDITIONAL_MESSAGE ""
 #endif
         
-        BA_String_Append(&finalMessage, "\nStack: %s```%s```");
-        SBR_SupportChannels_SendLogsMessage(BA_String_Format(&finalMessage, SBR_MAIN_ADDITIONAL_MESSAGE, callStack), NULL);
+        finalMessage = BA_String_Format(BA_String_Append(finalMessage, "\nStack: %s```%s```"), SBR_MAIN_ADDITIONAL_MESSAGE, callStack);
+        
+        SBR_SupportChannels_SendLogsMessage(finalMessage, NULL);
         free(finalMessage);
         free(callStack);
         SBR_cURL_Close(BA_BOOLEAN_TRUE);

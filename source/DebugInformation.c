@@ -3,7 +3,7 @@
 
 #include <BaconAPI/String.h>
 #include <BaconAPI/Math/Bitwise.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <BaconAPI/OperatingSystem.h>
 #include <BaconAPI/Internal/Compiler.h>
 
 #include "DebugInformation.h"
@@ -43,16 +43,17 @@ char* SBR_DebugInformation_Get(void) {
 
     char* memoryInformation = BA_Memory_GetAllocatedInformation("    ");
 
-    BA_String_Format(&debugMessage, terminalCommands,
-                                    SBR_Category_GetAll()->keys.used,
-                                    classicCommands,
-                                    slashCommands,
-                                    SBR_VERSION,
-                                    BA_OPERATINGSYSTEM_NAME,
-                                    BA_COMPILER_STANDARD_VERSION,
-                                    BA_Memory_GetAllocatedAmount(),
-                                    BA_Memory_GetAllocatedBytes(),
-                                    memoryInformation);
+    debugMessage = BA_String_Format(debugMessage, terminalCommands,
+                                                  SBR_Category_GetAll()->keys.used,
+                                                  classicCommands,
+                                                  slashCommands,
+                                                  SBR_VERSION,
+                                                  BA_OPERATINGSYSTEM_NAME,
+                                                  BA_COMPILER_STANDARD_VERSION,
+                                                  BA_Memory_GetAllocatedAmount(),
+                                                  BA_Memory_GetAllocatedBytes(),
+                                                  memoryInformation);
+    
     free(memoryInformation);
     return debugMessage;
 }

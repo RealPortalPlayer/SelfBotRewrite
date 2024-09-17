@@ -7,9 +7,9 @@
 #include "Debugging/Assert.h"
 
 SBR_COMMANDS_CREATE_COMMAND_HEADER(test) {
-    char* newMessage = BA_String_Copy("Hello, from %s command");
+    char* newMessage = BA_String_Format(BA_String_Copy("Hello, from %s command"), this->name);
 
-    SBR_DiscordMessage_Deallocate(SBR_DiscordChannel_Send(message->channel, BA_String_Format(&newMessage, this->name), NULL));
+    SBR_DiscordMessage_Deallocate(SBR_DiscordChannel_Send(message->channel, newMessage, NULL));
     free(newMessage);
     return NULL;
 }

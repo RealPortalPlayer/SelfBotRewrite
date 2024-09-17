@@ -110,9 +110,7 @@ BA_Boolean SBR_DiscordPermissions_IsStagePermission(SBR_DiscordPermissions permi
 }
 
 char* SBR_DiscordPermissions_ConvertToString(SBR_DiscordPermissions permission) {
-    char* formatter = BA_String_Copy("%lu");
-
-    return BA_String_Format(&formatter, permission);
+    return BA_String_Format(BA_String_Copy("%lu"), permission);
 }
 
 SBR_DiscordPermissions SBR_DiscordPermissions_ConvertFromString(const char* permission) {

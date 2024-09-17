@@ -140,11 +140,8 @@ const char* SBR_Gateway_GetSessionID(void) {
 }
 
 void SBR_Gateway_SetResumeData(const char* url, const char* id) {
-    sbrGatewayResumeUrl = BA_String_Copy(url);
+    sbrGatewayResumeUrl = BA_String_Format(BA_String_Append(BA_String_Copy(url), "?v=%i&encoding=json"), SBR_DiscordConfiguration_GetAPIVersion());
     sbrGatewaySessionId = id;
-
-    BA_String_Append(&sbrGatewayResumeUrl, "?v=%i&encoding=json");
-    BA_String_Format(&sbrGatewayResumeUrl, SBR_DiscordConfiguration_GetAPIVersion());
 }
 
 int SBR_Gateway_GetLastSequence(void) {

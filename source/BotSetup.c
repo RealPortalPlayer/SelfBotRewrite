@@ -43,25 +43,25 @@ void SBR_BotSetup_MessageSent(SBR_DiscordMessage* message) {
     {
         const char* results = command->Action(command, message);
         SBR_EmbedCreator_Embed* embed = SBR_EmbedCreator_Create();
-        char* parsedId = BA_String_Copy("%llu");
+        char* parsedId = BA_String_Format(BA_String_Copy("%llu"), SBR_Snowflake_ConvertToNumber(message->author->id));
 
         SBR_EmbedCreator_AddField(embed, "Success", results == NULL ? "true" : "false", BA_BOOLEAN_TRUE);
         SBR_EmbedCreator_AddField(embed, "Command", name, BA_BOOLEAN_TRUE);
         SBR_EmbedCreator_AddField(embed, "Arguments", "None", BA_BOOLEAN_TRUE); // TODO
         SBR_EmbedCreator_AddField(embed, "Message", message->content, BA_BOOLEAN_TRUE);
-        SBR_EmbedCreator_AddField(embed, "ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->author->id)), BA_BOOLEAN_TRUE);
+        SBR_EmbedCreator_AddField(embed, "ID", parsedId, BA_BOOLEAN_TRUE);
 
         if (message->channel->type == SBR_DISCORDCHANNEL_TYPE_GUILD_TEXT && !message->channel->guild->unavailable) {
             free(parsedId);
 
-            parsedId = BA_String_Copy("%llu");
+            parsedId = BA_String_Format(BA_String_Copy("%llu"), SBR_Snowflake_ConvertToNumber(message->channel->guild->id));
 
-            SBR_EmbedCreator_AddField(embed, "Guild ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guild->id)), BA_BOOLEAN_TRUE);
+            SBR_EmbedCreator_AddField(embed, "Guild ID", parsedId, BA_BOOLEAN_TRUE);
             free(parsedId);
 
-            parsedId = BA_String_Copy("%llu");
-
-            SBR_EmbedCreator_AddField(embed, "Guild Owner ID", BA_String_Format(&parsedId, SBR_Snowflake_ConvertToNumber(message->channel->guild->ownerId)), BA_BOOLEAN_TRUE);
+            parsedId = BA_String_Format(BA_String_Copy("%llu"), SBR_Snowflake_ConvertToNumber(message->channel->guild->ownerId));
+            
+            SBR_EmbedCreator_AddField(embed, "Guild Owner ID", parsedId, BA_BOOLEAN_TRUE);
         }
 
         if (results != NULL)
@@ -88,16 +88,16 @@ void SBR_BotSetup_Ready(void) {
     SBR_Commands_Register();
     SBR_Categories_Register();
 
-    char* message = BA_String_Copy("Bot successfully started%s\n%s");
-    char* debugInformation = SBR_DebugInformation_Get();
-
 #if DEBUG
 #   define SBR_BOTSETUP_ADDITIONAL_MESSAGE " (DEBUG BUILD)"
 #else
 #   define SBR_BOTSETUP_ADDITIONAL_MESSAGE ""
 #endif
     
-    SBR_DiscordMessage_Deallocate(SBR_SupportChannels_SendLogsMessage(BA_String_Format(&message, SBR_BOTSETUP_ADDITIONAL_MESSAGE, debugInformation), NULL));
+    char* debugInformation = SBR_DebugInformation_Get();
+    char* message = BA_String_Format(BA_String_Copy("Bot successfully started%s\n%s"), SBR_BOTSETUP_ADDITIONAL_MESSAGE, debugInformation);
+    
+    SBR_DiscordMessage_Deallocate(SBR_SupportChannels_SendLogsMessage(message, NULL));
     free(debugInformation);
     free(message);
 }

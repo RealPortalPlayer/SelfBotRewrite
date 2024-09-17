@@ -21,9 +21,8 @@
 
 #define SBR_DISCORDAPIEVENTS_CREATE_EVENT_DEFAULT(code, path, data, post) \
 SBR_DISCORDAPIEVENTS_CREATE_EVENT_FUNCTION_HEADER(code) {                 \
-    char* url = SBR_DiscordConfiguration_GetAPIURL(path);                 \
-    char* response = BA_String_CreateEmpty();                             \
-    SBR_cURL_HTTPSend(BA_String_Format(&url, SBR_Snowflake_ConvertToNumber(variables->snowflake)), data, post, &response); \
+    char* url = BA_String_Format(SBR_DiscordConfiguration_GetAPIURL(path), SBR_Snowflake_ConvertToNumber(variables->snowflake)); \
+    char* response = SBR_cURL_HTTPSend(url, data, post);                  \
     json_object* parsed = json_tokener_parse(response);                   \
     if (parsed == NULL)                                                   \
         BA_LOGGER_ERROR("Failed to parse response: %s\n", response);      \

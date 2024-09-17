@@ -2,7 +2,7 @@
 // Licensed under MIT <https://opensource.org/licenses/MIT>
 
 #include <BaconAPI/Thread.h>
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <BaconAPI/OperatingSystem.h>
 
 #include "Threads/Heartbeat.h"
 #include "Discord/Gateway/Event.h"

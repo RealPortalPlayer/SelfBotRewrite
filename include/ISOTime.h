@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <BaconAPI/Internal/OperatingSystem.h>
+#include <BaconAPI/OperatingSystem.h>
 
 #if BA_OPERATINGSYSTEM_WINDOWS
 #   include <Windows.h>
