@@ -61,7 +61,9 @@ CURL* SBR_cURL_Get(void) {
 #define SBR_CURL_INITIALIZE(variable, type) \
 SBR_ASSERT((variable = curl_easy_init()), "Failed to initialize " type " cURL\n"); \
 if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_CURL_VERBOSE, SBR_BUILTINARGUMENTS_CURL_VERBOSE_SHORT, BA_BOOLEAN_FALSE)) \
-    curl_easy_setopt(variable, CURLOPT_VERBOSE, 1L);
+    curl_easy_setopt(variable, CURLOPT_VERBOSE, 1L);                               \
+if (BA_ArgumentHandler_ContainsArgumentOrShort(SBR_BUILTINARGUMENTS_INSECURE, SBR_BUILTINARGUMENTS_INSECURE_SHORT, BA_BOOLEAN_FALSE)) \
+    curl_easy_setopt(variable, CURLOPT_SSL_VERIFYPEER, 0L)
 
 BA_Boolean SBR_cURL_Initialize(const char* webSocketUrl) {
     SBR_ASSERT(!sbrcURLInitialized, "Already initialized cURL\n");
